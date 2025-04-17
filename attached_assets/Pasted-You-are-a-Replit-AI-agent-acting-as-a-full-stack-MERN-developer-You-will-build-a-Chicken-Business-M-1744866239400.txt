@@ -1,0 +1,208 @@
+You are a Replit AI agent acting as a full‑stack MERN developer. You will build a Chicken Business Management Web Application to help a small business owner manage daily purchases and sales of chicken. The system will allow him to track purchases from 3 different vendors, and sales to retail customers and local hotels, calculate daily profit, and store everything in Firebase Firestore. You are expected to generate working, complete, and clean code for both the frontend and backend.
+
+🛠️ Tech Stack (Strict Requirement)
+Frontend: React.js (v18+)
+
+UI: Material‑UI (MUI v5)
+
+Forms: Formik + Yup
+
+State: Context API
+
+Routing: React Router v6
+
+HTTP Client: Axios
+
+Charts: Recharts or Chart.js
+
+Date utils: date-fns
+
+Backend: Node.js with Express.js
+
+Middleware: CORS, body-parser, morgan
+
+Auth: Firebase Authentication
+
+Data: Firebase Firestore (NoSQL)
+
+Environment: dotenv
+
+Hosting & Auth: Firebase Hosting + Firebase Auth
+
+Version Control: Git with README and .env example
+
+Bonus (if time permits): Export reports as CSV or PDF
+
+📦 Core Features & Requirements
+1. Authentication
+Admin login using Firebase email/password auth
+
+Only one admin user (the business owner)
+
+Secure routes and Firebase-protected APIs
+
+2. Vendor Management
+Add/edit/delete up to 3 vendors
+
+Fields: name, phone, notes
+
+Show vendor list in dropdown for purchases
+
+3. Daily Chicken Purchase Entry
+Allow admin to input multiple purchases per day
+
+Vendor (from dropdown)
+
+Quantity in KG
+
+Rate per KG (₹)
+
+Date (default to today)
+
+Store each purchase entry in Firestore
+
+Auto calculate total kg and cost per day
+
+4. Sales Tracking
+Retail Sales:
+
+Input sales from 8 AM onward
+
+Fields: quantity (kg), rate per kg, timestamp (auto)
+
+Multiple retail sales per day
+
+Hotel Sales:
+
+Fields: hotel name, quantity, rate per kg, timestamp
+
+Separate from retail
+
+Track each type of sale separately in Firestore
+
+5. Daily Summary & Profit Calculation
+On selecting a date:
+
+Total quantity bought
+
+Total purchase cost
+
+Total retail sales + profit
+
+Total hotel sales + profit
+
+Net profit = total revenue - total cost
+
+Prevent selling more kg than purchased
+
+Optional: warning UI when stock is low
+
+6. Reporting & Visualization
+View sales/profit summary for:
+
+Today
+
+This week
+
+This month
+
+Display with:
+
+Line chart: profit trend
+
+Bar chart: kg in vs. kg out
+
+Export report (CSV or PDF if possible)
+
+🧠 Firestore Data Model
+bash
+Copy
+Edit
+/users/{userId}
+/vendors/{vendorId}
+/purchases/{purchaseId}
+/sales/retail/{saleId}
+/sales/hotel/{saleId}
+Each purchase, sale, etc. must include:
+
+userId (for multi-user expansion)
+
+date, quantityKg, ratePerKg, total
+
+🔗 API Routes (Express)
+
+METHOD	ROUTE	DESC
+POST	/api/auth/login	Login with Firebase Auth
+GET	/api/vendors	Get all vendors
+POST	/api/vendors	Add a vendor
+PUT	/api/vendors/:id	Update vendor
+DELETE	/api/vendors/:id	Delete vendor
+POST	/api/purchases	Add daily purchase
+GET	/api/purchases?date=YYYY-MM-DD	List daily purchases
+POST	/api/sales/retail	Add retail sale
+POST	/api/sales/hotel	Add hotel sale
+GET	/api/sales/:type?date=YYYY-MM-DD	Get sales by type/date
+GET	/api/report/daily?date=YYYY-MM-DD	Summary for date
+GET	/api/report/aggregate?from=...&to=...	Weekly/monthly summary
+🧱 Frontend Pages & Components
+LoginPage – Firebase login
+
+DashboardPage
+
+SummaryCards: kg, cost, revenue, profit
+
+ChartComponents
+
+VendorsPage – List/Add/Edit vendors
+
+PurchasePage – Form to add/view daily purchases
+
+RetailSalesPage – Form + table for retail
+
+HotelSalesPage – Form + table for hotel
+
+ReportsPage – Select date range, view/export
+
+🗂️ Project Structure
+bash
+Copy
+Edit
+/client
+  /src
+    /api
+    /components
+    /pages
+    /context
+    /utils
+    App.jsx
+    index.js
+
+/server
+  /routes
+  /controllers
+  /models
+  server.js
+
+/.env.example
+/firebase.json
+✅ Final Deliverables
+Fully working app with Firebase connection
+
+Frontend with working UI and forms
+
+Backend APIs connected to Firestore
+
+Auth-guarded routes and secure data flow
+
+Deployment-ready with firebase deploy
+
+Clean and commented code
+
+Sample .env.example file
+
+Instructions in README.md
+
+📣 Replit AI Agent — Instructions
+Start by scaffolding the project structure above. Generate code component by component. Create working examples for both the frontend and backend. Assume Firebase keys and auth are already set up. Use placeholder data where necessary.
+
+Focus on correct functionality, clean UI, and profit accuracy. Everything must work in a daily transaction and reporting flow.
