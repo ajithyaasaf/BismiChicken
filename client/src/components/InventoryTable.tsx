@@ -143,7 +143,66 @@ export default function InventoryTable({
         <CardDescription>Track inventory by meat type and cut</CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="rounded-md border">
+        {/* Mobile-optimized card view for small screens */}
+        <div className="space-y-4 md:hidden">
+          {sortedMeatTypes.map((meatType) => (
+            <div key={`mobile-${meatType}`} className="rounded-md border bg-white overflow-hidden">
+              <div className="bg-gray-50 px-3 py-2 border-b">
+                <Badge variant="outline" className="bg-gray-50 capitalize">
+                  {capitalize(meatType)}
+                </Badge>
+              </div>
+              
+              <div className="divide-y">
+                {inventoryByType[meatType].map((item) => {
+                  // Determine status color for remaining stock
+                  const isLowStock = item.remainingKg < 5;
+                  const isVeryLowStock = item.remainingKg < 2;
+                  const stockStatusColor = isVeryLowStock 
+                    ? 'text-red-500' 
+                    : isLowStock 
+                      ? 'text-amber-500' 
+                      : 'text-green-600';
+                  
+                  return (
+                    <div 
+                      key={`mobile-${meatType}-${item.productCut}`} 
+                      className="p-3"
+                    >
+                      <div className="flex items-center justify-between mb-2">
+                        <span className="font-medium capitalize">{capitalize(item.productCut)}</span>
+                        <span className={`font-semibold ${stockStatusColor} flex items-center`}>
+                          {item.remainingKg.toFixed(2)} kg
+                          {isVeryLowStock && (
+                            <AlertCircle className="h-3.5 w-3.5 ml-1 text-red-500" />
+                          )}
+                        </span>
+                      </div>
+                      
+                      <div className="grid grid-cols-3 gap-1 text-xs">
+                        <div>
+                          <div className="text-gray-500">Purchased</div>
+                          <div className="font-medium">{item.purchasedKg.toFixed(2)} kg</div>
+                        </div>
+                        <div>
+                          <div className="text-gray-500">Sold</div>
+                          <div className="font-medium">{item.soldKg.toFixed(2)} kg</div>
+                        </div>
+                        <div>
+                          <div className="text-gray-500">Avg. Cost</div>
+                          <div className="font-medium">₹{item.avgCostPerKg.toFixed(2)}</div>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          ))}
+        </div>
+        
+        {/* Desktop table view for larger screens */}
+        <div className="rounded-md border hidden md:block">
           <Table>
             <TableHeader>
               <TableRow>
@@ -195,11 +254,13 @@ export default function InventoryTable({
             </TableBody>
           </Table>
         </div>
-        <div className="mt-4 text-xs text-gray-500 flex items-center">
+        
+        {/* Legend for stock status indicators */}
+        <div className="mt-4 text-xs text-gray-500 flex flex-wrap items-center">
           <span className="inline-block w-3 h-3 bg-red-500 rounded-full mr-1"></span>
-          <span className="mr-3">Very Low Stock (&lt; 2kg)</span>
+          <span className="mr-3">Very Low (&lt; 2kg)</span>
           <span className="inline-block w-3 h-3 bg-amber-500 rounded-full mr-1"></span>
-          <span className="mr-3">Low Stock (&lt; 5kg)</span>
+          <span className="mr-3">Low (&lt; 5kg)</span>
           <span className="inline-block w-3 h-3 bg-green-600 rounded-full mr-1"></span>
           <span>Good Stock</span>
         </div>

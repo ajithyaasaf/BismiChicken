@@ -13,16 +13,20 @@ import { Button } from "@/components/ui/button";
 import { Trash2 } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 
+// Define transaction types to match schema
+type TransactionType = "purchase" | "retail" | "hotel" | "payment";
+
 interface TransactionBadgeProps {
-  type: Transaction["type"];
+  type: TransactionType;
   children: ReactNode;
 }
 
 function TransactionBadge({ type, children }: TransactionBadgeProps) {
-  const badgeClasses = {
+  const badgeClasses: Record<TransactionType, string> = {
     purchase: "bg-primary bg-opacity-10 text-primary-dark",
     retail: "bg-green-500 bg-opacity-10 text-green-700",
     hotel: "bg-cyan-500 bg-opacity-10 text-cyan-700",
+    payment: "bg-amber-500 bg-opacity-10 text-amber-700",
   };
 
   return (
@@ -63,8 +67,10 @@ export default function TransactionTable({
         return "Retail";
       case "hotel":
         return "Hotel";
+      case "payment":
+        return "Payment";
       default:
-        return type;
+        return type.charAt(0).toUpperCase() + type.slice(1);
     }
   };
 
@@ -79,8 +85,75 @@ export default function TransactionTable({
     );
   }
 
-  return (
-    <div className="overflow-x-auto">
+  // Mobile card view for small screens
+  const renderMobileView = () => {
+    if (transactions.length === 0) {
+      return (
+        <div className="text-center py-8 text-gray-500 border rounded-md">
+          No transactions found for this day
+        </div>
+      );
+    }
+
+    return (
+      <div className="space-y-3 md:hidden">
+        {transactions.map((transaction) => (
+          <div 
+            key={`mobile-${transaction.type}-${transaction.id}`} 
+            className="border rounded-md p-3 bg-white shadow-sm"
+          >
+            <div className="flex justify-between items-start mb-2">
+              <TransactionBadge type={transaction.type}>
+                {getTypeName(transaction.type)}
+              </TransactionBadge>
+              <span className="text-xs text-gray-500">
+                {format(new Date(transaction.timestamp), "hh:mm a")}
+              </span>
+            </div>
+            
+            <div className="font-medium text-gray-900 mb-1 text-sm">
+              {transaction.type === "purchase"
+                ? getVendorName(transaction.details)
+                : transaction.details}
+            </div>
+            
+            <div className="grid grid-cols-3 gap-1 text-xs border-t pt-2 mt-2">
+              <div>
+                <div className="text-gray-500">Quantity</div>
+                <div className="font-medium">{transaction.quantityKg} kg</div>
+              </div>
+              <div>
+                <div className="text-gray-500">Rate</div>
+                <div className="font-medium">₹{transaction.ratePerKg}</div>
+              </div>
+              <div>
+                <div className="text-gray-500">Amount</div>
+                <div className="font-medium">₹{transaction.total.toFixed(2)}</div>
+              </div>
+            </div>
+            
+            {onDelete && (
+              <div className="mt-2 pt-2 border-t text-right">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => onDelete(transaction.id, transaction.type)}
+                  className="h-8 px-2"
+                >
+                  <Trash2 className="h-3.5 w-3.5 text-red-500 mr-1" />
+                  <span className="text-xs">Delete</span>
+                </Button>
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+    );
+  };
+
+  // Desktop table view for larger screens
+  const renderDesktopView = () => (
+    <div className="overflow-x-auto hidden md:block">
       <Table>
         <TableHeader>
           <TableRow className="bg-gray-50">
@@ -136,5 +209,12 @@ export default function TransactionTable({
         </TableBody>
       </Table>
     </div>
+  );
+
+  return (
+    <>
+      {renderMobileView()}
+      {renderDesktopView()}
+    </>
   );
 }
