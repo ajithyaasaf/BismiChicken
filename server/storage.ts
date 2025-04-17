@@ -3,7 +3,8 @@ import {
   Vendor, InsertVendor, 
   Purchase, InsertPurchase, 
   RetailSale, InsertRetailSale, 
-  HotelSale, InsertHotelSale, 
+  HotelSale, InsertHotelSale,
+  VendorPayment, InsertVendorPayment,
   DailySummary, Transaction
 } from "@shared/schema";
 import { format } from "date-fns";
@@ -37,6 +38,11 @@ export interface IStorage {
   getHotelSales(userId: number, date?: Date): Promise<HotelSale[]>;
   createHotelSale(sale: InsertHotelSale): Promise<HotelSale>;
   deleteHotelSale(id: number): Promise<boolean>;
+  
+  // Vendor Payment operations
+  getVendorPayments(userId: number, vendorId?: number, date?: Date): Promise<VendorPayment[]>;
+  createVendorPayment(payment: InsertVendorPayment): Promise<VendorPayment>;
+  deleteVendorPayment(id: number): Promise<boolean>;
 
   // Report operations
   getDailySummary(userId: number, date: Date): Promise<DailySummary>;
@@ -50,12 +56,14 @@ export class MemStorage implements IStorage {
   private purchases: Map<number, Purchase>;
   private retailSales: Map<number, RetailSale>;
   private hotelSales: Map<number, HotelSale>;
+  private vendorPayments: Map<number, VendorPayment>;
   
   private currentUserId: number;
   private currentVendorId: number;
   private currentPurchaseId: number;
   private currentRetailSaleId: number;
   private currentHotelSaleId: number;
+  private currentVendorPaymentId: number;
 
   constructor() {
     this.users = new Map();
@@ -63,12 +71,14 @@ export class MemStorage implements IStorage {
     this.purchases = new Map();
     this.retailSales = new Map();
     this.hotelSales = new Map();
+    this.vendorPayments = new Map();
     
     this.currentUserId = 1;
     this.currentVendorId = 1;
     this.currentPurchaseId = 1;
     this.currentRetailSaleId = 1;
     this.currentHotelSaleId = 1;
+    this.currentVendorPaymentId = 1;
   }
 
   // User methods

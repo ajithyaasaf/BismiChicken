@@ -2,6 +2,46 @@ import { pgTable, text, serial, integer, date, timestamp, numeric, boolean } fro
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
+// Enum for meat types
+export const MeatTypes = {
+  CHICKEN: "chicken",
+  GOAT: "goat",
+  BEEF: "beef",
+  KADAI: "kadai"
+} as const;
+
+// Zod schema for meat type
+export const meatTypeSchema = z.enum([
+  MeatTypes.CHICKEN,
+  MeatTypes.GOAT,
+  MeatTypes.BEEF,
+  MeatTypes.KADAI
+]);
+
+// Product cut/variant types
+export const ProductCuts = {
+  WHOLE: "whole",
+  LEG: "leg",
+  EERAL: "eeral", // liver
+  THIGH: "thigh",
+  BREAST: "breast",
+  WING: "wing",
+  BONELESS: "boneless",
+  OTHER: "other"
+} as const;
+
+// Zod schema for product cuts
+export const productCutSchema = z.enum([
+  ProductCuts.WHOLE,
+  ProductCuts.LEG,
+  ProductCuts.EERAL,
+  ProductCuts.THIGH,
+  ProductCuts.BREAST,
+  ProductCuts.WING,
+  ProductCuts.BONELESS,
+  ProductCuts.OTHER
+]);
+
 // Users
 export const users = pgTable("users", {
   id: serial("id").primaryKey(),
@@ -60,16 +100,24 @@ export const vendors = pgTable("vendors", {
   name: text("name").notNull(),
   phone: text("phone").notNull(),
   notes: text("notes"),
-  outstandingDebt: numeric("outstanding_debt").notNull().default("0"),
+  balance: numeric("balance").notNull().default("0"),
   userId: integer("user_id").notNull(),
+  // Vendor specializations - store as comma-separated strings 
+  specializedMeatTypes: text("specialized_meat_types"),
+  specializedProductCuts: text("specialized_product_cuts"),
+  // Custom pricing - store as JSON string
+  customPricing: text("custom_pricing"),
 });
 
 export const insertVendorSchema = createInsertSchema(vendors).pick({
   name: true,
   phone: true,
   notes: true,
-  outstandingDebt: true,
+  balance: true,
   userId: true,
+  specializedMeatTypes: true,
+  specializedProductCuts: true, 
+  customPricing: true,
 });
 
 // Hotels (Regular Clients)
@@ -104,6 +152,8 @@ export const purchases = pgTable("purchases", {
   date: date("date").notNull(),
   timestamp: timestamp("timestamp").notNull().defaultNow(),
   userId: integer("user_id").notNull(),
+  meatType: text("meat_type").notNull().default(MeatTypes.CHICKEN),
+  productCut: text("product_cut").notNull().default(ProductCuts.WHOLE),
 });
 
 export const insertPurchaseSchema = createInsertSchema(purchases).pick({
@@ -115,6 +165,8 @@ export const insertPurchaseSchema = createInsertSchema(purchases).pick({
   total: true,
   date: true,
   userId: true,
+  meatType: true,
+  productCut: true,
 });
 
 // Retail Sales
@@ -128,6 +180,8 @@ export const retailSales = pgTable("retail_sales", {
   date: date("date").notNull(),
   timestamp: timestamp("timestamp").notNull().defaultNow(),
   userId: integer("user_id").notNull(),
+  meatType: text("meat_type").notNull().default(MeatTypes.CHICKEN),
+  productCut: text("product_cut").notNull().default(ProductCuts.WHOLE),
 });
 
 export const insertRetailSaleSchema = createInsertSchema(retailSales).pick({
@@ -138,6 +192,8 @@ export const insertRetailSaleSchema = createInsertSchema(retailSales).pick({
   total: true,
   date: true,
   userId: true,
+  meatType: true,
+  productCut: true,
 });
 
 // Hotel Sales (Line Items)
@@ -150,6 +206,8 @@ export const hotelSaleItems = pgTable("hotel_sale_items", {
   ratePerKg: numeric("rate_per_kg").notNull(),
   total: numeric("total").notNull(),
   userId: integer("user_id").notNull(),
+  meatType: text("meat_type").notNull().default(MeatTypes.CHICKEN),
+  productCut: text("product_cut").notNull().default(ProductCuts.WHOLE),
 });
 
 export const insertHotelSaleItemSchema = createInsertSchema(hotelSaleItems).pick({
@@ -160,6 +218,8 @@ export const insertHotelSaleItemSchema = createInsertSchema(hotelSaleItems).pick
   ratePerKg: true,
   total: true,
   userId: true,
+  meatType: true,
+  productCut: true,
 });
 
 // Hotel Sales (Header)
@@ -172,6 +232,8 @@ export const hotelSales = pgTable("hotel_sales", {
   timestamp: timestamp("timestamp").notNull().defaultNow(),
   isPaid: boolean("is_paid").notNull().default(false),
   userId: integer("user_id").notNull(),
+  meatType: text("meat_type").notNull().default(MeatTypes.CHICKEN),
+  productCut: text("product_cut").notNull().default(ProductCuts.WHOLE),
 });
 
 export const insertHotelSaleSchema = createInsertSchema(hotelSales).pick({
@@ -181,6 +243,8 @@ export const insertHotelSaleSchema = createInsertSchema(hotelSales).pick({
   date: true,
   isPaid: true,
   userId: true,
+  meatType: true,
+  productCut: true,
 });
 
 // Vendor Payments
@@ -192,6 +256,8 @@ export const vendorPayments = pgTable("vendor_payments", {
   notes: text("notes"),
   timestamp: timestamp("timestamp").notNull().defaultNow(),
   userId: integer("user_id").notNull(),
+  meatType: text("meat_type").notNull().default(MeatTypes.CHICKEN),
+  productCut: text("product_cut").notNull().default(ProductCuts.WHOLE),
 });
 
 export const insertVendorPaymentSchema = createInsertSchema(vendorPayments).pick({
@@ -200,6 +266,8 @@ export const insertVendorPaymentSchema = createInsertSchema(vendorPayments).pick
   date: true,
   notes: true,
   userId: true,
+  meatType: true,
+  productCut: true,
 });
 
 // Type definitions
@@ -244,6 +312,18 @@ export type Transaction = {
   ratePerKg: number;
   total: number;
   timestamp: Date;
+  meatType?: string;
+  productCut?: string;
+};
+
+// Product inventory type for tracking stock by meat type and cut
+export type ProductInventory = {
+  meatType: string;
+  productCut: string;
+  purchasedKg: number;
+  soldKg: number;
+  remainingKg: number;
+  avgCostPerKg: number;
 };
 
 export type DailySummary = {
@@ -261,6 +341,7 @@ export type DailySummary = {
   netProfit: number;
   vendorPayments: number;
   transactions: Transaction[];
+  inventory: ProductInventory[]; // Detailed inventory by product type
 };
 
 // Predefined types for UI consistency
