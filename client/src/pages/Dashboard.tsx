@@ -1,5 +1,5 @@
 import { useState, useRef } from "react";
-import { useData } from "../context/EnhancedDataContext";
+import { useEnhancedData } from "../context/EnhancedDataContext";
 import DatePicker from "../components/DatePicker";
 import SummaryCard from "../components/SummaryCard";
 import TransactionTable from "../components/TransactionTable";
@@ -54,7 +54,7 @@ export default function Dashboard() {
     deletePurchase,
     deleteRetailSale,
     deleteHotelSale,
-  } = useData();
+  } = useEnhancedData();
 
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const deleteItemRef = useRef<{ id: number; type: Transaction["type"] } | null>(
@@ -90,7 +90,7 @@ export default function Dashboard() {
 
   // Create a vendor map for display
   const vendorMap: Record<number, string> = {};
-  vendors.forEach(vendor => {
+  vendors.forEach((vendor: { id: number; name: string }) => {
     vendorMap[vendor.id] = vendor.name;
   });
 

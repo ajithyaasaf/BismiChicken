@@ -192,9 +192,9 @@ export default function SaleForm({
               <motion.div variants={itemVariants}>
                 {/* Use type assertion to fix TypeScript error with dynamic form field names */}
                 {type === "hotel" && (
-                  // @ts-expect-error - We know this is valid when type is hotel
                   <FormField
                     control={form.control}
+                    // @ts-ignore - The schema is conditional based on type
                     name="hotelName"
                     render={({ field }) => (
                       <FormItem className="mb-3 sm:mb-4">
