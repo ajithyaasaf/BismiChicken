@@ -19,6 +19,7 @@ import NotFound from "@/pages/not-found";
 import Products from "./pages/Products";
 import Hotels from "./pages/Hotels";
 import VendorDebt from "./pages/VendorDebt";
+import VendorPayments from "./pages/VendorPayments";
 import HotelBills from "./pages/HotelBills";
 import { Loader2 } from "lucide-react";
 
@@ -98,6 +99,9 @@ function Router() {
       {/* Vendor Management */}
       <Route path="/vendors">
         {(params) => <PrivateRoute component={Vendors} params={params} />}
+      </Route>
+      <Route path="/vendor-payments">
+        {(params) => <PrivateRoute component={VendorPayments} params={params} />}
       </Route>
       <Route path="/vendor-debt">
         {(params) => <PrivateRoute component={VendorDebt} params={params} />}

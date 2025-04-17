@@ -5,7 +5,8 @@ import {
   ShoppingCart, 
   Store, 
   Building2, 
-  BarChart3 
+  BarChart3,
+  CreditCard
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
@@ -57,6 +58,7 @@ export default function Sidebar({ isOpen }: { isOpen?: boolean }) {
   const navItems = [
     { href: "/", icon: <LayoutDashboard className="h-5 w-5" />, label: "Dashboard" },
     { href: "/vendors", icon: <Users className="h-5 w-5" />, label: "Vendors" },
+    { href: "/vendor-payments", icon: <CreditCard className="h-5 w-5" />, label: "Vendor Payments" },
     { href: "/purchases", icon: <ShoppingCart className="h-5 w-5" />, label: "Purchases" },
     { href: "/retail-sales", icon: <Store className="h-5 w-5" />, label: "Retail Sales" },
     { href: "/hotel-sales", icon: <Building2 className="h-5 w-5" />, label: "Hotel Sales" },
