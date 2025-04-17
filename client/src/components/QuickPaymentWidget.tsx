@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useEnhancedData } from "../context/EnhancedDataContext";
+import { useAuth } from "../context/AuthContext";
 import { Vendor } from "@shared/schema";
 import { Button } from "@/components/ui/button";
 import {
@@ -19,6 +20,7 @@ import { Input } from "@/components/ui/input";
 import { Loader2, CoinsIcon } from "lucide-react";
 import { motion } from "framer-motion";
 import { toast } from "@/hooks/use-toast";
+import { addVendorPaymentToFirestore } from "../utils/firestoreHelpers";
 
 export default function QuickPaymentWidget() {
   const { vendors, selectedDate, addVendorPayment } = useEnhancedData();
@@ -69,6 +71,8 @@ export default function QuickPaymentWidget() {
     }
   }, [selectedVendorId, selectedVendor]);
 
+  const { currentUser } = useAuth();
+  
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
@@ -84,14 +88,27 @@ export default function QuickPaymentWidget() {
     setIsSubmitting(true);
     
     try {
-      await addVendorPayment({
+      const paymentData = {
         vendorId: parseInt(selectedVendorId),
         amount,
         date: selectedDate.toISOString().split("T")[0],
         meatType: "chicken", // Default values
         productCut: "whole",
         notes: null // Required field
-      });
+      };
+      
+      // Save to backend API
+      await addVendorPayment(paymentData);
+      
+      // Also save to Firestore for redundancy if we have a currentUser
+      if (currentUser) {
+        try {
+          await addVendorPaymentToFirestore(paymentData, currentUser.uid);
+        } catch (firestoreError) {
+          console.error("Firestore backup failed:", firestoreError);
+          // Continue even if Firestore fails
+        }
+      }
       
       toast({
         title: "Payment recorded",

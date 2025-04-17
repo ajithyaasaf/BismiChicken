@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useEnhancedData } from "../context/EnhancedDataContext";
+import { useAuth } from "../context/AuthContext";
 import { MeatTypes, ProductCuts } from "@shared/schema";
 import { 
   Card, 
@@ -20,6 +21,7 @@ import { StoreIcon, Loader2 } from "lucide-react";
 import { motion } from "framer-motion";
 import { toast } from "@/hooks/use-toast";
 import { calculateTotal } from "../utils/helpers";
+import { addRetailSaleToFirestore } from "../utils/firestoreHelpers";
 
 // Common retail sale quantities
 const COMMON_QUANTITIES = [0.5, 1, 1.5, 2, 2.5, 3, 4, 5];
@@ -50,6 +52,7 @@ const SUGGESTED_RATES: Record<string, Record<string, number>> = {
 
 export default function QuickRetailSaleForm() {
   const { selectedDate, addRetailSale } = useEnhancedData();
+  const { currentUser } = useAuth();
   
   const [quantityKg, setQuantityKg] = useState<string>("");
   const [ratePerKg, setRatePerKg] = useState<string>("");
@@ -102,7 +105,18 @@ export default function QuickRetailSaleForm() {
         partId: null // Required field
       };
       
+      // Save to backend API
       await addRetailSale(saleData);
+      
+      // Also save to Firestore for redundancy if we have a currentUser
+      if (currentUser) {
+        try {
+          await addRetailSaleToFirestore(saleData, currentUser.uid);
+        } catch (firestoreError) {
+          console.error("Firestore backup failed:", firestoreError);
+          // Continue even if Firestore fails
+        }
+      }
       
       toast({
         title: "Sale recorded",
