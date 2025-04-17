@@ -365,6 +365,100 @@ export class MemStorage implements IStorage {
       }))
     ].sort((a, b) => a.timestamp.getTime() - b.timestamp.getTime());
     
+    // Generate inventory data by meat type and product cut
+    const inventoryMap = new Map<string, {
+      meatType: string;
+      productCut: string;
+      purchasedKg: number;
+      soldKg: number;
+      remainingKg: number;
+      avgCostPerKg: number;
+      totalCost: number;
+    }>();
+
+    // Process purchases
+    for (const purchase of purchases) {
+      const key = `${purchase.meatType}-${purchase.productCut}`;
+      
+      if (!inventoryMap.has(key)) {
+        inventoryMap.set(key, {
+          meatType: purchase.meatType,
+          productCut: purchase.productCut,
+          purchasedKg: 0,
+          soldKg: 0,
+          remainingKg: 0,
+          avgCostPerKg: 0,
+          totalCost: 0
+        });
+      }
+      
+      const item = inventoryMap.get(key)!;
+      const quantityKg = Number(purchase.quantityKg);
+      const totalCost = Number(purchase.total);
+      
+      item.purchasedKg += quantityKg;
+      item.totalCost += totalCost;
+      
+      if (item.purchasedKg > 0) {
+        item.avgCostPerKg = item.totalCost / item.purchasedKg;
+      }
+    }
+    
+    // Process retail sales
+    for (const sale of retailSales) {
+      const key = `${sale.meatType}-${sale.productCut}`;
+      
+      if (!inventoryMap.has(key)) {
+        // Should not happen in practice, but handle it just in case
+        inventoryMap.set(key, {
+          meatType: sale.meatType,
+          productCut: sale.productCut,
+          purchasedKg: 0,
+          soldKg: 0,
+          remainingKg: 0,
+          avgCostPerKg: 0,
+          totalCost: 0
+        });
+      }
+      
+      const item = inventoryMap.get(key)!;
+      item.soldKg += Number(sale.quantityKg);
+    }
+    
+    // Process hotel sales
+    for (const sale of hotelSales) {
+      const key = `${sale.meatType}-${sale.productCut}`;
+      
+      if (!inventoryMap.has(key)) {
+        // Should not happen in practice, but handle it just in case
+        inventoryMap.set(key, {
+          meatType: sale.meatType,
+          productCut: sale.productCut,
+          purchasedKg: 0,
+          soldKg: 0,
+          remainingKg: 0,
+          avgCostPerKg: 0,
+          totalCost: 0
+        });
+      }
+      
+      const item = inventoryMap.get(key)!;
+      item.soldKg += Number(sale.quantityKg);
+    }
+    
+    // Calculate remaining kg for each product
+    const inventory = Array.from(inventoryMap.values()).map(item => {
+      const remaining = Math.max(0, item.purchasedKg - item.soldKg);
+      return {
+        meatType: item.meatType,
+        productCut: item.productCut,
+        purchasedKg: item.purchasedKg,
+        soldKg: item.soldKg,
+        remainingKg: remaining,
+        avgCostPerKg: item.avgCostPerKg
+      };
+    });
+
     return {
       date,
       totalPurchasedKg,
@@ -378,7 +472,8 @@ export class MemStorage implements IStorage {
       totalSoldKg,
       remainingKg,
       netProfit,
-      transactions
+      transactions,
+      inventory
     };
   }
 

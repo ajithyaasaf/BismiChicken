@@ -3,6 +3,7 @@ import { useData } from "../context/EnhancedDataContext";
 import DatePicker from "../components/DatePicker";
 import SummaryCard from "../components/SummaryCard";
 import TransactionTable from "../components/TransactionTable";
+import InventoryTable from "../components/InventoryTable";
 import {
   Card,
   CardContent,
@@ -231,6 +232,14 @@ export default function Dashboard() {
             </ResponsiveContainer>
           </CardContent>
         </Card>
+      </div>
+
+      {/* Inventory Table - Show current stock by meat type and cut */}
+      <div className="mb-6">
+        <InventoryTable 
+          inventory={dailySummary?.inventory || []} 
+          isLoading={loadingSummary}
+        />
       </div>
 
       {/* Recent Transactions */}
