@@ -120,7 +120,7 @@ export function EnhancedDataProvider({ children }: { children: ReactNode }) {
   });
 
   const vendorPaymentsQuery = useQuery({
-    queryKey: ['/api/vendor-payments', formattedDate],
+    queryKey: ['/api/vendors/payments', formattedDate],
     enabled: !!currentUser,
   });
 
@@ -473,10 +473,10 @@ export function EnhancedDataProvider({ children }: { children: ReactNode }) {
   // Vendor Payment Mutations
   const addVendorPaymentMutation = useMutation({
     mutationFn: (payment: Omit<VendorPayment, "id" | "userId" | "timestamp">) => 
-      apiRequest('/api/vendor-payments', { method: 'POST', body: payment }),
+      apiRequest('/api/vendors/payments', { method: 'POST', body: payment }),
     onSuccess: () => {
       toast({ title: "Payment recorded successfully" });
-      queryClient.invalidateQueries({ queryKey: ['/api/vendor-payments'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/vendors/payments'] });
       queryClient.invalidateQueries({ queryKey: ['/api/vendors'] }); // To update debt
     },
     onError: (error: any) => {
@@ -491,10 +491,10 @@ export function EnhancedDataProvider({ children }: { children: ReactNode }) {
 
   const deleteVendorPaymentMutation = useMutation({
     mutationFn: (id: number) => 
-      apiRequest(`/api/vendor-payments/${id}`, { method: 'DELETE' }),
+      apiRequest(`/api/vendors/payments/${id}`, { method: 'DELETE' }),
     onSuccess: () => {
       toast({ title: "Payment deleted successfully" });
-      queryClient.invalidateQueries({ queryKey: ['/api/vendor-payments'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/vendors/payments'] });
       queryClient.invalidateQueries({ queryKey: ['/api/vendors'] }); // To update debt
     },
     onError: (error: any) => {
@@ -515,7 +515,7 @@ export function EnhancedDataProvider({ children }: { children: ReactNode }) {
       queryClient.invalidateQueries({ queryKey: ['/api/product-parts'] }),
       queryClient.invalidateQueries({ queryKey: ['/api/hotels'] }),
       queryClient.invalidateQueries({ queryKey: ['/api/report/daily'] }),
-      queryClient.invalidateQueries({ queryKey: ['/api/vendor-payments'] }),
+      queryClient.invalidateQueries({ queryKey: ['/api/vendors/payments'] }),
       queryClient.invalidateQueries({ queryKey: ['/api/hotel-sales'] }),
       queryClient.invalidateQueries({ queryKey: ['/api/hotel-sale-items'] })
     ]);
