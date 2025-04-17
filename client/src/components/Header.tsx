@@ -100,7 +100,7 @@ export default function Header({ onMobileMenuToggle }: HeaderProps) {
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.1, duration: 0.3 }}
           >
-            Chicken Business Management
+            Bismi Broilers Management
           </motion.h1>
           
           <motion.h1 
@@ -109,7 +109,7 @@ export default function Header({ onMobileMenuToggle }: HeaderProps) {
             animate={{ opacity: 1 }}
             transition={{ delay: 0.1, duration: 0.3 }}
           >
-            CBM
+            Bismi
           </motion.h1>
         </div>
         
