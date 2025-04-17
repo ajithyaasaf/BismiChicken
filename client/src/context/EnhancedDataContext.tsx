@@ -139,7 +139,7 @@ export function EnhancedDataProvider({ children }: { children: ReactNode }) {
   // Vendor Mutations
   const addVendorMutation = useMutation({
     mutationFn: (vendor: Omit<Vendor, "id" | "userId">) => 
-      apiRequest('/api/vendors', { method: 'POST', body: vendor }),
+      apiRequest('POST', '/api/vendors', vendor),
     onSuccess: () => {
       toast({ title: "Vendor added successfully" });
       queryClient.invalidateQueries({ queryKey: ['/api/vendors'] });
@@ -156,7 +156,7 @@ export function EnhancedDataProvider({ children }: { children: ReactNode }) {
 
   const updateVendorMutation = useMutation({
     mutationFn: ({ id, vendor }: { id: number, vendor: Partial<Omit<Vendor, "id" | "userId">> }) => 
-      apiRequest(`/api/vendors/${id}`, { method: 'PATCH', body: vendor }),
+      apiRequest('PATCH', `/api/vendors/${id}`, vendor),
     onSuccess: () => {
       toast({ title: "Vendor updated successfully" });
       queryClient.invalidateQueries({ queryKey: ['/api/vendors'] });
@@ -173,7 +173,7 @@ export function EnhancedDataProvider({ children }: { children: ReactNode }) {
 
   const deleteVendorMutation = useMutation({
     mutationFn: (id: number) => 
-      apiRequest(`/api/vendors/${id}`, { method: 'DELETE' }),
+      apiRequest('DELETE', `/api/vendors/${id}`),
     onSuccess: () => {
       toast({ title: "Vendor deleted successfully" });
       queryClient.invalidateQueries({ queryKey: ['/api/vendors'] });
@@ -191,7 +191,7 @@ export function EnhancedDataProvider({ children }: { children: ReactNode }) {
   // Product Mutations
   const addProductMutation = useMutation({
     mutationFn: (product: Omit<Product, "id" | "userId">) => 
-      apiRequest('/api/products', { method: 'POST', body: product }),
+      apiRequest('POST', '/api/products', product),
     onSuccess: () => {
       toast({ title: "Product added successfully" });
       queryClient.invalidateQueries({ queryKey: ['/api/products'] });
@@ -208,7 +208,7 @@ export function EnhancedDataProvider({ children }: { children: ReactNode }) {
 
   const updateProductMutation = useMutation({
     mutationFn: ({ id, product }: { id: number, product: Partial<Omit<Product, "id" | "userId">> }) => 
-      apiRequest(`/api/products/${id}`, { method: 'PATCH', body: product }),
+      apiRequest('PATCH', `/api/products/${id}`, product),
     onSuccess: () => {
       toast({ title: "Product updated successfully" });
       queryClient.invalidateQueries({ queryKey: ['/api/products'] });
@@ -225,7 +225,7 @@ export function EnhancedDataProvider({ children }: { children: ReactNode }) {
 
   const deleteProductMutation = useMutation({
     mutationFn: (id: number) => 
-      apiRequest(`/api/products/${id}`, { method: 'DELETE' }),
+      apiRequest('DELETE', `/api/products/${id}`),
     onSuccess: () => {
       toast({ title: "Product deleted successfully" });
       queryClient.invalidateQueries({ queryKey: ['/api/products'] });
@@ -243,7 +243,7 @@ export function EnhancedDataProvider({ children }: { children: ReactNode }) {
   // Product Part Mutations
   const addProductPartMutation = useMutation({
     mutationFn: (part: Omit<ProductPart, "id" | "userId">) => 
-      apiRequest('/api/product-parts', { method: 'POST', body: part }),
+      apiRequest('POST', '/api/product-parts', part),
     onSuccess: () => {
       toast({ title: "Product part added successfully" });
       queryClient.invalidateQueries({ queryKey: ['/api/product-parts'] });
@@ -260,7 +260,7 @@ export function EnhancedDataProvider({ children }: { children: ReactNode }) {
 
   const updateProductPartMutation = useMutation({
     mutationFn: ({ id, part }: { id: number, part: Partial<Omit<ProductPart, "id" | "userId">> }) => 
-      apiRequest(`/api/product-parts/${id}`, { method: 'PATCH', body: part }),
+      apiRequest('PATCH', `/api/product-parts/${id}`, part),
     onSuccess: () => {
       toast({ title: "Product part updated successfully" });
       queryClient.invalidateQueries({ queryKey: ['/api/product-parts'] });
@@ -277,7 +277,7 @@ export function EnhancedDataProvider({ children }: { children: ReactNode }) {
 
   const deleteProductPartMutation = useMutation({
     mutationFn: (id: number) => 
-      apiRequest(`/api/product-parts/${id}`, { method: 'DELETE' }),
+      apiRequest('DELETE', `/api/product-parts/${id}`),
     onSuccess: () => {
       toast({ title: "Product part deleted successfully" });
       queryClient.invalidateQueries({ queryKey: ['/api/product-parts'] });
@@ -295,7 +295,7 @@ export function EnhancedDataProvider({ children }: { children: ReactNode }) {
   // Hotel Mutations
   const addHotelMutation = useMutation({
     mutationFn: (hotel: Omit<Hotel, "id" | "userId">) => 
-      apiRequest('/api/hotels', { method: 'POST', body: hotel }),
+      apiRequest('POST', '/api/hotels', hotel),
     onSuccess: () => {
       toast({ title: "Hotel added successfully" });
       queryClient.invalidateQueries({ queryKey: ['/api/hotels'] });
@@ -312,7 +312,7 @@ export function EnhancedDataProvider({ children }: { children: ReactNode }) {
 
   const updateHotelMutation = useMutation({
     mutationFn: ({ id, hotel }: { id: number, hotel: Partial<Omit<Hotel, "id" | "userId">> }) => 
-      apiRequest(`/api/hotels/${id}`, { method: 'PATCH', body: hotel }),
+      apiRequest('PATCH', `/api/hotels/${id}`, hotel),
     onSuccess: () => {
       toast({ title: "Hotel updated successfully" });
       queryClient.invalidateQueries({ queryKey: ['/api/hotels'] });
@@ -329,7 +329,7 @@ export function EnhancedDataProvider({ children }: { children: ReactNode }) {
 
   const deleteHotelMutation = useMutation({
     mutationFn: (id: number) => 
-      apiRequest(`/api/hotels/${id}`, { method: 'DELETE' }),
+      apiRequest('DELETE', `/api/hotels/${id}`),
     onSuccess: () => {
       toast({ title: "Hotel deleted successfully" });
       queryClient.invalidateQueries({ queryKey: ['/api/hotels'] });
@@ -347,7 +347,7 @@ export function EnhancedDataProvider({ children }: { children: ReactNode }) {
   // Purchase Mutations
   const addPurchaseMutation = useMutation({
     mutationFn: (purchase: Omit<Purchase, "id" | "userId" | "total" | "timestamp">) => 
-      apiRequest('/api/purchases', { method: 'POST', body: purchase }),
+      apiRequest('POST', '/api/purchases', purchase),
     onSuccess: () => {
       toast({ title: "Purchase added successfully" });
       queryClient.invalidateQueries({ queryKey: ['/api/report/daily'] });
@@ -364,7 +364,7 @@ export function EnhancedDataProvider({ children }: { children: ReactNode }) {
 
   const deletePurchaseMutation = useMutation({
     mutationFn: (id: number) => 
-      apiRequest(`/api/purchases/${id}`, { method: 'DELETE' }),
+      apiRequest('DELETE', `/api/purchases/${id}`),
     onSuccess: () => {
       toast({ title: "Purchase deleted successfully" });
       queryClient.invalidateQueries({ queryKey: ['/api/report/daily'] });
