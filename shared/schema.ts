@@ -1,4 +1,13 @@
-import { pgTable, text, serial, integer, date, timestamp, numeric, boolean } from "drizzle-orm/pg-core";
+import {
+  pgTable,
+  text,
+  serial,
+  integer,
+  date,
+  timestamp,
+  numeric,
+  boolean,
+} from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
@@ -7,7 +16,7 @@ export const MeatTypes = {
   CHICKEN: "chicken",
   GOAT: "goat",
   BEEF: "beef",
-  KADAI: "kadai"
+  KADAI: "kadai",
 } as const;
 
 // Zod schema for meat type
@@ -15,7 +24,7 @@ export const meatTypeSchema = z.enum([
   MeatTypes.CHICKEN,
   MeatTypes.GOAT,
   MeatTypes.BEEF,
-  MeatTypes.KADAI
+  MeatTypes.KADAI,
 ]);
 
 // Product cut/variant types
@@ -27,7 +36,7 @@ export const ProductCuts = {
   BREAST: "breast",
   WING: "wing",
   BONELESS: "boneless",
-  OTHER: "other"
+  OTHER: "other",
 } as const;
 
 // Zod schema for product cuts
@@ -39,9 +48,8 @@ export const productCutSchema = z.enum([
   ProductCuts.BREAST,
   ProductCuts.WING,
   ProductCuts.BONELESS,
-  ProductCuts.OTHER
+  ProductCuts.OTHER,
 ]);
-
 // Users
 export const users = pgTable("users", {
   id: serial("id").primaryKey(),
@@ -80,7 +88,7 @@ export const insertProductSchema = createInsertSchema(products).pick({
 export const productParts = pgTable("product_parts", {
   id: serial("id").primaryKey(),
   productId: integer("product_id").notNull(),
-  name: text("name").notNull(),  // 'whole', 'leg', 'liver', etc.
+  name: text("name").notNull(), // 'whole', 'leg', 'liver', etc.
   description: text("description"),
   isActive: boolean("is_active").notNull().default(true),
   userId: integer("user_id").notNull(),
@@ -102,7 +110,7 @@ export const vendors = pgTable("vendors", {
   notes: text("notes"),
   balance: numeric("balance").notNull().default("0"),
   userId: integer("user_id").notNull(),
-  // Vendor specializations - store as comma-separated strings 
+  // Vendor specializations - store as comma-separated strings
   specializedMeatTypes: text("specialized_meat_types"),
   specializedProductCuts: text("specialized_product_cuts"),
   // Custom pricing - store as JSON string
@@ -116,7 +124,7 @@ export const insertVendorSchema = createInsertSchema(vendors).pick({
   balance: true,
   userId: true,
   specializedMeatTypes: true,
-  specializedProductCuts: true, 
+  specializedProductCuts: true,
   customPricing: true,
 });
 
@@ -210,7 +218,9 @@ export const hotelSaleItems = pgTable("hotel_sale_items", {
   productCut: text("product_cut").notNull().default(ProductCuts.WHOLE),
 });
 
-export const insertHotelSaleItemSchema = createInsertSchema(hotelSaleItems).pick({
+export const insertHotelSaleItemSchema = createInsertSchema(
+  hotelSaleItems,
+).pick({
   hotelSaleId: true,
   productId: true,
   partId: true,
@@ -260,7 +270,9 @@ export const vendorPayments = pgTable("vendor_payments", {
   productCut: text("product_cut").notNull().default(ProductCuts.WHOLE),
 });
 
-export const insertVendorPaymentSchema = createInsertSchema(vendorPayments).pick({
+export const insertVendorPaymentSchema = createInsertSchema(
+  vendorPayments,
+).pick({
   vendorId: true,
   amount: true,
   date: true,
@@ -304,7 +316,7 @@ export type VendorPayment = typeof vendorPayments.$inferSelect;
 // Combined types for frontend use
 export type Transaction = {
   id: number;
-  type: 'purchase' | 'retail' | 'hotel' | 'payment';
+  type: "purchase" | "retail" | "hotel" | "payment";
   details: string;
   productName?: string;
   partName?: string;
@@ -346,11 +358,11 @@ export type DailySummary = {
 
 // Predefined types for UI consistency
 export const PRODUCT_CATEGORIES = [
-  'chicken',
-  'goat',
-  'beef',
-  'kadai',
-  'other'
+  "chicken",
+  "goat",
+  "beef",
+  "kadai",
+  "other",
 ] as const;
 
-export type ProductCategory = typeof PRODUCT_CATEGORIES[number];
+export type ProductCategory = (typeof PRODUCT_CATEGORIES)[number];

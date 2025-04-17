@@ -157,10 +157,30 @@ export class MemStorage implements IStorage {
     const timestamp = purchase.timestamp || new Date();
     const newPurchase = { ...purchase, id, timestamp };
     this.purchases.set(id, newPurchase);
+    
+    // Update vendor balance
+    const vendor = this.vendors.get(purchase.vendorId);
+    if (vendor) {
+      const currentBalance = Number(vendor.balance) || 0;
+      const newBalance = currentBalance + Number(purchase.total);
+      this.updateVendor(vendor.id, { balance: newBalance.toString() });
+    }
+    
     return newPurchase;
   }
 
   async deletePurchase(id: number): Promise<boolean> {
+    const purchase = this.purchases.get(id);
+    if (!purchase) return false;
+    
+    // Revert vendor balance update
+    const vendor = this.vendors.get(purchase.vendorId);
+    if (vendor) {
+      const currentBalance = Number(vendor.balance) || 0;
+      const newBalance = currentBalance - Number(purchase.total);
+      this.updateVendor(vendor.id, { balance: newBalance.toString() });
+    }
+    
     return this.purchases.delete(id);
   }
 
@@ -220,11 +240,64 @@ export class MemStorage implements IStorage {
     return this.hotelSales.delete(id);
   }
 
+  // Vendor Payment methods
+  async getVendorPayments(userId: number, vendorId?: number, date?: Date): Promise<VendorPayment[]> {
+    let payments = Array.from(this.vendorPayments.values()).filter(
+      (payment) => payment.userId === userId
+    );
+    
+    if (vendorId) {
+      payments = payments.filter(payment => payment.vendorId === vendorId);
+    }
+    
+    if (date) {
+      const dateStr = format(date, 'yyyy-MM-dd');
+      payments = payments.filter(
+        (payment) => format(payment.date, 'yyyy-MM-dd') === dateStr
+      );
+    }
+    
+    return payments.sort((a, b) => a.timestamp.getTime() - b.timestamp.getTime());
+  }
+
+  async createVendorPayment(payment: InsertVendorPayment): Promise<VendorPayment> {
+    const id = this.currentVendorPaymentId++;
+    const timestamp = payment.timestamp || new Date();
+    const newPayment = { ...payment, id, timestamp };
+    this.vendorPayments.set(id, newPayment);
+    
+    // Update vendor balance
+    const vendor = this.vendors.get(payment.vendorId);
+    if (vendor) {
+      const currentBalance = Number(vendor.balance) || 0;
+      const newBalance = currentBalance - Number(payment.amount);
+      this.updateVendor(vendor.id, { balance: newBalance.toString() });
+    }
+    
+    return newPayment;
+  }
+
+  async deleteVendorPayment(id: number): Promise<boolean> {
+    const payment = this.vendorPayments.get(id);
+    if (!payment) return false;
+    
+    // Revert vendor balance update
+    const vendor = this.vendors.get(payment.vendorId);
+    if (vendor) {
+      const currentBalance = Number(vendor.balance) || 0;
+      const newBalance = currentBalance + Number(payment.amount);
+      this.updateVendor(vendor.id, { balance: newBalance.toString() });
+    }
+    
+    return this.vendorPayments.delete(id);
+  }
+
   // Report methods
   async getDailySummary(userId: number, date: Date): Promise<DailySummary> {
     const purchases = await this.getPurchases(userId, date);
     const retailSales = await this.getRetailSales(userId, date);
     const hotelSales = await this.getHotelSales(userId, date);
+    const vendorPayments = await this.getVendorPayments(userId, undefined, date);
     
     // Calculate totals
     const totalPurchasedKg = purchases.reduce((sum, purchase) => sum + Number(purchase.quantityKg), 0);
@@ -276,6 +349,13 @@ export class MemStorage implements IStorage {
         ratePerKg: Number(s.ratePerKg),
         total: Number(s.total),
         timestamp: s.timestamp
+      })),
+      ...vendorPayments.map(p => ({
+        id: p.id,
+        type: 'payment' as const,
+        details: `Payment to Vendor ID: ${p.vendorId}`,
+        total: Number(p.amount),
+        timestamp: p.timestamp
       }))
     ].sort((a, b) => a.timestamp.getTime() - b.timestamp.getTime());
     

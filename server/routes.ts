@@ -6,7 +6,8 @@ import {
   insertVendorSchema, 
   insertPurchaseSchema, 
   insertRetailSaleSchema, 
-  insertHotelSaleSchema
+  insertHotelSaleSchema,
+  insertVendorPaymentSchema
 } from "@shared/schema";
 import { z } from "zod";
 import { ZodError } from "zod";
@@ -136,7 +137,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const vendorData = {
         name: req.body.name,
         phone: req.body.phone,
-        notes: req.body.notes
+        notes: req.body.notes,
+        balance: req.body.balance
       };
       
       const updatedVendor = await storage.updateVendor(vendorId, vendorData);
@@ -457,6 +459,82 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.json(summaries);
     } catch (error) {
       console.error("Error getting aggregate report:", error);
+      res.status(500).json({ message: "Internal server error" });
+    }
+  });
+
+  // Vendor Payment routes
+  router.get("/vendors/payments", getUserIdMiddleware, async (req, res) => {
+    try {
+      const userId = req.body.userId;
+      const vendorId = req.query.vendorId ? parseInt(req.query.vendorId as string) : undefined;
+      const dateStr = req.query.date as string | undefined;
+      let date: Date | undefined = undefined;
+      
+      if (dateStr) {
+        date = new Date(dateStr);
+        if (isNaN(date.getTime())) {
+          return res.status(400).json({ message: "Invalid date format" });
+        }
+      }
+      
+      const payments = await storage.getVendorPayments(userId, vendorId, date);
+      res.json(payments);
+    } catch (error) {
+      console.error("Error getting vendor payments:", error);
+      res.status(500).json({ message: "Internal server error" });
+    }
+  });
+
+  router.post("/vendors/payments", getUserIdMiddleware, async (req, res) => {
+    try {
+      const userId = req.body.userId;
+      
+      // Parse the date
+      let date: Date;
+      if (req.body.date) {
+        date = new Date(req.body.date);
+        if (isNaN(date.getTime())) {
+          return res.status(400).json({ message: "Invalid date format" });
+        }
+      } else {
+        date = new Date(); // Default to today
+      }
+      
+      // Validate vendor exists
+      const vendorId = parseInt(req.body.vendorId);
+      const vendor = await storage.getVendor(vendorId);
+      if (!vendor) {
+        return res.status(404).json({ message: "Vendor not found" });
+      }
+      
+      const paymentData = insertVendorPaymentSchema.parse({
+        ...req.body,
+        date,
+        userId
+      });
+      
+      const payment = await storage.createVendorPayment(paymentData);
+      res.status(201).json(payment);
+    } catch (error) {
+      if (error instanceof ZodError) {
+        return res.status(400).json({ 
+          message: "Validation error", 
+          errors: fromZodError(error).message 
+        });
+      }
+      console.error("Error creating vendor payment:", error);
+      res.status(500).json({ message: "Internal server error" });
+    }
+  });
+
+  router.delete("/vendors/payments/:id", getUserIdMiddleware, async (req, res) => {
+    try {
+      const paymentId = parseInt(req.params.id);
+      await storage.deleteVendorPayment(paymentId);
+      res.status(204).send();
+    } catch (error) {
+      console.error("Error deleting vendor payment:", error);
       res.status(500).json({ message: "Internal server error" });
     }
   });
