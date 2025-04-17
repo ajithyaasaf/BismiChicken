@@ -305,8 +305,20 @@ export type Purchase = typeof purchases.$inferSelect;
 export type InsertRetailSale = z.infer<typeof insertRetailSaleSchema>;
 export type RetailSale = typeof retailSales.$inferSelect;
 
-export type InsertHotelSale = z.infer<typeof insertHotelSaleSchema>;
-export type HotelSale = typeof hotelSales.$inferSelect;
+// Base InsertHotelSale type from Drizzle
+type BaseInsertHotelSale = z.infer<typeof insertHotelSaleSchema>;
+
+// Extended InsertHotelSale type with items property
+export interface InsertHotelSale extends BaseInsertHotelSale {
+  items?: InsertHotelSaleItem[];
+}
+// Base HotelSale type from Drizzle
+type BaseHotelSale = typeof hotelSales.$inferSelect;
+
+// Extended HotelSale type with items property
+export interface HotelSale extends BaseHotelSale {
+  items: HotelSaleItem[];
+}
 
 export type InsertHotelSaleItem = z.infer<typeof insertHotelSaleItemSchema>;
 export type HotelSaleItem = typeof hotelSaleItems.$inferSelect;
@@ -325,8 +337,20 @@ export type Transaction = {
   ratePerKg: number;
   total: number;
   timestamp: Date;
+  meatType: string;
+  productCut: string;
+} | {
+  id: number;
+  type: "payment";
+  details: string;
+  total: number;
+  timestamp: Date;
+  quantityKg?: number;
+  ratePerKg?: number;
   meatType?: string;
   productCut?: string;
+  productName?: string;
+  partName?: string;
 };
 
 // Product inventory type for tracking stock by meat type and cut

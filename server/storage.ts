@@ -601,5 +601,8 @@ export class MemStorage implements IStorage {
   }
 }
 
-// Use MemStorage for development and testing
-export const storage = new MemStorage();
+// Import Firebase Realtime Database storage implementation
+import { firebaseDBStorage } from './firebase-db-storage';
+
+// Use Firebase Realtime Database for persistence
+export const storage = firebaseDBStorage;
