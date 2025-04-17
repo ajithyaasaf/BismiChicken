@@ -2,7 +2,7 @@ import { useState } from "react";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { insertVendorPaymentSchema as vendorPaymentSchema, Vendor } from "@shared/schema";
+import { insertVendorPaymentSchema as baseVendorPaymentSchema, Vendor, MeatTypes, ProductCuts } from "@shared/schema";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -13,7 +13,20 @@ import { Loader2, Plus } from "lucide-react";
 import { motion } from "framer-motion";
 import { formatDate } from "../utils/helpers";
 
-type VendorPaymentFormValues = z.infer<typeof vendorPaymentSchema>;
+// Define a form-specific schema for client-side validation
+const formSchema = z.object({
+  vendorId: z.string().min(1, "Vendor is required"),
+  amount: z.string().min(1, "Amount is required").refine(
+    (val) => !isNaN(parseFloat(val)) && parseFloat(val) > 0,
+    { message: "Amount must be a positive number" }
+  ),
+  date: z.string(),
+  notes: z.string().optional(),
+  meatType: z.string().default(MeatTypes.CHICKEN),
+  productCut: z.string().default(ProductCuts.WHOLE)
+});
+
+type VendorPaymentFormValues = z.infer<typeof formSchema>;
 
 interface VendorPaymentFormProps {
   vendors: Vendor[];
@@ -33,21 +46,15 @@ export default function VendorPaymentForm({
     ? vendors.find(v => v.id.toString() === selectedVendorId) 
     : null;
 
-  const formSchema = vendorPaymentSchema.extend({
-    vendorId: z.string().min(1, "Vendor is required"),
-    amount: z.string().min(1, "Amount is required").refine(
-      (val) => !isNaN(parseFloat(val)) && parseFloat(val) > 0,
-      { message: "Amount must be a positive number" }
-    )
-  });
-
   const form = useForm<VendorPaymentFormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       vendorId: "",
       amount: "",
       date: formatDate(date),
-      notes: ""
+      notes: "",
+      meatType: MeatTypes.CHICKEN,
+      productCut: ProductCuts.WHOLE
     }
   });
 
@@ -59,11 +66,14 @@ export default function VendorPaymentForm({
   const handleSubmit = async (values: VendorPaymentFormValues) => {
     setIsSubmitting(true);
     try {
-      // Convert string values to appropriate types
+      // Convert string values to appropriate types for the backend
       const formattedValues = {
         ...values,
         vendorId: parseInt(values.vendorId),
-        amount: parseFloat(values.amount)
+        amount: values.amount,  // Keep as string for the backend
+        userId: 1, // Default user ID
+        meatType: values.meatType || MeatTypes.CHICKEN,
+        productCut: values.productCut || ProductCuts.WHOLE
       };
       
       await onSubmit(formattedValues);
@@ -73,7 +83,9 @@ export default function VendorPaymentForm({
         vendorId: "",
         amount: "",
         date: formatDate(date),
-        notes: ""
+        notes: "",
+        meatType: MeatTypes.CHICKEN,
+        productCut: ProductCuts.WHOLE
       });
       
       setSelectedVendorId(null);

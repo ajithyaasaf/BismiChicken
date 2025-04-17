@@ -325,6 +325,10 @@ export class MemStorage implements IStorage {
     return payments.sort((a, b) => a.timestamp.getTime() - b.timestamp.getTime());
   }
 
+  async getVendorPaymentById(id: number): Promise<VendorPayment | undefined> {
+    return this.vendorPayments.get(id);
+  }
+
   async createVendorPayment(payment: InsertVendorPayment): Promise<VendorPayment> {
     const id = this.currentVendorPaymentId++;
     const timestamp = new Date();

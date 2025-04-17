@@ -575,6 +575,22 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  router.get("/vendors/payments/:id", getUserIdMiddleware, async (req, res) => {
+    try {
+      const paymentId = parseInt(req.params.id);
+      const payment = await storage.getVendorPaymentById(paymentId);
+      
+      if (!payment) {
+        return res.status(404).json({ message: "Vendor payment not found" });
+      }
+      
+      res.json(payment);
+    } catch (error) {
+      console.error("Error getting vendor payment:", error);
+      res.status(500).json({ message: "Internal server error" });
+    }
+  });
+
   router.delete("/vendors/payments/:id", getUserIdMiddleware, async (req, res) => {
     try {
       const paymentId = parseInt(req.params.id);
