@@ -33,6 +33,12 @@ const vendorSchema = z.object({
   name: z.string().min(1, "Vendor name is required"),
   phone: z.string().min(10, "Phone number should be at least 10 digits"),
   notes: z.string().optional(),
+  balance: z.string().transform(val => val === "" ? "0" : val).pipe(
+    z.string().refine(
+      (val) => !isNaN(Number(val)),
+      { message: "Balance must be a valid number" }
+    )
+  ),
   specializedMeatTypes: z.string().optional(),
   specializedProductCuts: z.string().optional(),
   customPricing: z.string().optional(),
@@ -93,6 +99,7 @@ export default function VendorForm({
       name: initialData?.name || "",
       phone: initialData?.phone || "",
       notes: initialData?.notes || "",
+      balance: initialData?.balance?.toString() || "0",
       specializedMeatTypes: initialData?.specializedMeatTypes || "",
       specializedProductCuts: initialData?.specializedProductCuts || "",
       customPricing: initialData?.customPricing || "",
@@ -175,6 +182,33 @@ export default function VendorForm({
                         {...field} 
                       />
                     </FormControl>
+                    <FormMessage className="text-xs" />
+                  </FormItem>
+                )}
+              />
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+              <FormField
+                control={form.control}
+                name="balance"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-xs sm:text-sm font-medium">Outstanding Balance (₹)</FormLabel>
+                    <FormControl>
+                      <Input 
+                        type="number"
+                        step="0.01"
+                        min="0"
+                        placeholder="Enter balance amount" 
+                        className="h-8 sm:h-9 md:h-10 text-xs sm:text-sm rounded-md"
+                        inputMode="decimal"
+                        {...field} 
+                      />
+                    </FormControl>
+                    <FormDescription className="text-[10px] sm:text-xs text-gray-500">
+                      {isEdit ? "Current outstanding balance owed to vendor" : "Initial balance owed to this vendor"}
+                    </FormDescription>
                     <FormMessage className="text-xs" />
                   </FormItem>
                 )}
