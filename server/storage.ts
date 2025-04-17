@@ -4,8 +4,12 @@ import {
   Purchase, InsertPurchase, 
   RetailSale, InsertRetailSale, 
   HotelSale, InsertHotelSale,
+  HotelSaleItem, InsertHotelSaleItem,
   VendorPayment, InsertVendorPayment,
-  DailySummary, Transaction
+  Hotel, InsertHotel,
+  Product, InsertProduct,
+  ProductPart, InsertProductPart,
+  DailySummary, Transaction, ProductInventory
 } from "@shared/schema";
 import { format } from "date-fns";
 
@@ -33,6 +37,27 @@ export interface IStorage {
   getRetailSales(userId: number, date?: Date): Promise<RetailSale[]>;
   createRetailSale(sale: InsertRetailSale): Promise<RetailSale>;
   deleteRetailSale(id: number): Promise<boolean>;
+
+  // Hotel operations
+  getHotels(userId: number): Promise<Hotel[]>;
+  getHotel(id: number): Promise<Hotel | undefined>;
+  createHotel(hotel: InsertHotel): Promise<Hotel>;
+  updateHotel(id: number, hotel: Partial<InsertHotel>): Promise<Hotel | undefined>;
+  deleteHotel(id: number): Promise<boolean>;
+  
+  // Product operations
+  getProducts(userId: number): Promise<Product[]>;
+  getProduct(id: number): Promise<Product | undefined>;
+  createProduct(product: InsertProduct): Promise<Product>;
+  updateProduct(id: number, product: Partial<InsertProduct>): Promise<Product | undefined>;
+  deleteProduct(id: number): Promise<boolean>;
+  
+  // Product Part operations
+  getProductParts(userId: number): Promise<ProductPart[]>;
+  getProductPart(id: number): Promise<ProductPart | undefined>;
+  createProductPart(part: InsertProductPart): Promise<ProductPart>;
+  updateProductPart(id: number, part: Partial<InsertProductPart>): Promise<ProductPart | undefined>;
+  deleteProductPart(id: number): Promise<boolean>;
 
   // Hotel Sales operations
   getHotelSales(userId: number, date?: Date): Promise<HotelSale[]>;
