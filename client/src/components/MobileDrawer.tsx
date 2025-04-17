@@ -147,7 +147,7 @@ export default function MobileDrawer({ isOpen, onClose }: MobileDrawerProps) {
               />
             </Dialog.Overlay>
             
-            <Dialog.Content asChild>
+            <Dialog.Content asChild aria-describedby="drawer-description">
               <motion.div 
                 className="fixed inset-y-0 left-0 z-50 w-3/4 max-w-xs bg-white shadow-xl"
                 initial="hidden"
@@ -155,6 +155,10 @@ export default function MobileDrawer({ isOpen, onClose }: MobileDrawerProps) {
                 exit="exit"
                 variants={drawerVariants}
               >
+                <Dialog.Title className="sr-only">Mobile Navigation Menu</Dialog.Title>
+                <Dialog.Description id="drawer-description" className="sr-only">
+                  Navigation menu for accessing different sections of the application
+                </Dialog.Description>
                 <div className="flex flex-col h-full">
                   <motion.div 
                     className="flex items-center justify-between p-4 border-b"
