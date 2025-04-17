@@ -1,0 +1,42 @@
+chunk-276SZO74.js?v=c8c66d2f:521 Warning: validateDOMNesting(...): <div> cannot appear as a descendant of <p>.
+    at div
+    at Skeleton (https://3eaf126e-1647-4cd4-aabd-e3bc94ea6b5c-00-1gnhgrj630jr.pike.replit.dev/src/components/ui/skeleton.tsx:19:3)
+    at p
+    at _c7 (https://3eaf126e-1647-4cd4-aabd-e3bc94ea6b5c-00-1gnhgrj630jr.pike.replit.dev/src/components/ui/card.tsx:92:12)
+    at div
+    at _c3 (https://3eaf126e-1647-4cd4-aabd-e3bc94ea6b5c-00-1gnhgrj630jr.pike.replit.dev/src/components/ui/card.tsx:45:12)
+    at div
+    at _c (https://3eaf126e-1647-4cd4-aabd-e3bc94ea6b5c-00-1gnhgrj630jr.pike.replit.dev/src/components/ui/card.tsx:20:11)
+    at InventoryTable (https://3eaf126e-1647-4cd4-aabd-e3bc94ea6b5c-00-1gnhgrj630jr.pike.replit.dev/src/components/InventoryTable.tsx:30:3)
+    at div
+    at Dashboard (https://3eaf126e-1647-4cd4-aabd-e3bc94ea6b5c-00-1gnhgrj630jr.pike.replit.dev/src/pages/Dashboard.tsx:79:7)
+    at PrivateRoute (https://3eaf126e-1647-4cd4-aabd-e3bc94ea6b5c-00-1gnhgrj630jr.pike.replit.dev/src/App.tsx?v=nMkdNybpPyXBY1ntgPXHJ:41:36)
+    at Route (https://3eaf126e-1647-4cd4-aabd-e3bc94ea6b5c-00-1gnhgrj630jr.pike.replit.de…/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=c8c66d2f:323:16)
+    at Switch (https://3eaf126e-1647-4cd4-aabd-e3bc94ea6b5c-00-1gnhgrj630jr.pike.replit.de…/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=c8c66d2f:379:17)
+    at Router
+    at div
+    at MotionComponent (https://3eaf126e-1647-4cd4-aabd-e3bc94ea6b5c-00-1gnhgrj630jr.pike.replit.de…nner/workspace/node_modules/.vite/deps/framer-motion.js?v=c8c66d2f:6562:40)
+    at main
+    at MotionComponent (https://3eaf126e-1647-4cd4-aabd-e3bc94ea6b5c-00-1gnhgrj630jr.pike.replit.de…nner/workspace/node_modules/.vite/deps/framer-motion.js?v=c8c66d2f:6562:40)
+    at div
+    at div
+    at Layout (https://3eaf126e-1647-4cd4-aabd-e3bc94ea6b5c-00-1gnhgrj630jr.pike.replit.dev/src/components/Layout.tsx:26:34)
+    at EnhancedDataProvider (https://3eaf126e-1647-4cd4-aabd-e3bc94ea6b5c-00-1gnhgrj630jr.pike.replit.dev/src/context/EnhancedDataContext.tsx:24:40)
+    at AuthProvider (https://3eaf126e-1647-4cd4-aabd-e3bc94ea6b5c-00-1gnhgrj630jr.pike.replit.dev/src/context/AuthContext.tsx:23:32)
+    at AppWithProviders
+    at QueryClientProvider (https://3eaf126e-1647-4cd4-aabd-e3bc94ea6b5c-00-1gnhgrj630jr.pike.replit.de…rkspace/node_modules/.vite/deps/@tanstack_react-query.js?v=c8c66d2f:2805:3)
+    at App
+api/report/daily:1 
+ Failed to load resource: the server responded with a status of 400 (Bad Request)
+2
+@radix-ui_react-dial….js?v=c8c66d2f:1601 Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+api/vendors/payments:1 
+ Failed to load resource: the server responded with a status of 400 (Bad Request)
+EnhancedDataContext.tsx:483 Error recording payment: Error: 400: {"message":"Invalid date format"}
+    at throwIfResNotOk (queryClient.ts:6:11)
+    at async apiRequest (queryClient.ts:35:3)
+VendorPaymentForm.tsx:93 Error submitting payment: Error: 400: {"message":"Invalid date format"}
+    at throwIfResNotOk (queryClient.ts:6:11)
+    at async apiRequest (queryClient.ts:35:3)
+﻿
+

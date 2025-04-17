@@ -71,6 +71,7 @@ export default function VendorPaymentForm({
         ...values,
         vendorId: parseInt(values.vendorId),
         amount: values.amount,  // Keep as string for the backend
+        date: date.toISOString().split('T')[0], // Format as YYYY-MM-DD for the backend
         userId: 1, // Default user ID
         meatType: values.meatType || MeatTypes.CHICKEN,
         productCut: values.productCut || ProductCuts.WHOLE
