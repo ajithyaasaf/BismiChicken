@@ -4,7 +4,8 @@ import { QueryClientProvider } from "@tanstack/react-query";
 import { queryClient } from "./lib/queryClient";
 import { Toaster } from "@/components/ui/toaster";
 import { AuthProvider, useAuth } from "./context/AuthContext";
-import { DataProvider } from "./context/DataContext";
+// Use EnhancedDataProvider instead of DataProvider
+import { EnhancedDataProvider } from "./context/EnhancedDataContext";
 import Layout from "./components/Layout";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
@@ -14,6 +15,11 @@ import RetailSales from "./pages/RetailSales";
 import HotelSales from "./pages/HotelSales";
 import Reports from "./pages/Reports";
 import NotFound from "@/pages/not-found";
+// Import new pages
+import Products from "./pages/Products";
+import Hotels from "./pages/Hotels";
+import VendorDebt from "./pages/VendorDebt";
+import HotelBills from "./pages/HotelBills";
 import { Loader2 } from "lucide-react";
 
 // Private route component to protect routes
@@ -79,16 +85,30 @@ function PublicRoute({ component: Component, ...rest }: any) {
 function Router() {
   return (
     <Switch>
+      {/* Public Routes */}
       <Route path="/login">
         {(params) => <PublicRoute component={Login} params={params} />}
       </Route>
       
+      {/* Dashboard */}
       <Route path="/">
         {(params) => <PrivateRoute component={Dashboard} params={params} />}
       </Route>
+      
+      {/* Vendor Management */}
       <Route path="/vendors">
         {(params) => <PrivateRoute component={Vendors} params={params} />}
       </Route>
+      <Route path="/vendor-debt">
+        {(params) => <PrivateRoute component={VendorDebt} params={params} />}
+      </Route>
+      
+      {/* Product Management */}
+      <Route path="/products">
+        {(params) => <PrivateRoute component={Products} params={params} />}
+      </Route>
+      
+      {/* Transaction Routes */}
       <Route path="/purchases">
         {(params) => <PrivateRoute component={Purchases} params={params} />}
       </Route>
@@ -98,10 +118,21 @@ function Router() {
       <Route path="/hotel-sales">
         {(params) => <PrivateRoute component={HotelSales} params={params} />}
       </Route>
+      
+      {/* Hotel Management */}
+      <Route path="/hotels">
+        {(params) => <PrivateRoute component={Hotels} params={params} />}
+      </Route>
+      <Route path="/hotel-bills">
+        {(params) => <PrivateRoute component={HotelBills} params={params} />}
+      </Route>
+      
+      {/* Reports */}
       <Route path="/reports">
         {(params) => <PrivateRoute component={Reports} params={params} />}
       </Route>
       
+      {/* Error Handling */}
       <Route path="/404" component={NotFound} />
       <Route>
         <Redirect to="/404" />
@@ -113,11 +144,11 @@ function Router() {
 function AppWithProviders() {
   return (
     <AuthProvider>
-      <DataProvider>
+      <EnhancedDataProvider>
         <Layout>
           <Router />
         </Layout>
-      </DataProvider>
+      </EnhancedDataProvider>
     </AuthProvider>
   );
 }
