@@ -537,15 +537,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const userId = req.body.userId;
       
-      // Parse the date
-      let date: Date;
-      if (req.body.date) {
-        date = new Date(req.body.date);
-        if (isNaN(date.getTime())) {
-          return res.status(400).json({ message: "Invalid date format" });
-        }
-      } else {
-        date = new Date(); // Default to today
+      // Ensure the date is a string (already formatted as YYYY-MM-DD)
+      if (!req.body.date) {
+        // Use today's date if none provided, in YYYY-MM-DD format
+        const today = new Date();
+        req.body.date = today.toISOString().split('T')[0];
       }
       
       // Validate vendor exists
@@ -557,7 +553,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       const paymentData = insertVendorPaymentSchema.parse({
         ...req.body,
-        date,
         userId
       });
       
