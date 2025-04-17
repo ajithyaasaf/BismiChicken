@@ -22,16 +22,25 @@ interface TransactionBadgeProps {
 }
 
 function TransactionBadge({ type, children }: TransactionBadgeProps) {
-  const badgeClasses: Record<TransactionType, string> = {
-    purchase: "bg-primary bg-opacity-10 text-primary-dark",
-    retail: "bg-green-500 bg-opacity-10 text-green-700",
-    hotel: "bg-cyan-500 bg-opacity-10 text-cyan-700",
-    payment: "bg-amber-500 bg-opacity-10 text-amber-700",
+  // Map transaction types to their respective styles
+  const getTypeClass = (transactionType: TransactionType): string => {
+    switch (transactionType) {
+      case 'purchase':
+        return "bg-primary bg-opacity-10 text-primary-dark";
+      case 'retail':
+        return "bg-green-500 bg-opacity-10 text-green-700";
+      case 'hotel':
+        return "bg-cyan-500 bg-opacity-10 text-cyan-700";
+      case 'payment':
+        return "bg-amber-500 bg-opacity-10 text-amber-700";
+      default:
+        return "bg-gray-500 bg-opacity-10 text-gray-700";
+    }
   };
 
   return (
     <span
-      className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${badgeClasses[type]}`}
+      className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getTypeClass(type)}`}
     >
       {children}
     </span>
@@ -59,7 +68,8 @@ export default function TransactionTable({
     return details;
   };
 
-  const getTypeName = (type: Transaction["type"]) => {
+  // Helper function to get a display name for transaction type
+  const getTypeName = (type: TransactionType) => {
     switch (type) {
       case "purchase":
         return "Purchase";
@@ -70,7 +80,7 @@ export default function TransactionTable({
       case "payment":
         return "Payment";
       default:
-        return type.charAt(0).toUpperCase() + type.slice(1);
+        return "Unknown";
     }
   };
 
@@ -103,8 +113,8 @@ export default function TransactionTable({
             className="border rounded-md p-3 bg-white shadow-sm"
           >
             <div className="flex justify-between items-start mb-2">
-              <TransactionBadge type={transaction.type}>
-                {getTypeName(transaction.type)}
+              <TransactionBadge type={transaction.type as TransactionType}>
+                {getTypeName(transaction.type as TransactionType)}
               </TransactionBadge>
               <span className="text-xs text-gray-500">
                 {format(new Date(transaction.timestamp), "hh:mm a")}
@@ -177,8 +187,8 @@ export default function TransactionTable({
             transactions.map((transaction) => (
               <TableRow key={`${transaction.type}-${transaction.id}`} className="hover:bg-gray-50">
                 <TableCell>
-                  <TransactionBadge type={transaction.type}>
-                    {getTypeName(transaction.type)}
+                  <TransactionBadge type={transaction.type as TransactionType}>
+                    {getTypeName(transaction.type as TransactionType)}
                   </TransactionBadge>
                 </TableCell>
                 <TableCell className="font-medium text-gray-900">
