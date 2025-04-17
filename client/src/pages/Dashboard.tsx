@@ -4,6 +4,9 @@ import DatePicker from "../components/DatePicker";
 import SummaryCard from "../components/SummaryCard";
 import TransactionTable from "../components/TransactionTable";
 import InventoryTable from "../components/InventoryTable";
+import QuickPaymentWidget from "../components/QuickPaymentWidget";
+import QuickPurchaseForm from "../components/QuickPurchaseForm";
+import QuickRetailSaleForm from "../components/QuickRetailSaleForm";
 import {
   Card,
   CardContent,
@@ -28,6 +31,7 @@ import {
   Building2,
   TrendingUp,
   ArrowRight,
+  Sparkles,
 } from "lucide-react";
 import {
   LineChart,
@@ -44,6 +48,7 @@ import {
 import { Transaction } from "@shared/schema";
 import { format, subDays } from "date-fns";
 import { motion } from "framer-motion";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 export default function Dashboard() {
   const {
@@ -181,6 +186,44 @@ export default function Dashboard() {
           isLoading={loadingSummary}
         />
       </div>
+
+      {/* Quick Actions Section */}
+      <motion.div 
+        className="mb-6"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.1, duration: 0.5 }}
+      >
+        <Card>
+          <CardHeader className="pb-2">
+            <CardTitle className="flex items-center text-base">
+              <Sparkles className="h-4 w-4 mr-2 text-amber-500" />
+              Quick Actions
+            </CardTitle>
+            <CardDescription className="text-xs">
+              Record common transactions with just a few taps
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Tabs defaultValue="purchase" className="w-full">
+              <TabsList className="grid grid-cols-3 mb-4">
+                <TabsTrigger value="purchase" className="text-xs">Purchase</TabsTrigger>
+                <TabsTrigger value="sale" className="text-xs">Retail Sale</TabsTrigger>
+                <TabsTrigger value="payment" className="text-xs">Payment</TabsTrigger>
+              </TabsList>
+              <TabsContent value="purchase" className="mt-0">
+                <QuickPurchaseForm />
+              </TabsContent>
+              <TabsContent value="sale" className="mt-0">
+                <QuickRetailSaleForm />
+              </TabsContent>
+              <TabsContent value="payment" className="mt-0">
+                <QuickPaymentWidget />
+              </TabsContent>
+            </Tabs>
+          </CardContent>
+        </Card>
+      </motion.div>
 
       {/* Charts Section */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-6">
