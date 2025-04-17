@@ -118,7 +118,22 @@ export class MemStorage implements IStorage {
 
   async createVendor(vendor: InsertVendor): Promise<Vendor> {
     const id = this.currentVendorId++;
-    const newVendor = { ...vendor, id };
+    
+    // Ensure all required fields have proper defaults
+    const vendorWithDefaults = {
+      ...vendor,
+      notes: vendor.notes || null,
+      balance: vendor.balance || "0",
+      specializedMeatTypes: vendor.specializedMeatTypes || null,
+      specializedProductCuts: vendor.specializedProductCuts || null,
+      customPricing: vendor.customPricing || null
+    };
+    
+    const newVendor: Vendor = {
+      ...vendorWithDefaults,
+      id
+    };
+    
     this.vendors.set(id, newVendor);
     return newVendor;
   }
@@ -127,7 +142,17 @@ export class MemStorage implements IStorage {
     const existingVendor = this.vendors.get(id);
     if (!existingVendor) return undefined;
     
-    const updatedVendor = { ...existingVendor, ...vendor };
+    // Handle optional fields to ensure they have proper values
+    const vendorWithDefaults = {
+      ...vendor,
+      notes: vendor.notes !== undefined ? vendor.notes : existingVendor.notes,
+      balance: vendor.balance !== undefined ? vendor.balance : existingVendor.balance,
+      specializedMeatTypes: vendor.specializedMeatTypes !== undefined ? vendor.specializedMeatTypes : existingVendor.specializedMeatTypes,
+      specializedProductCuts: vendor.specializedProductCuts !== undefined ? vendor.specializedProductCuts : existingVendor.specializedProductCuts,
+      customPricing: vendor.customPricing !== undefined ? vendor.customPricing : existingVendor.customPricing
+    };
+    
+    const updatedVendor = { ...existingVendor, ...vendorWithDefaults };
     this.vendors.set(id, updatedVendor);
     return updatedVendor;
   }
@@ -154,8 +179,21 @@ export class MemStorage implements IStorage {
 
   async createPurchase(purchase: InsertPurchase): Promise<Purchase> {
     const id = this.currentPurchaseId++;
-    const timestamp = purchase.timestamp || new Date();
-    const newPurchase = { ...purchase, id, timestamp };
+    const timestamp = new Date();
+    
+    // Ensure required fields have default values
+    const purchaseWithDefaults = {
+      ...purchase,
+      meatType: purchase.meatType || "chicken",
+      productCut: purchase.productCut || "whole"
+    };
+    
+    const newPurchase: Purchase = {
+      ...purchaseWithDefaults,
+      id,
+      timestamp
+    };
+    
     this.purchases.set(id, newPurchase);
     
     // Update vendor balance
@@ -202,8 +240,21 @@ export class MemStorage implements IStorage {
 
   async createRetailSale(sale: InsertRetailSale): Promise<RetailSale> {
     const id = this.currentRetailSaleId++;
-    const timestamp = sale.timestamp || new Date();
-    const newSale = { ...sale, id, timestamp };
+    const timestamp = new Date();
+    
+    // Ensure required fields have default values
+    const saleWithDefaults = {
+      ...sale,
+      meatType: sale.meatType || "chicken",
+      productCut: sale.productCut || "whole"
+    };
+    
+    const newSale: RetailSale = {
+      ...saleWithDefaults,
+      id,
+      timestamp
+    };
+    
     this.retailSales.set(id, newSale);
     return newSale;
   }
@@ -230,8 +281,21 @@ export class MemStorage implements IStorage {
 
   async createHotelSale(sale: InsertHotelSale): Promise<HotelSale> {
     const id = this.currentHotelSaleId++;
-    const timestamp = sale.timestamp || new Date();
-    const newSale = { ...sale, id, timestamp };
+    const timestamp = new Date();
+    
+    // Ensure required fields have default values
+    const saleWithDefaults = {
+      ...sale,
+      meatType: sale.meatType || "chicken",
+      productCut: sale.productCut || "whole"
+    };
+    
+    const newSale: HotelSale = {
+      ...saleWithDefaults,
+      id,
+      timestamp
+    };
+    
     this.hotelSales.set(id, newSale);
     return newSale;
   }
@@ -262,8 +326,20 @@ export class MemStorage implements IStorage {
 
   async createVendorPayment(payment: InsertVendorPayment): Promise<VendorPayment> {
     const id = this.currentVendorPaymentId++;
-    const timestamp = payment.timestamp || new Date();
-    const newPayment = { ...payment, id, timestamp };
+    const timestamp = new Date();
+    
+    // Handle potentially undefined notes field
+    const paymentWithDefaults = {
+      ...payment,
+      notes: payment.notes || null
+    };
+    
+    const newPayment: VendorPayment = {
+      ...paymentWithDefaults,
+      id,
+      timestamp
+    };
+    
     this.vendorPayments.set(id, newPayment);
     
     // Update vendor balance
