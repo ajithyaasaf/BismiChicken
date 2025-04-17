@@ -43,6 +43,7 @@ import {
 } from "recharts";
 import { Transaction } from "@shared/schema";
 import { format, subDays } from "date-fns";
+import { motion } from "framer-motion";
 
 export default function Dashboard() {
   const {
@@ -131,7 +132,7 @@ export default function Dashboard() {
       </div>
 
       {/* Summary Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+      <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-3 mb-6">
         <SummaryCard
           title="Total Purchased"
           icon={<ShoppingCart className="h-5 w-5 text-primary" />}
@@ -182,56 +183,111 @@ export default function Dashboard() {
       </div>
 
       {/* Charts Section */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-        <Card>
-          <CardHeader>
-            <CardTitle>Weekly Profit Trend</CardTitle>
-            <CardDescription>Last 7 days profit trend</CardDescription>
-          </CardHeader>
-          <CardContent className="h-64">
-            <ResponsiveContainer width="100%" height="100%">
-              <LineChart
-                data={weeklyData}
-                margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
-              >
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="date" />
-                <YAxis />
-                <Tooltip formatter={(value) => [`₹${value}`, "Profit"]} />
-                <Legend />
-                <Line
-                  type="monotone"
-                  dataKey="profit"
-                  stroke="#2e7d32"
-                  activeDot={{ r: 8 }}
-                />
-              </LineChart>
-            </ResponsiveContainer>
-          </CardContent>
-        </Card>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-6">
+        <motion.div 
+          className="w-full"
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
+        >
+          <Card className="h-full">
+            <CardHeader className="py-3">
+              <CardTitle className="text-base md:text-lg">Weekly Profit Trend</CardTitle>
+              <CardDescription className="text-xs md:text-sm">Last 7 days profit trend</CardDescription>
+            </CardHeader>
+            <CardContent className="h-56 md:h-64">
+              <ResponsiveContainer width="100%" height="100%">
+                <LineChart
+                  data={weeklyData}
+                  margin={{ top: 5, right: 10, left: 5, bottom: 5 }}
+                >
+                  <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
+                  <XAxis 
+                    dataKey="date" 
+                    tick={{ fontSize: 10 }}
+                    tickMargin={5}
+                  />
+                  <YAxis 
+                    tick={{ fontSize: 10 }}
+                    tickFormatter={(value) => `₹${value}`}
+                    width={40}
+                  />
+                  <Tooltip 
+                    formatter={(value) => [`₹${value}`, "Profit"]}
+                    contentStyle={{ fontSize: '12px' }}
+                  />
+                  <Legend 
+                    verticalAlign="bottom" 
+                    height={24}
+                    wrapperStyle={{ fontSize: '10px' }}
+                  />
+                  <Line
+                    type="monotone"
+                    dataKey="profit"
+                    stroke="#2e7d32"
+                    strokeWidth={2}
+                    dot={{ r: 3 }}
+                    activeDot={{ r: 6 }}
+                  />
+                </LineChart>
+              </ResponsiveContainer>
+            </CardContent>
+          </Card>
+        </motion.div>
 
-        <Card>
-          <CardHeader>
-            <CardTitle>Inventory Flow (kg)</CardTitle>
-            <CardDescription>Daily purchase vs. sale comparison</CardDescription>
-          </CardHeader>
-          <CardContent className="h-64">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart
-                data={weeklyData}
-                margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
-              >
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="date" />
-                <YAxis />
-                <Tooltip />
-                <Legend />
-                <Bar dataKey="purchased" name="Purchased (kg)" fill="#1976d2" />
-                <Bar dataKey="sold" name="Sold (kg)" fill="#4caf50" />
-              </BarChart>
-            </ResponsiveContainer>
-          </CardContent>
-        </Card>
+        <motion.div 
+          className="w-full"
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+        >
+          <Card className="h-full">
+            <CardHeader className="py-3">
+              <CardTitle className="text-base md:text-lg">Inventory Flow (kg)</CardTitle>
+              <CardDescription className="text-xs md:text-sm">Daily purchase vs. sale comparison</CardDescription>
+            </CardHeader>
+            <CardContent className="h-56 md:h-64">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart
+                  data={weeklyData}
+                  margin={{ top: 5, right: 10, left: 5, bottom: 5 }}
+                >
+                  <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
+                  <XAxis 
+                    dataKey="date" 
+                    tick={{ fontSize: 10 }}
+                    tickMargin={5}
+                  />
+                  <YAxis 
+                    tick={{ fontSize: 10 }}
+                    width={25}
+                  />
+                  <Tooltip
+                    formatter={(value) => [`${value} kg`, ""]}
+                    contentStyle={{ fontSize: '12px' }}
+                  />
+                  <Legend 
+                    verticalAlign="bottom" 
+                    height={24}
+                    wrapperStyle={{ fontSize: '10px' }}
+                  />
+                  <Bar 
+                    dataKey="purchased" 
+                    name="Purchased (kg)" 
+                    fill="#1976d2" 
+                    radius={[3, 3, 0, 0]}
+                  />
+                  <Bar 
+                    dataKey="sold" 
+                    name="Sold (kg)" 
+                    fill="#4caf50" 
+                    radius={[3, 3, 0, 0]}
+                  />
+                </BarChart>
+              </ResponsiveContainer>
+            </CardContent>
+          </Card>
+        </motion.div>
       </div>
 
       {/* Inventory Table - Show current stock by meat type and cut */}
