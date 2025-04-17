@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useData } from "../context/DataContext";
+import { useEnhancedData } from "../context/EnhancedDataContext";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -24,7 +24,7 @@ import {
 
 export default function Reports() {
   const { toast } = useToast();
-  const { dailySummary, loadingSummary } = useData();
+  const { dailySummary, loadingSummary } = useEnhancedData();
   const [reportType, setReportType] = useState<"daily" | "weekly" | "monthly">("daily");
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const [dateRange, setDateRange] = useState<{
@@ -74,7 +74,7 @@ export default function Reports() {
           : (reportType === "weekly" ? subDays(currentDate, -7) : subMonths(currentDate, -1));
       }
       
-      setChartData(newData.sort((a, b) => a.rawDate - b.rawDate));
+      setChartData(newData.sort((a, b) => a.rawDate.getTime() - b.rawDate.getTime()));
       setLoadingChartData(false);
     }, 1000);
   };

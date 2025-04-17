@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useData } from "../context/DataContext";
+import { useEnhancedData } from "../context/EnhancedDataContext";
 import DatePicker from "../components/DatePicker";
 import SaleForm from "../components/SaleForm";
 import TransactionTable from "../components/TransactionTable";
@@ -31,14 +31,14 @@ export default function HotelSales() {
     loadingSummary,
     addHotelSale,
     deleteHotelSale,
-  } = useData();
+  } = useEnhancedData();
 
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [deleteId, setDeleteId] = useState<number | null>(null);
 
   // Filter only hotel sale transactions
   const hotelTransactions = dailySummary?.transactions.filter(
-    (t) => t.type === "hotel"
+    (t: { type: string }) => t.type === "hotel"
   ) || [];
 
   const handleAddHotelSale = async (data: any) => {
