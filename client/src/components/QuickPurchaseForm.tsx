@@ -20,6 +20,8 @@ import { ShoppingCartIcon, Loader2 } from "lucide-react";
 import { motion } from "framer-motion";
 import { toast } from "@/hooks/use-toast";
 import { calculateTotal } from "../utils/helpers";
+import { addPurchaseToFirestore } from "../utils/firestoreHelpers";
+import { useAuth } from "../context/AuthContext";
 
 // Define suggested rates based on meat type and cut
 const SUGGESTED_RATES: Record<string, Record<string, number>> = {
@@ -46,6 +48,7 @@ const SUGGESTED_RATES: Record<string, Record<string, number>> = {
 
 export default function QuickPurchaseForm() {
   const { vendors, selectedDate, addPurchase } = useEnhancedData();
+  const { currentUser } = useAuth();
   
   const [vendorId, setVendorId] = useState<string>("");
   const [quantityKg, setQuantityKg] = useState<string>("");
@@ -138,7 +141,18 @@ export default function QuickPurchaseForm() {
         partId: null
       };
       
+      // Save to backend API
       await addPurchase(purchaseData);
+      
+      // Also save to Firestore for redundancy if we have a currentUser
+      if (currentUser) {
+        try {
+          await addPurchaseToFirestore(purchaseData, currentUser.uid);
+        } catch (firestoreError) {
+          console.error("Firestore backup failed:", firestoreError);
+          // Continue even if Firestore fails
+        }
+      }
       
       toast({
         title: "Purchase added",
