@@ -10,19 +10,23 @@ import {
 import { getFirestore } from "firebase/firestore";
 
 // Check if Firebase env variables are available
+const apiKey = import.meta.env.VITE_FIREBASE_API_KEY;
+const projectId = import.meta.env.VITE_FIREBASE_PROJECT_ID;
+const appId = import.meta.env.VITE_FIREBASE_APP_ID;
+
 console.log('Firebase config check:');
-console.log('API Key available:', !!import.meta.env.VITE_FIREBASE_API_KEY);
-console.log('Project ID available:', !!import.meta.env.VITE_FIREBASE_PROJECT_ID);
-console.log('App ID available:', !!import.meta.env.VITE_FIREBASE_APP_ID);
+console.log('API Key available:', !!apiKey);
+console.log('Project ID available:', !!projectId);
+console.log('App ID available:', !!appId);
 
 // Firebase configuration
 const firebaseConfig = {
-  apiKey: import.meta.env.VITE_FIREBASE_API_KEY || "",
-  authDomain: `${import.meta.env.VITE_FIREBASE_PROJECT_ID || ""}.firebaseapp.com`,
-  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID || "",
-  storageBucket: `${import.meta.env.VITE_FIREBASE_PROJECT_ID || ""}.appspot.com`,
+  apiKey: apiKey,
+  authDomain: `${projectId}.firebaseapp.com`,
+  projectId: projectId,
+  storageBucket: `${projectId}.appspot.com`,
   messagingSenderId: "",
-  appId: import.meta.env.VITE_FIREBASE_APP_ID || "",
+  appId: appId,
 };
 
 // Initialize Firebase

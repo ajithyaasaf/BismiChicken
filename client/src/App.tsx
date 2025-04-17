@@ -21,6 +21,7 @@ import Hotels from "./pages/Hotels";
 import VendorDebt from "./pages/VendorDebt";
 import VendorPayments from "./pages/VendorPayments";
 import HotelBills from "./pages/HotelBills";
+import TestFirebase from "./pages/TestFirebase";
 import { Loader2 } from "lucide-react";
 
 // Private route component to protect routes
@@ -90,6 +91,9 @@ function Router() {
       <Route path="/login">
         {(params) => <PublicRoute component={Login} params={params} />}
       </Route>
+      
+      {/* Test Firebase */}
+      <Route path="/test-firebase" component={TestFirebase} />
       
       {/* Dashboard */}
       <Route path="/">
