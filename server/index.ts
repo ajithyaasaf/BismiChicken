@@ -1,6 +1,7 @@
 import express, { type Request, Response, NextFunction } from "express";
 import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
+import './firebase-admin'; // Initialize Firebase Admin (will use fallback for development)
 
 const app = express();
 app.use(express.json());

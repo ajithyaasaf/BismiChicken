@@ -1,0 +1,97 @@
+git push
+Enumerating objects: 46, done.
+Counting objects: 100% (46/46), done.
+Delta compression using up to 8 threads
+Compressing objects: 100% (33/33), done.
+Writing objects: 100% (33/33), 27.61 KiB | 3.94 MiB/s, done.
+Total 33 (delta 19), reused 0 (delta 0), pack-reused 0 (from 0)
+remote: Resolving deltas: 100% (19/19), completed with 11 local objects.
+remote: error: GH013: Repository rule violations found for refs/heads/main.
+remote: 
+remote: - GITHUB PUSH PROTECTION
+remote:   —————————————————————————————————————————
+remote:     Resolve the following violations before pushing again
+remote: 
+remote:     - Push cannot contain secrets
+remote: 
+remote:     
+remote:      (?) Learn how to resolve a blocked push
+remote:      https://docs.github.com/code-security/secret-scanning/working-with-secret-scanning-and-push-protection/working-with-push-protection-from-the-command-line#resolving-a-blocked-push
+remote:     
+remote:     
+remote:       —— Google Cloud Service Account Credentials ——————————
+remote:        locations:
+remote:          - commit: eb0d9037c5608e3c8da370cb0a1c15761a725511
+remote:            path: server/firebase-service-account.json:1
+remote:     
+remote:        (?) To push, remove secret from commit(s) or follow this URL to allow the secret.
+remote:        https://github.com/ajithyaasaf/BismiChicken/security/secret-scanning/unblock-secret/2vr9Layc9QTNYVY7gWPi6gEuzrZ
+remote:     
+remote:     
+remote:       —— Google Cloud Service Account Credentials ——————————
+remote:        locations:
+remote:          - commit: 56a7b7793928ff9b420b7efa345666f632999f14
+remote:            path: attached_assets/Pasted--type-service-account-project-id-bismi-broilers-3ca96-private-key-id-12eee-1744891646084.txt:1
+remote:     
+remote:        (?) To push, remove secret from commit(s) or follow this URL to allow the secret.
+remote:        https://github.com/ajithyaasaf/BismiChicken/security/secret-scanning/unblock-secret/2vr5hHTfg0bTKnsx136FxbqLLgS
+remote:     
+remote: 
+remote: 
+To https://github.com/ajithyaasaf/BismiChicken
+ ! [remote rejected] main -> main (push declined due to repository rule violations)
+error: failed to push some refs to 'https://github.com/ajithyaasaf/BismiChicken'
+~/workspace$ ^C
+~/workspace$ git add .
+~/workspace$ git commit -m "mm"
+On branch main
+Your branch is ahead of 'origin/main' by 6 commits.
+  (use "git push" to publish your local commits)
+
+nothing to commit, working tree clean
+~/workspace$ git push
+Enumerating objects: 51, done.
+Counting objects: 100% (51/51), done.
+Delta compression using up to 8 threads
+Compressing objects: 100% (38/38), done.
+Writing objects: 100% (38/38), 28.84 KiB | 3.20 MiB/s, done.
+Total 38 (delta 22), reused 0 (delta 0), pack-reused 0 (from 0)
+remote: Resolving deltas: 100% (22/22), completed with 11 local objects.
+remote: error: GH013: Repository rule violations found for refs/heads/main.
+remote: 
+remote: - GITHUB PUSH PROTECTION
+remote:   —————————————————————————————————————————
+remote:     Resolve the following violations before pushing again
+remote: 
+remote:     - Push cannot contain secrets
+remote: 
+remote:     
+remote:      (?) Learn how to resolve a blocked push
+remote:      https://docs.github.com/code-security/secret-scanning/working-with-secret-scanning-and-push-protection/working-with-push-protection-from-the-command-line#resolving-a-blocked-push
+remote:     
+remote:     
+remote:       —— Google Cloud Service Account Credentials ——————————
+remote:        locations:
+remote:          - commit: eb0d9037c5608e3c8da370cb0a1c15761a725511
+remote:            path: server/firebase-service-account.json:1
+remote:     
+remote:        (?) To push, remove secret from commit(s) or follow this URL to allow the secret.
+remote:        https://github.com/ajithyaasaf/BismiChicken/security/secret-scanning/unblock-secret/2vr9Layc9QTNYVY7gWPi6gEuzrZ
+remote:     
+remote:     
+remote:       —— Google Cloud Service Account Credentials ——————————
+remote:        locations:
+remote:          - commit: 56a7b7793928ff9b420b7efa345666f632999f14
+remote:            path: attached_assets/Pasted--type-service-account-project-id-bismi-broilers-3ca96-private-key-id-12eee-1744891646084.txt:1
+remote:     
+remote:        (?) To push, remove secret from commit(s) or follow this URL to allow the secret.
+remote:        https://github.com/ajithyaasaf/BismiChicken/security/secret-scanning/unblock-secret/2vr5hHTfg0bTKnsx136FxbqLLgS
+remote:     
+remote: 
+remote: 
+To https://github.com/ajithyaasaf/BismiChicken
+ ! [remote rejected] main -> main (push declined due to repository rule violations)
+error: failed to push some refs to 'https://github.com/ajithyaasaf/BismiChicken'
+~/workspace$ ^C
+~/workspace$ git rm serviceAccountKey.json attached_assets/Pasted--type-service-account-project-id-bismi-broilers-3ca96-private-key-id-12eee-1744888000504.txt
+fatal: pathspec 'serviceAccountKey.json' did not match any files
