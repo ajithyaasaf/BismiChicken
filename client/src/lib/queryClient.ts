@@ -12,9 +12,22 @@ export async function apiRequest(
   url: string,
   data?: unknown | undefined,
 ): Promise<Response> {
+  // Get the current Firebase user from localStorage if available
+  const firebaseUser = localStorage.getItem('firebaseUser');
+  const firebaseId = firebaseUser ? JSON.parse(firebaseUser).uid : null;
+  
+  // Prepare headers
+  const headers: Record<string, string> = {};
+  if (data) {
+    headers["Content-Type"] = "application/json";
+  }
+  if (firebaseId) {
+    headers["Authorization"] = firebaseId;
+  }
+
   const res = await fetch(url, {
     method,
-    headers: data ? { "Content-Type": "application/json" } : {},
+    headers,
     body: data ? JSON.stringify(data) : undefined,
     credentials: "include",
   });
@@ -29,8 +42,19 @@ export const getQueryFn: <T>(options: {
 }) => QueryFunction<T> =
   ({ on401: unauthorizedBehavior }) =>
   async ({ queryKey }) => {
+    // Get the current Firebase user from localStorage if available
+    const firebaseUser = localStorage.getItem('firebaseUser');
+    const firebaseId = firebaseUser ? JSON.parse(firebaseUser).uid : null;
+    
+    // Prepare headers
+    const headers: Record<string, string> = {};
+    if (firebaseId) {
+      headers["Authorization"] = firebaseId;
+    }
+
     const res = await fetch(queryKey[0] as string, {
       credentials: "include",
+      headers
     });
 
     if (unauthorizedBehavior === "returnNull" && res.status === 401) {

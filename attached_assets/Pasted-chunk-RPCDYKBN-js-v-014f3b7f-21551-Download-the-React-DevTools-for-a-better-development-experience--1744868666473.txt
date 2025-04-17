@@ -1,0 +1,59 @@
+chunk-RPCDYKBN.js?v=014f3b7f:21551 Download the React DevTools for a better development experience: https://reactjs.org/link/react-devtools
+firebase.ts:13 Firebase config check:
+firebase.ts:14 API Key available: true
+firebase.ts:15 Project ID available: true
+firebase.ts:16 App ID available: true
+chunk-RPCDYKBN.js?v=014f3b7f:521 Warning: validateDOMNesting(...): <a> cannot appear as a descendant of <a>.
+    at a
+    at a
+    at https://b382e2c0-cc1e-4b96-8c1a-08cdaff8b8a8-00-1pgn99ywiuqjn.kirk.replit.d…/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=014f3b7f:337:18
+    at NavItem (https://b382e2c0-cc1e-4b96-8c1a-08cdaff8b8a8-00-1pgn99ywiuqjn.kirk.replit.dev/src/components/Sidebar.tsx:28:20)
+    at nav
+    at aside
+    at Sidebar (https://b382e2c0-cc1e-4b96-8c1a-08cdaff8b8a8-00-1pgn99ywiuqjn.kirk.replit.dev/src/components/Sidebar.tsx:67:22)
+    at div
+    at div
+    at Layout (https://b382e2c0-cc1e-4b96-8c1a-08cdaff8b8a8-00-1pgn99ywiuqjn.kirk.replit.dev/src/components/Layout.tsx:22:34)
+    at DataProvider (https://b382e2c0-cc1e-4b96-8c1a-08cdaff8b8a8-00-1pgn99ywiuqjn.kirk.replit.dev/src/context/DataContext.tsx:24:32)
+    at AuthProvider (https://b382e2c0-cc1e-4b96-8c1a-08cdaff8b8a8-00-1pgn99ywiuqjn.kirk.replit.dev/src/context/AuthContext.tsx:23:32)
+    at AppWithProviders
+    at QueryClientProvider (https://b382e2c0-cc1e-4b96-8c1a-08cdaff8b8a8-00-1pgn99ywiuqjn.kirk.replit.d…rkspace/node_modules/.vite/deps/@tanstack_react-query.js?v=014f3b7f:2805:3)
+    at App
+/api/vendors:1 
+ Failed to load resource: the server responded with a status of 401 (Unauthorized)
+/api/report/daily?date=2025-04-17:1 
+ Failed to load resource: the server responded with a status of 401 (Unauthorized)
+DataContext.tsx:77 Error fetching vendors: Error: 401: {"message":"Unauthorized - No Firebase ID provided"}
+    at throwIfResNotOk (queryClient.ts:6:11)
+    at async apiRequest (queryClient.ts:22:3)
+    at async fetchVendors (DataContext.tsx:73:24)
+DataContext.tsx:97 Error fetching daily summary: Error: 401: {"message":"Unauthorized - No Firebase ID provided"}
+    at throwIfResNotOk (queryClient.ts:6:11)
+    at async apiRequest (queryClient.ts:22:3)
+    at async fetchDailySummary (DataContext.tsx:93:24)
+/api/report/daily?date=2025-04-18:1 
+ Failed to load resource: the server responded with a status of 401 (Unauthorized)
+DataContext.tsx:97 Error fetching daily summary: Error: 401: {"message":"Unauthorized - No Firebase ID provided"}
+    at throwIfResNotOk (queryClient.ts:6:11)
+    at async apiRequest (queryClient.ts:22:3)
+    at async fetchDailySummary (DataContext.tsx:93:24)
+/api/report/daily?date=2025-04-19:1 
+ Failed to load resource: the server responded with a status of 401 (Unauthorized)
+DataContext.tsx:97 Error fetching daily summary: Error: 401: {"message":"Unauthorized - No Firebase ID provided"}
+    at throwIfResNotOk (queryClient.ts:6:11)
+    at async apiRequest (queryClient.ts:22:3)
+    at async fetchDailySummary (DataContext.tsx:93:24)
+/api/report/daily?date=2025-04-18:1 
+ Failed to load resource: the server responded with a status of 401 (Unauthorized)
+DataContext.tsx:97 Error fetching daily summary: Error: 401: {"message":"Unauthorized - No Firebase ID provided"}
+    at throwIfResNotOk (queryClient.ts:6:11)
+    at async apiRequest (queryClient.ts:22:3)
+    at async fetchDailySummary (DataContext.tsx:93:24)
+/api/report/daily?date=2025-04-17:1 
+ Failed to load resource: the server responded with a status of 401 (Unauthorized)
+DataContext.tsx:97 Error fetching daily summary: Error: 401: {"message":"Unauthorized - No Firebase ID provided"}
+    at throwIfResNotOk (queryClient.ts:6:11)
+    at async apiRequest (queryClient.ts:22:3)
+    at async fetchDailySummary (DataContext.tsx:93:24)
+﻿
+

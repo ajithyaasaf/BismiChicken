@@ -29,8 +29,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setIsAuthenticated(!!user);
       setLoading(false);
       
-      // If user is authenticated, check if they exist in our backend
+      // Store or remove Firebase user in localStorage for API requests
       if (user) {
+        // Store minimal user information for auth headers
+        localStorage.setItem('firebaseUser', JSON.stringify({
+          uid: user.uid,
+          email: user.email
+        }));
+        
+        // If user is authenticated, check if they exist in our backend
         apiRequest("POST", "/api/auth/login", { firebaseId: user.uid })
           .catch(error => {
             console.error("Backend login error:", error);
@@ -57,6 +64,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
               variant: "destructive"
             });
           });
+      } else {
+        // Remove from localStorage when logged out
+        localStorage.removeItem('firebaseUser');
       }
     });
 
