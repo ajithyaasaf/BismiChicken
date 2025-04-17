@@ -1,0 +1,25 @@
+chunk-276SZO74.js?v=675f180a:14032 The above error occurred in the <Dashboard> component:
+
+    at Dashboard (https://98fa6697-a06b-407d-875b-e631259b8916-00-3acmfxa6h3j3r.sisko.replit.dev/src/pages/Dashboard.tsx:72:7)
+    at PrivateRoute (https://98fa6697-a06b-407d-875b-e631259b8916-00-3acmfxa6h3j3r.sisko.replit.dev/src/App.tsx?t=1744874051851&v=KUnhe2-cJslTyvuE0FxYl:39:36)
+    at Route (https://98fa6697-a06b-407d-875b-e631259b8916-00-3acmfxa6h3j3r.sisko.replit.…/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=675f180a:323:16)
+    at Switch (https://98fa6697-a06b-407d-875b-e631259b8916-00-3acmfxa6h3j3r.sisko.replit.…/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=675f180a:379:17)
+    at Router
+    at div
+    at MotionComponent (https://98fa6697-a06b-407d-875b-e631259b8916-00-3acmfxa6h3j3r.sisko.replit.…nner/workspace/node_modules/.vite/deps/framer-motion.js?v=675f180a:6562:40)
+    at main
+    at MotionComponent (https://98fa6697-a06b-407d-875b-e631259b8916-00-3acmfxa6h3j3r.sisko.replit.…nner/workspace/node_modules/.vite/deps/framer-motion.js?v=675f180a:6562:40)
+    at div
+    at div
+    at Layout (https://98fa6697-a06b-407d-875b-e631259b8916-00-3acmfxa6h3j3r.sisko.replit.dev/src/components/Layout.tsx:26:34)
+    at EnhancedDataProvider (https://98fa6697-a06b-407d-875b-e631259b8916-00-3acmfxa6h3j3r.sisko.replit.dev/src/context/EnhancedDataContext.tsx:24:40)
+    at AuthProvider (https://98fa6697-a06b-407d-875b-e631259b8916-00-3acmfxa6h3j3r.sisko.replit.dev/src/context/AuthContext.tsx:23:32)
+    at AppWithProviders
+    at QueryClientProvider (https://98fa6697-a06b-407d-875b-e631259b8916-00-3acmfxa6h3j3r.sisko.replit.…rkspace/node_modules/.vite/deps/@tanstack_react-query.js?v=675f180a:2805:3)
+    at App
+
+Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://reactjs.org/link/error-boundaries to learn more about error boundaries.
+chunk-276SZO74.js?v=675f180a:19413 Uncaught Error: useData must be used within a DataProvider
+    at useData (DataContext.tsx:386:11)
+    at Dashboard (Dashboard.tsx:56:7)

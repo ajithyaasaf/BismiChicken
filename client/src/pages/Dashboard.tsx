@@ -1,5 +1,5 @@
 import { useState, useRef } from "react";
-import { useData } from "../context/DataContext";
+import { useData } from "../context/EnhancedDataContext";
 import DatePicker from "../components/DatePicker";
 import SummaryCard from "../components/SummaryCard";
 import TransactionTable from "../components/TransactionTable";
