@@ -1,34 +1,29 @@
-import { initializeApp, cert } from 'firebase-admin/app';
-import { getFirestore } from 'firebase-admin/firestore';
-import { getAuth } from 'firebase-admin/auth';
+import admin from 'firebase-admin';
 
-// Use environment variables for service account credentials
-const projectId = process.env.FIREBASE_PROJECT_ID || "bismi-broilers-3ca96";
-const clientEmail = process.env.FIREBASE_CLIENT_EMAIL || "firebase-adminsdk-uj6n4@bismi-broilers-3ca96.iam.gserviceaccount.com";
+// Firebase configuration
+const firebaseConfig = {
+  projectId: "bismi-broilers-3ca96",
+  databaseURL: "https://bismi-broilers-3ca96-default-rtdb.firebaseio.com"
+};
 
-// Initialize Firebase Admin with application default credentials
-// This works in development mode
+// Initialize Firebase Admin
 let app;
 
 try {
-  // Initialize Firebase Admin with default credentials
-  app = initializeApp({
-    projectId
+  app = admin.initializeApp({
+    databaseURL: firebaseConfig.databaseURL
   });
-  console.log("Firebase Admin initialized with default credentials");
+  console.log("Firebase Admin initialized successfully");
 } catch (error) {
   console.error("Failed to initialize Firebase Admin:", error);
-  
-  // Fallback to minimal initialization
-  app = initializeApp({ projectId });
-  console.log("WARNING: Firebase Admin initialized in fallback mode");
+  throw error;
 }
 
-// Initialize Firestore
-const firestore = getFirestore(app);
+// Initialize Realtime Database
+const database = admin.database();
 
 // Initialize Auth
-const auth = getAuth(app);
+const auth = admin.auth();
 
-export { firestore, auth };
+export { database, auth };
 export default app;
