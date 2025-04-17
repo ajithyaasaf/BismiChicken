@@ -41,6 +41,7 @@ export interface IStorage {
   
   // Vendor Payment operations
   getVendorPayments(userId: number, vendorId?: number, date?: Date): Promise<VendorPayment[]>;
+  getVendorPaymentById(id: number): Promise<VendorPayment | undefined>;
   createVendorPayment(payment: InsertVendorPayment): Promise<VendorPayment>;
   deleteVendorPayment(id: number): Promise<boolean>;
 
