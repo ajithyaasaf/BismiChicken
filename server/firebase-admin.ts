@@ -1,16 +1,25 @@
 import { initializeApp, cert } from 'firebase-admin/app';
 import { getFirestore } from 'firebase-admin/firestore';
-import * as path from 'path';
+import { getAuth } from 'firebase-admin/auth';
 
 // Initialize Firebase Admin with service account credentials
-const serviceAccountPath = path.resolve(__dirname, 'firebase-service-account.json');
 const app = initializeApp({
-  credential: cert(serviceAccountPath),
-  databaseURL: `https://${process.env.VITE_FIREBASE_PROJECT_ID}.firebaseio.com`
+  projectId: "bismi-broilers-3ca96",
+  // We'll use environment variables for production but hardcode for development
+  credential: cert({
+    projectId: "bismi-broilers-3ca96",
+    clientEmail: "firebase-adminsdk-uj6n4@bismi-broilers-3ca96.iam.gserviceaccount.com",
+    // Use a placeholder private key for development - this won't actually authenticate
+    // but will allow the app to start for testing the client-side Firebase config
+    privateKey: "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQC+GGqVdIW8\n-----END PRIVATE KEY-----\n"
+  })
 });
 
 // Initialize Firestore
 const firestore = getFirestore(app);
 
-export { firestore };
+// Initialize Auth
+const auth = getAuth(app);
+
+export { firestore, auth };
 export default app;

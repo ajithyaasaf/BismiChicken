@@ -1,6 +1,6 @@
 import express, { type Express, Request, Response } from "express";
 import { createServer, type Server } from "http";
-import { firestoreStorage as storage } from "./firestore-storage";
+import { storage } from "./storage";
 import { 
   insertUserSchema, 
   insertVendorSchema, 
