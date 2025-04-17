@@ -382,7 +382,7 @@ export function EnhancedDataProvider({ children }: { children: ReactNode }) {
   // Retail Sale Mutations
   const addRetailSaleMutation = useMutation({
     mutationFn: (sale: Omit<RetailSale, "id" | "userId" | "total" | "timestamp">) => 
-      apiRequest('/api/retail-sales', { method: 'POST', body: sale }),
+      apiRequest('POST', '/api/retail-sales', sale),
     onSuccess: () => {
       toast({ title: "Retail sale added successfully" });
       queryClient.invalidateQueries({ queryKey: ['/api/report/daily'] });
@@ -399,7 +399,7 @@ export function EnhancedDataProvider({ children }: { children: ReactNode }) {
 
   const deleteRetailSaleMutation = useMutation({
     mutationFn: (id: number) => 
-      apiRequest(`/api/retail-sales/${id}`, { method: 'DELETE' }),
+      apiRequest('DELETE', `/api/retail-sales/${id}`),
     onSuccess: () => {
       toast({ title: "Retail sale deleted successfully" });
       queryClient.invalidateQueries({ queryKey: ['/api/report/daily'] });
@@ -417,7 +417,7 @@ export function EnhancedDataProvider({ children }: { children: ReactNode }) {
   // Hotel Sale Mutations
   const addHotelSaleMutation = useMutation({
     mutationFn: (data: any) => 
-      apiRequest('/api/hotel-sales', { method: 'POST', body: data }),
+      apiRequest('POST', '/api/hotel-sales', data),
     onSuccess: () => {
       toast({ title: "Hotel bill created successfully" });
       queryClient.invalidateQueries({ queryKey: ['/api/hotel-sales'] });
@@ -436,7 +436,7 @@ export function EnhancedDataProvider({ children }: { children: ReactNode }) {
 
   const updateHotelSalePaidMutation = useMutation({
     mutationFn: ({ id, isPaid }: { id: number, isPaid: boolean }) => 
-      apiRequest(`/api/hotel-sales/${id}/paid`, { method: 'PATCH', body: { isPaid } }),
+      apiRequest('PATCH', `/api/hotel-sales/${id}/paid`, { isPaid }),
     onSuccess: () => {
       toast({ title: "Payment status updated successfully" });
       queryClient.invalidateQueries({ queryKey: ['/api/hotel-sales'] });
@@ -453,7 +453,7 @@ export function EnhancedDataProvider({ children }: { children: ReactNode }) {
 
   const deleteHotelSaleMutation = useMutation({
     mutationFn: (id: number) => 
-      apiRequest(`/api/hotel-sales/${id}`, { method: 'DELETE' }),
+      apiRequest('DELETE', `/api/hotel-sales/${id}`),
     onSuccess: () => {
       toast({ title: "Hotel bill deleted successfully" });
       queryClient.invalidateQueries({ queryKey: ['/api/hotel-sales'] });
@@ -473,7 +473,7 @@ export function EnhancedDataProvider({ children }: { children: ReactNode }) {
   // Vendor Payment Mutations
   const addVendorPaymentMutation = useMutation({
     mutationFn: (payment: Omit<VendorPayment, "id" | "userId" | "timestamp">) => 
-      apiRequest('/api/vendors/payments', { method: 'POST', body: payment }),
+      apiRequest('POST', '/api/vendors/payments', payment),
     onSuccess: () => {
       toast({ title: "Payment recorded successfully" });
       queryClient.invalidateQueries({ queryKey: ['/api/vendors/payments'] });
@@ -491,7 +491,7 @@ export function EnhancedDataProvider({ children }: { children: ReactNode }) {
 
   const deleteVendorPaymentMutation = useMutation({
     mutationFn: (id: number) => 
-      apiRequest(`/api/vendors/payments/${id}`, { method: 'DELETE' }),
+      apiRequest('DELETE', `/api/vendors/payments/${id}`),
     onSuccess: () => {
       toast({ title: "Payment deleted successfully" });
       queryClient.invalidateQueries({ queryKey: ['/api/vendors/payments'] });
