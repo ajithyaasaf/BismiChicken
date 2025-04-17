@@ -19,7 +19,7 @@ interface NavItemProps {
 function NavItem({ href, icon, label, active }: NavItemProps) {
   return (
     <Link href={href}>
-      <a className="flex flex-col items-center text-xs">
+      <div className="flex flex-col items-center text-xs cursor-pointer">
         <div className={cn(
           "p-1",
           active ? "text-primary" : "text-gray-500"
@@ -32,7 +32,7 @@ function NavItem({ href, icon, label, active }: NavItemProps) {
         )}>
           {label}
         </span>
-      </a>
+      </div>
     </Link>
   );
 }
