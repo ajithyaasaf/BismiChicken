@@ -8,6 +8,7 @@ import {
   BarChart3 
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { motion } from "framer-motion";
 
 interface NavItemProps {
   href: string;
@@ -19,24 +20,38 @@ interface NavItemProps {
 function NavItem({ href, icon, label, active }: NavItemProps) {
   return (
     <Link href={href}>
-      <div 
+      <motion.div 
         className={cn(
-          "group flex items-center px-3 py-2 text-base font-medium rounded-md cursor-pointer transition-colors",
+          "group flex items-center px-3 py-2 text-base font-medium rounded-md cursor-pointer",
           active 
             ? "bg-primary text-white"
             : "text-gray-700 hover:bg-gray-100"
         )}
+        whileHover={{ 
+          scale: 1.02,
+          transition: { duration: 0.2 }
+        }}
+        whileTap={{ scale: 0.98 }}
+        transition={{
+          type: "spring",
+          stiffness: 400,
+          damping: 17
+        }}
       >
-        <div className="mr-3">
+        <motion.div 
+          className="mr-3"
+          initial={{ opacity: 0.8 }}
+          animate={{ opacity: 1 }}
+        >
           {icon}
-        </div>
+        </motion.div>
         {label}
-      </div>
+      </motion.div>
     </Link>
   );
 }
 
-export default function Sidebar() {
+export default function Sidebar({ isOpen }: { isOpen?: boolean }) {
   const [location] = useLocation();
 
   const navItems = [
@@ -49,21 +64,45 @@ export default function Sidebar() {
   ];
 
   return (
-    <aside className="w-64 bg-white shadow-md hidden md:block">
-      <div className="py-4 px-3 bg-primary text-white font-medium">
+    <motion.aside 
+      className="w-64 bg-white shadow-md hidden md:block"
+      initial={{ x: -20, opacity: 0.5 }}
+      animate={{ x: 0, opacity: 1 }}
+      transition={{
+        type: "spring",
+        stiffness: 300,
+        damping: 25
+      }}
+    >
+      <motion.div 
+        className="py-4 px-3 bg-primary text-white font-medium"
+        initial={{ opacity: 0.7 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5 }}
+      >
         Chicken Business Management
-      </div>
+      </motion.div>
       <nav className="mt-4 px-2 space-y-1">
-        {navItems.map((item) => (
-          <NavItem 
+        {navItems.map((item, index) => (
+          <motion.div
             key={item.href}
-            href={item.href}
-            icon={item.icon}
-            label={item.label}
-            active={location === item.href}
-          />
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ 
+              delay: index * 0.05,
+              duration: 0.3,
+              ease: "easeOut"
+            }}
+          >
+            <NavItem 
+              href={item.href}
+              icon={item.icon}
+              label={item.label}
+              active={location === item.href}
+            />
+          </motion.div>
         ))}
       </nav>
-    </aside>
+    </motion.aside>
   );
 }
