@@ -265,7 +265,6 @@ export const vendorPayments = pgTable("vendor_payments", {
   amount: numeric("amount").notNull(),
   date: date("date").notNull(),
   notes: text("notes"),
-  paymentMethod: text("payment_method"), // e.g., 'cash', 'bank_transfer', 'upi'
   timestamp: timestamp("timestamp").notNull().defaultNow(),
   userId: integer("user_id").notNull(),
   meatType: text("meat_type").notNull().default(MeatTypes.CHICKEN),
@@ -279,7 +278,6 @@ export const insertVendorPaymentSchema = createInsertSchema(
   amount: true,
   date: true,
   notes: true,
-  paymentMethod: true,
   userId: true,
   meatType: true,
   productCut: true,
