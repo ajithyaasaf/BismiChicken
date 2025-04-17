@@ -21,16 +21,13 @@ function NavItem({ href, icon, label, active }: NavItemProps) {
     <Link href={href}>
       <div 
         className={cn(
-          "group flex items-center px-2 py-2 text-base font-medium rounded-md cursor-pointer",
+          "group flex items-center px-3 py-2 text-base font-medium rounded-md cursor-pointer transition-colors",
           active 
-            ? "bg-primary bg-opacity-10 text-primary"
-            : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+            ? "bg-primary text-white"
+            : "text-gray-700 hover:bg-gray-100"
         )}
       >
-        <div className={cn(
-          "mr-3", 
-          active ? "text-primary" : "text-gray-500"
-        )}>
+        <div className="mr-3">
           {icon}
         </div>
         {label}
@@ -53,7 +50,10 @@ export default function Sidebar() {
 
   return (
     <aside className="w-64 bg-white shadow-md hidden md:block">
-      <nav className="mt-5 px-2 space-y-1">
+      <div className="py-4 px-3 bg-primary text-white font-medium">
+        Chicken Business Management
+      </div>
+      <nav className="mt-4 px-2 space-y-1">
         {navItems.map((item) => (
           <NavItem 
             key={item.href}
