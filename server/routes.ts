@@ -7,7 +7,9 @@ import {
   insertPurchaseSchema, 
   insertRetailSaleSchema, 
   insertHotelSaleSchema,
-  insertVendorPaymentSchema
+  insertVendorPaymentSchema,
+  MeatTypes,
+  ProductCuts
 } from "@shared/schema";
 import { z } from "zod";
 import { ZodError } from "zod";
@@ -211,13 +213,28 @@ export async function registerRoutes(app: Express): Promise<Server> {
         date = new Date(); // Default to today
       }
       
+      // Validate meat type and product cut
+      const meatType = req.body.meatType || MeatTypes.CHICKEN;
+      const productCut = req.body.productCut || ProductCuts.WHOLE;
+      
+      // Validate with zod schema
+      if (!Object.values(MeatTypes).includes(meatType)) {
+        return res.status(400).json({ message: "Invalid meat type" });
+      }
+      
+      if (!Object.values(ProductCuts).includes(productCut)) {
+        return res.status(400).json({ message: "Invalid product cut" });
+      }
+      
       const purchaseData = insertPurchaseSchema.parse({
         ...req.body,
         quantityKg,
         ratePerKg,
         total,
         date,
-        userId
+        userId,
+        meatType,
+        productCut
       });
       
       const purchase = await storage.createPurchase(purchaseData);
@@ -296,13 +313,28 @@ export async function registerRoutes(app: Express): Promise<Server> {
         });
       }
       
+      // Validate meat type and product cut
+      const meatType = req.body.meatType || MeatTypes.CHICKEN;
+      const productCut = req.body.productCut || ProductCuts.WHOLE;
+      
+      // Validate with zod schema
+      if (!Object.values(MeatTypes).includes(meatType)) {
+        return res.status(400).json({ message: "Invalid meat type" });
+      }
+      
+      if (!Object.values(ProductCuts).includes(productCut)) {
+        return res.status(400).json({ message: "Invalid product cut" });
+      }
+      
       const saleData = insertRetailSaleSchema.parse({
         ...req.body,
         quantityKg,
         ratePerKg,
         total,
         date,
-        userId
+        userId,
+        meatType,
+        productCut
       });
       
       const sale = await storage.createRetailSale(saleData);
@@ -381,13 +413,28 @@ export async function registerRoutes(app: Express): Promise<Server> {
         });
       }
       
+      // Validate meat type and product cut
+      const meatType = req.body.meatType || MeatTypes.CHICKEN;
+      const productCut = req.body.productCut || ProductCuts.WHOLE;
+      
+      // Validate with zod schema
+      if (!Object.values(MeatTypes).includes(meatType)) {
+        return res.status(400).json({ message: "Invalid meat type" });
+      }
+      
+      if (!Object.values(ProductCuts).includes(productCut)) {
+        return res.status(400).json({ message: "Invalid product cut" });
+      }
+      
       const saleData = insertHotelSaleSchema.parse({
         ...req.body,
         quantityKg,
         ratePerKg,
         total,
         date,
-        userId
+        userId,
+        meatType,
+        productCut
       });
       
       const sale = await storage.createHotelSale(saleData);

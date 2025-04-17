@@ -330,7 +330,9 @@ export class MemStorage implements IStorage {
         quantityKg: Number(p.quantityKg),
         ratePerKg: Number(p.ratePerKg),
         total: Number(p.total),
-        timestamp: p.timestamp
+        timestamp: p.timestamp,
+        meatType: p.meatType,
+        productCut: p.productCut
       })),
       ...retailSales.map(s => ({
         id: s.id,
@@ -339,7 +341,9 @@ export class MemStorage implements IStorage {
         quantityKg: Number(s.quantityKg),
         ratePerKg: Number(s.ratePerKg),
         total: Number(s.total),
-        timestamp: s.timestamp
+        timestamp: s.timestamp,
+        meatType: s.meatType,
+        productCut: s.productCut
       })),
       ...hotelSales.map(s => ({
         id: s.id,
@@ -348,7 +352,9 @@ export class MemStorage implements IStorage {
         quantityKg: Number(s.quantityKg),
         ratePerKg: Number(s.ratePerKg),
         total: Number(s.total),
-        timestamp: s.timestamp
+        timestamp: s.timestamp,
+        meatType: s.meatType,
+        productCut: s.productCut
       })),
       ...vendorPayments.map(p => ({
         id: p.id,
