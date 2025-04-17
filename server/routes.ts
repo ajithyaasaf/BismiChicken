@@ -466,15 +466,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
   router.get("/report/daily", getUserIdMiddleware, async (req, res) => {
     try {
       const userId = req.body.userId;
-      const dateStr = req.query.date as string;
+      const dateStr = req.query.date as string | undefined;
       
-      if (!dateStr) {
-        return res.status(400).json({ message: "Date parameter is required" });
-      }
-      
-      const date = new Date(dateStr);
-      if (isNaN(date.getTime())) {
-        return res.status(400).json({ message: "Invalid date format" });
+      // Use today's date if none is provided
+      let date: Date;
+      if (dateStr) {
+        date = new Date(dateStr);
+        if (isNaN(date.getTime())) {
+          return res.status(400).json({ message: "Invalid date format" });
+        }
+      } else {
+        date = new Date();
       }
       
       const summary = await storage.getDailySummary(userId, date);
