@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import * as React from "react";
 import { Switch, Route, useLocation, Redirect } from "wouter";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { queryClient } from "./lib/queryClient";
@@ -17,12 +17,12 @@ import NotFound from "@/pages/not-found";
 import { Loader2 } from "lucide-react";
 
 // Private route component to protect routes
-function PrivateRoute({ component: Component, ...rest }: { component: React.ComponentType<any>, path: string }) {
+function PrivateRoute({ component: Component, ...rest }: any) {
   const { isAuthenticated, loading } = useAuth();
   const [, navigate] = useLocation();
   
   // Use useEffect for navigation to prevent "Cannot update during render" error
-  useEffect(() => {
+  React.useEffect(() => {
     if (!loading && !isAuthenticated) {
       navigate("/login");
     }
@@ -47,12 +47,12 @@ function PrivateRoute({ component: Component, ...rest }: { component: React.Comp
 }
 
 // Public route component for routes that shouldn't be accessed when logged in
-function PublicRoute({ component: Component, ...rest }: { component: React.ComponentType<any>, path: string }) {
+function PublicRoute({ component: Component, ...rest }: any) {
   const { isAuthenticated, loading } = useAuth();
   const [, navigate] = useLocation();
   
   // Use useEffect for navigation to prevent "Cannot update during render" error
-  useEffect(() => {
+  React.useEffect(() => {
     if (!loading && isAuthenticated) {
       navigate("/");
     }
@@ -79,14 +79,28 @@ function PublicRoute({ component: Component, ...rest }: { component: React.Compo
 function Router() {
   return (
     <Switch>
-      <Route path="/login" component={(props) => <PublicRoute component={Login} {...props} />} />
+      <Route path="/login">
+        {(params) => <PublicRoute component={Login} params={params} />}
+      </Route>
       
-      <Route path="/" component={(props) => <PrivateRoute component={Dashboard} {...props} />} />
-      <Route path="/vendors" component={(props) => <PrivateRoute component={Vendors} {...props} />} />
-      <Route path="/purchases" component={(props) => <PrivateRoute component={Purchases} {...props} />} />
-      <Route path="/retail-sales" component={(props) => <PrivateRoute component={RetailSales} {...props} />} />
-      <Route path="/hotel-sales" component={(props) => <PrivateRoute component={HotelSales} {...props} />} />
-      <Route path="/reports" component={(props) => <PrivateRoute component={Reports} {...props} />} />
+      <Route path="/">
+        {(params) => <PrivateRoute component={Dashboard} params={params} />}
+      </Route>
+      <Route path="/vendors">
+        {(params) => <PrivateRoute component={Vendors} params={params} />}
+      </Route>
+      <Route path="/purchases">
+        {(params) => <PrivateRoute component={Purchases} params={params} />}
+      </Route>
+      <Route path="/retail-sales">
+        {(params) => <PrivateRoute component={RetailSales} params={params} />}
+      </Route>
+      <Route path="/hotel-sales">
+        {(params) => <PrivateRoute component={HotelSales} params={params} />}
+      </Route>
+      <Route path="/reports">
+        {(params) => <PrivateRoute component={Reports} params={params} />}
+      </Route>
       
       <Route path="/404" component={NotFound} />
       <Route>
