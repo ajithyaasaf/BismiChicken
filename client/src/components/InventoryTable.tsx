@@ -8,7 +8,9 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { AlertCircle } from "lucide-react";
 
 interface InventoryTableProps {
   inventory: ProductInventory[];
@@ -28,34 +30,61 @@ export default function InventoryTable({
     return (
       <Card>
         <CardHeader>
-          <CardTitle>
-            <Skeleton className="h-8 w-1/3" />
-          </CardTitle>
+          <div className="flex justify-between items-center mb-1">
+            <CardTitle>
+              <Skeleton className="h-7 w-40" />
+            </CardTitle>
+            <Skeleton className="h-6 w-20" />
+          </div>
+          <CardDescription>
+            <Skeleton className="h-4 w-56" />
+          </CardDescription>
         </CardHeader>
         <CardContent>
           <div className="rounded-md border">
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead><Skeleton className="h-5 w-full" /></TableHead>
-                  <TableHead><Skeleton className="h-5 w-full" /></TableHead>
-                  <TableHead><Skeleton className="h-5 w-full" /></TableHead>
-                  <TableHead><Skeleton className="h-5 w-full" /></TableHead>
-                  <TableHead><Skeleton className="h-5 w-full" /></TableHead>
+                  <TableHead><Skeleton className="h-5 w-24" /></TableHead>
+                  <TableHead><Skeleton className="h-5 w-24" /></TableHead>
+                  <TableHead className="text-right"><Skeleton className="h-5 w-full" /></TableHead>
+                  <TableHead className="text-right"><Skeleton className="h-5 w-full" /></TableHead>
+                  <TableHead className="text-right"><Skeleton className="h-5 w-full" /></TableHead>
+                  <TableHead className="text-right"><Skeleton className="h-5 w-full" /></TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {[...Array(3)].map((_, i) => (
-                  <TableRow key={i}>
-                    <TableCell><Skeleton className="h-5 w-full" /></TableCell>
-                    <TableCell><Skeleton className="h-5 w-full" /></TableCell>
-                    <TableCell><Skeleton className="h-5 w-full" /></TableCell>
-                    <TableCell><Skeleton className="h-5 w-full" /></TableCell>
-                    <TableCell><Skeleton className="h-5 w-full" /></TableCell>
-                  </TableRow>
-                ))}
+                {/* Simulate the grouped layout with different meat types */}
+                <TableRow className="border-t-2 border-t-gray-200">
+                  <TableCell><Skeleton className="h-6 w-20" /></TableCell>
+                  <TableCell><Skeleton className="h-5 w-24" /></TableCell>
+                  <TableCell className="text-right"><Skeleton className="h-5 w-14 ml-auto" /></TableCell>
+                  <TableCell className="text-right"><Skeleton className="h-5 w-14 ml-auto" /></TableCell>
+                  <TableCell className="text-right"><Skeleton className="h-5 w-14 ml-auto" /></TableCell>
+                  <TableCell className="text-right"><Skeleton className="h-5 w-14 ml-auto" /></TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell></TableCell>
+                  <TableCell><Skeleton className="h-5 w-24" /></TableCell>
+                  <TableCell className="text-right"><Skeleton className="h-5 w-14 ml-auto" /></TableCell>
+                  <TableCell className="text-right"><Skeleton className="h-5 w-14 ml-auto" /></TableCell>
+                  <TableCell className="text-right"><Skeleton className="h-5 w-14 ml-auto" /></TableCell>
+                  <TableCell className="text-right"><Skeleton className="h-5 w-14 ml-auto" /></TableCell>
+                </TableRow>
+                
+                <TableRow className="border-t-2 border-t-gray-200">
+                  <TableCell><Skeleton className="h-6 w-20" /></TableCell>
+                  <TableCell><Skeleton className="h-5 w-24" /></TableCell>
+                  <TableCell className="text-right"><Skeleton className="h-5 w-14 ml-auto" /></TableCell>
+                  <TableCell className="text-right"><Skeleton className="h-5 w-14 ml-auto" /></TableCell>
+                  <TableCell className="text-right"><Skeleton className="h-5 w-14 ml-auto" /></TableCell>
+                  <TableCell className="text-right"><Skeleton className="h-5 w-14 ml-auto" /></TableCell>
+                </TableRow>
               </TableBody>
             </Table>
+          </div>
+          <div className="mt-4">
+            <Skeleton className="h-4 w-full" />
           </div>
         </CardContent>
       </Card>
@@ -67,20 +96,51 @@ export default function InventoryTable({
       <Card>
         <CardHeader>
           <CardTitle>Current Inventory</CardTitle>
+          <CardDescription>Track inventory by meat type and cut</CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="text-center p-4 text-gray-500">
-            No inventory data available
+          <div className="text-center p-8 text-gray-500 border rounded-md flex flex-col items-center">
+            <AlertCircle className="h-10 w-10 mb-2 text-amber-500" />
+            <h3 className="text-lg font-medium mb-1">No Inventory Data</h3>
+            <p className="text-sm max-w-md">
+              Add purchases to see detailed inventory tracking by meat type and cut. 
+              Inventory is calculated from purchase and sale transactions.
+            </p>
           </div>
         </CardContent>
       </Card>
     );
   }
 
+  // Group inventory by meat type for better organization
+  const inventoryByType = inventory.reduce((acc, item) => {
+    if (!acc[item.meatType]) {
+      acc[item.meatType] = [];
+    }
+    acc[item.meatType].push(item);
+    return acc;
+  }, {} as Record<string, ProductInventory[]>);
+
+  // Sort meat types in a specific order (chicken first, then others alphabetically)
+  const sortedMeatTypes = Object.keys(inventoryByType).sort((a, b) => {
+    if (a === 'chicken') return -1;
+    if (b === 'chicken') return 1;
+    return a.localeCompare(b);
+  });
+
+  // Calculate total remaining kg
+  const totalRemaining = inventory.reduce((sum, item) => sum + item.remainingKg, 0);
+
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Current Inventory</CardTitle>
+        <div className="flex justify-between items-center mb-1">
+          <CardTitle>Current Inventory</CardTitle>
+          <Badge variant={totalRemaining < 10 ? "destructive" : "outline"} className="ml-2">
+            Total: {totalRemaining.toFixed(2)} kg
+          </Badge>
+        </div>
+        <CardDescription>Track inventory by meat type and cut</CardDescription>
       </CardHeader>
       <CardContent>
         <div className="rounded-md border">
@@ -96,22 +156,52 @@ export default function InventoryTable({
               </TableRow>
             </TableHeader>
             <TableBody>
-              {inventory.map((item, index) => (
-                <TableRow key={index}>
-                  <TableCell className="capitalize">{capitalize(item.meatType)}</TableCell>
-                  <TableCell className="capitalize">{capitalize(item.productCut)}</TableCell>
-                  <TableCell className="text-right">{item.purchasedKg.toFixed(2)}</TableCell>
-                  <TableCell className="text-right">{item.soldKg.toFixed(2)}</TableCell>
-                  <TableCell className="font-medium text-right">
-                    {item.remainingKg.toFixed(2)}
-                  </TableCell>
-                  <TableCell className="text-right">
-                    ₹{item.avgCostPerKg.toFixed(2)}
-                  </TableCell>
-                </TableRow>
-              ))}
+              {sortedMeatTypes.flatMap(meatType => 
+                inventoryByType[meatType].map((item, index) => {
+                  // Determine status color for remaining stock
+                  const isLowStock = item.remainingKg < 5;
+                  const isVeryLowStock = item.remainingKg < 2;
+                  
+                  return (
+                    <TableRow key={`${meatType}-${item.productCut}`} 
+                      className={index === 0 ? "border-t-2 border-t-gray-200" : ""}>
+                      <TableCell className="font-medium capitalize">
+                        {index === 0 ? (
+                          <Badge variant="outline" className="mr-2 bg-gray-50">
+                            {capitalize(item.meatType)}
+                          </Badge>
+                        ) : ""}
+                      </TableCell>
+                      <TableCell className="capitalize">{capitalize(item.productCut)}</TableCell>
+                      <TableCell className="text-right">{item.purchasedKg.toFixed(2)}</TableCell>
+                      <TableCell className="text-right">{item.soldKg.toFixed(2)}</TableCell>
+                      <TableCell className={`font-medium text-right ${
+                        isVeryLowStock ? 'text-red-500' : 
+                        isLowStock ? 'text-amber-500' : 
+                        'text-green-600'
+                      }`}>
+                        {item.remainingKg.toFixed(2)}
+                        {isVeryLowStock && (
+                          <AlertCircle className="h-4 w-4 inline ml-1 text-red-500" />
+                        )}
+                      </TableCell>
+                      <TableCell className="text-right">
+                        ₹{item.avgCostPerKg.toFixed(2)}
+                      </TableCell>
+                    </TableRow>
+                  );
+                })
+              )}
             </TableBody>
           </Table>
+        </div>
+        <div className="mt-4 text-xs text-gray-500 flex items-center">
+          <span className="inline-block w-3 h-3 bg-red-500 rounded-full mr-1"></span>
+          <span className="mr-3">Very Low Stock (&lt; 2kg)</span>
+          <span className="inline-block w-3 h-3 bg-amber-500 rounded-full mr-1"></span>
+          <span className="mr-3">Low Stock (&lt; 5kg)</span>
+          <span className="inline-block w-3 h-3 bg-green-600 rounded-full mr-1"></span>
+          <span>Good Stock</span>
         </div>
       </CardContent>
     </Card>
