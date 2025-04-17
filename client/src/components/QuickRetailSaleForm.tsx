@@ -24,16 +24,16 @@ import { calculateTotal } from "../utils/helpers";
 // Common retail sale quantities
 const COMMON_QUANTITIES = [0.5, 1, 1.5, 2, 2.5, 3, 4, 5];
 
-// Price suggestions by meat type and cut (simulated default prices)
+// Price suggestions by meat type and cut (default prices)
 const SUGGESTED_RATES: Record<string, Record<string, number>> = {
   [MeatTypes.CHICKEN]: {
     [ProductCuts.WHOLE]: 280,
     [ProductCuts.BREAST]: 320,
     [ProductCuts.LEG]: 300,
-    [ProductCuts.WINGS]: 250,
+    [ProductCuts.WING]: 250,
     [ProductCuts.BONELESS]: 380,
   },
-  [MeatTypes.MUTTON]: {
+  [MeatTypes.GOAT]: {
     [ProductCuts.WHOLE]: 800,
     [ProductCuts.LEG]: 850,
     [ProductCuts.BONELESS]: 950,
@@ -41,6 +41,10 @@ const SUGGESTED_RATES: Record<string, Record<string, number>> = {
   [MeatTypes.BEEF]: {
     [ProductCuts.WHOLE]: 450,
     [ProductCuts.BONELESS]: 550,
+  },
+  [MeatTypes.KADAI]: {
+    [ProductCuts.WHOLE]: 550,
+    [ProductCuts.OTHER]: 600
   }
 };
 
@@ -89,12 +93,13 @@ export default function QuickRetailSaleForm() {
     
     try {
       const saleData = {
-        quantityKg: parseFloat(quantityKg),
-        ratePerKg: parseFloat(ratePerKg),
+        quantityKg: quantityKg, // Keep as string for backend
+        ratePerKg: ratePerKg, // Keep as string for backend
         meatType,
         productCut,
         date: selectedDate.toISOString().split("T")[0],
         productId: 1, // Default product ID - typically would be determined based on meat type and cut
+        partId: null // Required field
       };
       
       await addRetailSale(saleData);

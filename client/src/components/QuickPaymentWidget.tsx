@@ -25,7 +25,7 @@ export default function QuickPaymentWidget() {
   const [selectedVendorId, setSelectedVendorId] = useState<string>("");
   const [amount, setAmount] = useState<string>("");
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [suggestedAmounts, setSuggestedAmounts] = useState<number[]>([]);
+  const [suggestedAmounts, setSuggestedAmounts] = useState<Array<number>>([]);
 
   // Find the selected vendor
   const selectedVendor = vendors.find(
@@ -36,7 +36,7 @@ export default function QuickPaymentWidget() {
   useEffect(() => {
     if (selectedVendor && Number(selectedVendor.balance) > 0) {
       const balance = Number(selectedVendor.balance);
-      const suggested: number[] = [];
+      const suggested: Array<number> = [];
       
       // Full amount
       suggested.push(balance);
@@ -60,7 +60,7 @@ export default function QuickPaymentWidget() {
       
       // Sort and filter
       setSuggestedAmounts(
-        [...new Set(suggested)]
+        Array.from(new Set(suggested))
           .filter(amount => amount > 0)
           .sort((a, b) => a - b)
       );
@@ -90,6 +90,7 @@ export default function QuickPaymentWidget() {
         date: selectedDate.toISOString().split("T")[0],
         meatType: "chicken", // Default values
         productCut: "whole",
+        notes: null // Required field
       });
       
       toast({
