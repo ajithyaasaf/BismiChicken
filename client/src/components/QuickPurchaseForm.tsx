@@ -130,12 +130,18 @@ export default function QuickPurchaseForm() {
     setIsSubmitting(true);
     
     try {
+      // Calculate total first
+      const qty = parseFloat(quantityKg);
+      const rate = parseFloat(ratePerKg);
+      const total = (qty * rate).toString();
+      
       // Format data properly for backend validation
       const purchaseData = {
         vendorId: parseInt(vendorId), // Convert string to number
         productId: 1, // Default productId as number 
         quantityKg: quantityKg.toString(), // Ensure it's a string
         ratePerKg: ratePerKg.toString(), // Ensure it's a string
+        total, // Include calculated total as string
         meatType,
         productCut,
         date: selectedDate.toISOString().split("T")[0],
@@ -145,10 +151,15 @@ export default function QuickPurchaseForm() {
       // Save to backend API
       await addPurchase(purchaseData);
       
-      // Also save to Firestore for redundancy if we have a currentUser
+      // Only pass the data Firestore expects (with string IDs) if we have a currentUser
       if (currentUser) {
         try {
-          await addPurchaseToFirestore(purchaseData, currentUser.uid);
+          const firestoreData = {
+            ...purchaseData,
+            vendorId: vendorId, // Keep as string for Firestore
+            productId: "1" // Keep as string for Firestore
+          };
+          await addPurchaseToFirestore(firestoreData, currentUser.uid);
         } catch (firestoreError) {
           console.error("Firestore backup failed:", firestoreError);
           // Continue even if Firestore fails
