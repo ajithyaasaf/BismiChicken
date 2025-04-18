@@ -350,7 +350,8 @@ export function EnhancedDataProvider({ children }: { children: ReactNode }) {
       apiRequest('POST', '/api/purchases', purchase),
     onSuccess: () => {
       toast({ title: "Purchase added successfully" });
-      queryClient.invalidateQueries({ queryKey: ['/api/report/daily'] });
+      // Invalidate the daily summary query with the proper key format including the date
+      queryClient.invalidateQueries({ queryKey: ['/api/report/daily', formattedDate] });
     },
     onError: (error: any) => {
       console.error("Error adding purchase:", error);
@@ -367,7 +368,7 @@ export function EnhancedDataProvider({ children }: { children: ReactNode }) {
       apiRequest('DELETE', `/api/purchases/${id}`),
     onSuccess: () => {
       toast({ title: "Purchase deleted successfully" });
-      queryClient.invalidateQueries({ queryKey: ['/api/report/daily'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/report/daily', formattedDate] });
     },
     onError: (error: any) => {
       console.error("Error deleting purchase:", error);
@@ -385,7 +386,7 @@ export function EnhancedDataProvider({ children }: { children: ReactNode }) {
       apiRequest('POST', '/api/retail-sales', sale),
     onSuccess: () => {
       toast({ title: "Retail sale added successfully" });
-      queryClient.invalidateQueries({ queryKey: ['/api/report/daily'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/report/daily', formattedDate] });
     },
     onError: (error: any) => {
       console.error("Error adding retail sale:", error);
@@ -402,7 +403,7 @@ export function EnhancedDataProvider({ children }: { children: ReactNode }) {
       apiRequest('DELETE', `/api/retail-sales/${id}`),
     onSuccess: () => {
       toast({ title: "Retail sale deleted successfully" });
-      queryClient.invalidateQueries({ queryKey: ['/api/report/daily'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/report/daily', formattedDate] });
     },
     onError: (error: any) => {
       console.error("Error deleting retail sale:", error);
@@ -422,7 +423,7 @@ export function EnhancedDataProvider({ children }: { children: ReactNode }) {
       toast({ title: "Hotel bill created successfully" });
       queryClient.invalidateQueries({ queryKey: ['/api/hotel-sales'] });
       queryClient.invalidateQueries({ queryKey: ['/api/hotel-sale-items'] });
-      queryClient.invalidateQueries({ queryKey: ['/api/report/daily'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/report/daily', formattedDate] });
     },
     onError: (error: any) => {
       console.error("Error creating hotel bill:", error);
@@ -458,7 +459,7 @@ export function EnhancedDataProvider({ children }: { children: ReactNode }) {
       toast({ title: "Hotel bill deleted successfully" });
       queryClient.invalidateQueries({ queryKey: ['/api/hotel-sales'] });
       queryClient.invalidateQueries({ queryKey: ['/api/hotel-sale-items'] });
-      queryClient.invalidateQueries({ queryKey: ['/api/report/daily'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/report/daily', formattedDate] });
     },
     onError: (error: any) => {
       console.error("Error deleting hotel bill:", error);
@@ -514,7 +515,7 @@ export function EnhancedDataProvider({ children }: { children: ReactNode }) {
       queryClient.invalidateQueries({ queryKey: ['/api/products'] }),
       queryClient.invalidateQueries({ queryKey: ['/api/product-parts'] }),
       queryClient.invalidateQueries({ queryKey: ['/api/hotels'] }),
-      queryClient.invalidateQueries({ queryKey: ['/api/report/daily'] }),
+      queryClient.invalidateQueries({ queryKey: ['/api/report/daily', formattedDate] }),
       queryClient.invalidateQueries({ queryKey: ['/api/vendors/payments'] }),
       queryClient.invalidateQueries({ queryKey: ['/api/hotel-sales'] }),
       queryClient.invalidateQueries({ queryKey: ['/api/hotel-sale-items'] })
