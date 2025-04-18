@@ -37,17 +37,17 @@ export default function SaleForm({
   const getGridLayout = () => {
     switch (currentBreakpoint) {
       case 'xs':
-        return "grid-cols-1 gap-3";
+        return "grid-cols-1 gap-4";
       case 'sm':
-        return "grid-cols-1 gap-3";
+        return "grid-cols-1 gap-4";
       case 'md':
-        return `grid-cols-${type === 'hotel' ? '3' : '2'} gap-4`;
+        return `grid-cols-${type === 'hotel' ? '3' : '2'} gap-5`;
       case 'lg':
       case 'xl':
       case 'xxl':
-        return "grid-cols-4 gap-4";
+        return "grid-cols-4 gap-5";
       default:
-        return "grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4";
+        return "grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5";
     }
   };
 
@@ -157,10 +157,10 @@ export default function SaleForm({
   };
 
   return (
-    <Card className="bg-white rounded-lg shadow-sm overflow-hidden">
-      <CardContent className={`p-4 sm:p-5 md:p-6 transition-all duration-200`}>
+    <Card className="bg-white rounded-lg shadow-md overflow-hidden">
+      <CardContent className="p-5 sm:p-6 md:p-7 transition-all duration-200">
         <motion.h3 
-          className="text-base sm:text-lg font-medium text-gray-900 mb-3 sm:mb-4"
+          className="text-base sm:text-lg font-medium text-gray-900 mb-4 sm:mb-5"
           initial={{ opacity: 0, y: -10, scale: 0.95 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
           transition={{ type: "spring", stiffness: 400, damping: 20 }}
@@ -172,7 +172,7 @@ export default function SaleForm({
         <AnimatePresence>
           {remainingStock <= 5 && (
             <motion.div 
-              className={`rounded-md mb-3 p-2 text-xs sm:text-sm flex items-center ${
+              className={`rounded-md mb-4 p-3 text-xs sm:text-sm flex items-center ${
                 remainingStock <= 0 
                   ? "bg-red-50 text-red-700" 
                   : "bg-yellow-50 text-yellow-700"
@@ -208,7 +208,7 @@ export default function SaleForm({
         <Form {...form}>
           <motion.form 
             onSubmit={form.handleSubmit(handleSubmit)} 
-            className={`grid ${getGridLayout()} gap-5`}
+            className={`grid ${getGridLayout()}`}
             variants={formVariants}
             initial="hidden"
             animate="visible"
@@ -222,8 +222,8 @@ export default function SaleForm({
                     // @ts-ignore - The schema is conditional based on type
                     name="hotelName"
                     render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="text-sm font-medium text-gray-700">Hotel Name</FormLabel>
+                      <FormItem className="mb-1">
+                        <FormLabel className="text-sm font-medium text-gray-700 mb-1.5">Hotel Name</FormLabel>
                         <FormControl>
                           <Input 
                             placeholder="Enter hotel name" 
@@ -231,7 +231,7 @@ export default function SaleForm({
                             {...field} 
                           />
                         </FormControl>
-                        <FormMessage className="text-xs sm:text-sm" />
+                        <FormMessage className="text-xs sm:text-sm mt-1" />
                       </FormItem>
                     )}
                   />
@@ -244,8 +244,8 @@ export default function SaleForm({
                 control={form.control}
                 name="quantityKg"
                 render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-sm font-medium text-gray-700 flex items-center justify-between">
+                  <FormItem className="mb-1">
+                    <FormLabel className="text-sm font-medium text-gray-700 flex items-center justify-between mb-1.5">
                       <span>Quantity (kg)</span>
                       {remainingStock > 0 && (
                         <span className="text-xs text-gray-500">
@@ -260,12 +260,12 @@ export default function SaleForm({
                         min="0"
                         max={remainingStock}
                         placeholder="Enter quantity"
-                        className="h-9 sm:h-10 text-sm rounded-md shadow-sm border-gray-300 focus:border-primary focus:ring-primary"
+                        className="h-10 text-sm rounded-md shadow-sm border-gray-300 focus:border-primary focus:ring-primary"
                         inputMode="decimal"
                         {...field}
                       />
                     </FormControl>
-                    <FormMessage className="text-xs sm:text-sm" />
+                    <FormMessage className="text-xs sm:text-sm mt-1" />
                   </FormItem>
                 )}
               />
@@ -276,20 +276,20 @@ export default function SaleForm({
                 control={form.control}
                 name="ratePerKg"
                 render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-sm font-medium text-gray-700">Rate per kg (₹)</FormLabel>
+                  <FormItem className="mb-1">
+                    <FormLabel className="text-sm font-medium text-gray-700 mb-1.5">Rate per kg (₹)</FormLabel>
                     <FormControl>
                       <Input
                         type="number"
                         step="0.01"
                         min="0"
                         placeholder="Enter rate"
-                        className="h-9 sm:h-10 text-sm rounded-md shadow-sm border-gray-300 focus:border-primary focus:ring-primary"
+                        className="h-10 text-sm rounded-md shadow-sm border-gray-300 focus:border-primary focus:ring-primary"
                         inputMode="decimal"
                         {...field}
                       />
                     </FormControl>
-                    <FormMessage className="text-xs sm:text-sm" />
+                    <FormMessage className="text-xs sm:text-sm mt-1" />
                   </FormItem>
                 )}
               />
@@ -314,8 +314,8 @@ export default function SaleForm({
                   disabled={isSubmitting || remainingStock <= 0}
                   className={`
                     inline-flex items-center justify-center
-                    h-9 sm:h-10 px-3 sm:px-4 py-0 
-                    text-xs sm:text-sm font-medium 
+                    h-10 px-4 py-0 
+                    text-sm font-medium 
                     rounded-md shadow-sm 
                     text-white bg-primary hover:bg-primary/90 
                     focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary/50
@@ -324,9 +324,9 @@ export default function SaleForm({
                   `}
                 >
                   {isSubmitting ? (
-                    <Loader2 className="h-4 w-4 mr-1 animate-spin" />
+                    <Loader2 className="h-4 w-4 mr-1.5 animate-spin" />
                   ) : (
-                    <Plus className="h-3 w-3 sm:h-4 sm:w-4 mr-1" />
+                    <Plus className="h-4 w-4 mr-1.5" />
                   )}
                   <span>Add {type === "retail" ? "Retail" : "Hotel"} Sale</span>
                 </Button>
