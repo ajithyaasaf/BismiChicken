@@ -125,24 +125,34 @@ export default function SaleForm({
     }
   };
   
-  // Smooth animations for form elements
+  // Enhanced animations for form elements
   const formVariants = {
-    hidden: { opacity: 0 },
+    hidden: { opacity: 0, y: 15 },
     visible: { 
       opacity: 1,
+      y: 0,
       transition: { 
-        staggerChildren: 0.1,
-        delayChildren: 0.1
+        type: "spring",
+        stiffness: 200,
+        damping: 20,
+        staggerChildren: 0.07,
+        delayChildren: 0.05
       }
     }
   };
   
   const itemVariants = {
-    hidden: { opacity: 0, y: 10 },
+    hidden: { opacity: 0, y: 15, scale: 0.98 },
     visible: { 
       opacity: 1, 
       y: 0,
-      transition: { type: "spring", stiffness: 300, damping: 30 }
+      scale: 1,
+      transition: { 
+        type: "spring", 
+        stiffness: 400, 
+        damping: 25,
+        mass: 0.8
+      }
     }
   };
 
@@ -151,9 +161,9 @@ export default function SaleForm({
       <CardContent className={`p-3 sm:p-4 md:p-5 transition-all duration-200`}>
         <motion.h3 
           className="text-base sm:text-lg font-medium text-gray-900 mb-3 sm:mb-4"
-          initial={{ opacity: 0, y: -5 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.3 }}
+          initial={{ opacity: 0, y: -10, scale: 0.95 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          transition={{ type: "spring", stiffness: 400, damping: 20 }}
         >
           Add New {type === "retail" ? "Retail Sale" : "Hotel Sale"}
         </motion.h3>
@@ -167,9 +177,24 @@ export default function SaleForm({
                   ? "bg-red-50 text-red-700" 
                   : "bg-yellow-50 text-yellow-700"
               }`}
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: 'auto' }}
-              exit={{ opacity: 0, height: 0 }}
+              initial={{ opacity: 0, height: 0, scale: 0.95 }}
+              animate={{ 
+                opacity: 1, 
+                height: 'auto', 
+                scale: 1,
+                transition: { 
+                  duration: 0.3,
+                  type: "spring",
+                  stiffness: 500,
+                  damping: 25
+                }
+              }}
+              exit={{ 
+                opacity: 0, 
+                height: 0,
+                scale: 0.95,
+                transition: { duration: 0.2 }
+              }}
             >
               <AlertCircle className="h-4 w-4 mr-2 flex-shrink-0" />
               {remainingStock <= 0 
@@ -187,7 +212,6 @@ export default function SaleForm({
             variants={formVariants}
             initial="hidden"
             animate="visible"
-            transition={{ staggerChildren: 0.1 }}
           >
             {type === "hotel" && (
               <motion.div variants={itemVariants}>
@@ -275,27 +299,38 @@ export default function SaleForm({
               className="flex items-end"
               variants={itemVariants}
             >
-              <Button
-                type="submit"
-                disabled={isSubmitting || remainingStock <= 0}
-                className={`
-                  inline-flex items-center justify-center
-                  h-9 sm:h-10 px-3 sm:px-4 py-0 
-                  text-xs sm:text-sm font-medium 
-                  rounded-md shadow-sm 
-                  text-white bg-primary hover:bg-primary/90 
-                  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary/50
-                  transition-all duration-200
-                  w-full sm:w-auto
-                `}
+              <motion.div
+                whileTap={{ scale: 0.95 }}
+                whileHover={{ scale: 1.02 }}
+                transition={{ 
+                  type: "spring", 
+                  stiffness: 500, 
+                  damping: 15 
+                }}
+                className="w-full sm:w-auto"
               >
-                {isSubmitting ? (
-                  <Loader2 className="h-4 w-4 mr-1 animate-spin" />
-                ) : (
-                  <Plus className="h-3 w-3 sm:h-4 sm:w-4 mr-1" />
-                )}
-                <span>Add {type === "retail" ? "Retail" : "Hotel"} Sale</span>
-              </Button>
+                <Button
+                  type="submit"
+                  disabled={isSubmitting || remainingStock <= 0}
+                  className={`
+                    inline-flex items-center justify-center
+                    h-9 sm:h-10 px-3 sm:px-4 py-0 
+                    text-xs sm:text-sm font-medium 
+                    rounded-md shadow-sm 
+                    text-white bg-primary hover:bg-primary/90 
+                    focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary/50
+                    transition-all duration-200
+                    w-full
+                  `}
+                >
+                  {isSubmitting ? (
+                    <Loader2 className="h-4 w-4 mr-1 animate-spin" />
+                  ) : (
+                    <Plus className="h-3 w-3 sm:h-4 sm:w-4 mr-1" />
+                  )}
+                  <span>Add {type === "retail" ? "Retail" : "Hotel"} Sale</span>
+                </Button>
+              </motion.div>
             </motion.div>
           </motion.form>
         </Form>
