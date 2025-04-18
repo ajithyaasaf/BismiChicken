@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useEnhancedData } from "../context/EnhancedDataContext";
 import DatePicker from "../components/DatePicker";
 import SaleForm from "../components/SaleForm";
+import QuickHotelOrderForm from "../components/QuickHotelOrderForm";
 import TransactionTable from "../components/TransactionTable";
 import {
   Card,
@@ -19,9 +20,15 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger
+} from "@/components/ui/tabs";
 import { Skeleton } from "@/components/ui/skeleton";
 import SummaryCard from "../components/SummaryCard";
-import { Building2 } from "lucide-react";
+import { Building2, ReceiptIcon, ClipboardList } from "lucide-react";
 
 export default function HotelSales() {
   const {
@@ -29,12 +36,19 @@ export default function HotelSales() {
     setSelectedDate,
     dailySummary,
     loadingSummary,
+    hotels,
+    products,
+    productParts,
+    loadingHotels,
+    loadingProducts,
+    loadingProductParts,
     addHotelSale,
     deleteHotelSale,
   } = useEnhancedData();
 
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [deleteId, setDeleteId] = useState<number | null>(null);
+  const [activeTab, setActiveTab] = useState("quick-order");
 
   // Filter only hotel sale transactions
   const hotelTransactions = dailySummary?.transactions.filter(
@@ -84,15 +98,51 @@ export default function HotelSales() {
         />
       </div>
 
-      {/* Sales Entry Form */}
-      <div className="mb-6">
-        <SaleForm 
-          type="hotel"
-          date={selectedDate}
-          remainingStock={remainingStock}
-          onSubmit={handleAddHotelSale}
-        />
-      </div>
+      {/* Order Entry Forms */}
+      <Tabs 
+        defaultValue="quick-order" 
+        value={activeTab}
+        onValueChange={setActiveTab}
+        className="mb-6"
+      >
+        <TabsList className="grid w-full grid-cols-2 mb-4">
+          <TabsTrigger value="quick-order" className="flex items-center gap-2">
+            <ClipboardList className="h-4 w-4" />
+            <span>Quick Hotel Order</span>
+          </TabsTrigger>
+          <TabsTrigger value="manual-entry" className="flex items-center gap-2">
+            <ReceiptIcon className="h-4 w-4" />
+            <span>Manual Entry</span>
+          </TabsTrigger>
+        </TabsList>
+        
+        <TabsContent value="quick-order">
+          {loadingHotels || loadingProducts ? (
+            <div className="space-y-4">
+              <Skeleton className="h-12 w-full" />
+              <Skeleton className="h-32 w-full" />
+              <Skeleton className="h-32 w-full" />
+            </div>
+          ) : (
+            <QuickHotelOrderForm 
+              hotels={hotels}
+              products={products}
+              productParts={productParts}
+              date={selectedDate}
+              onSubmit={handleAddHotelSale}
+            />
+          )}
+        </TabsContent>
+        
+        <TabsContent value="manual-entry">
+          <SaleForm 
+            type="hotel"
+            date={selectedDate}
+            remainingStock={remainingStock}
+            onSubmit={handleAddHotelSale}
+          />
+        </TabsContent>
+      </Tabs>
 
       {/* Sales Transactions */}
       <Card className="bg-white rounded-lg shadow-sm mb-6">

@@ -138,6 +138,16 @@ export const hotels = pgTable("hotels", {
   contactPerson: text("contact_person"),
   notes: text("notes"),
   userId: integer("user_id").notNull(),
+  // Additional fields for enhanced hotel management
+  email: text("email"),
+  orderFrequency: text("order_frequency"), // daily, weekly, biweekly, monthly, etc.
+  preferredDeliveryTime: text("preferred_delivery_time"),
+  deliveryNotes: text("delivery_notes"),
+  paymentTerms: text("payment_terms"), // cash, credit, X days, etc.
+  creditLimit: numeric("credit_limit").default("0"),
+  preferredProducts: text("preferred_products"), // JSON string of product IDs and quantities
+  isActive: boolean("is_active").notNull().default(true),
+  lastOrderDate: date("last_order_date"),
 });
 
 export const insertHotelSchema = createInsertSchema(hotels).pick({
@@ -147,6 +157,15 @@ export const insertHotelSchema = createInsertSchema(hotels).pick({
   contactPerson: true,
   notes: true,
   userId: true,
+  email: true,
+  orderFrequency: true,
+  preferredDeliveryTime: true,
+  deliveryNotes: true,
+  paymentTerms: true,
+  creditLimit: true,
+  preferredProducts: true,
+  isActive: true,
+  lastOrderDate: true,
 });
 
 // Purchases
