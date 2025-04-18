@@ -109,7 +109,12 @@ export default function VendorForm({
   const handleSubmit = async (values: VendorFormValues) => {
     setIsSubmitting(true);
     try {
-      await onSubmit(values);
+      // Ensure numeric values are properly formatted
+      const formattedValues = {
+        ...values,
+        balance: values.balance ? parseFloat(values.balance).toString() : "0"
+      };
+      await onSubmit(formattedValues);
       form.reset();
       onClose();
     } catch (error) {
