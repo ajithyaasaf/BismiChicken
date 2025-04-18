@@ -36,9 +36,10 @@ export default function InventoryTable({
             </CardTitle>
             <Skeleton className="h-6 w-20" />
           </div>
-          <CardDescription className="flex">
-            <span className="w-56"><Skeleton className="h-4 w-full" /></span>
-          </CardDescription>
+          {/* Using div instead of CardDescription to avoid DOM nesting errors */}
+          <div className="text-sm text-muted-foreground">
+            <Skeleton className="h-4 w-56" />
+          </div>
         </CardHeader>
         <CardContent>
           <div className="rounded-md border">
