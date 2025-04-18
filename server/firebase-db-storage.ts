@@ -863,8 +863,24 @@ export class FirebaseDBStorage implements IStorage {
         notes: payment.notes || null // Ensure notes is not undefined
       };
       
+      // Record the payment
       const paymentRef = ref(database, `users/${payment.userId}/vendorPayments/${id}`);
       await set(paymentRef, newPayment);
+      
+      // Update vendor balance
+      const vendor = await this.getVendor(payment.vendorId);
+      if (vendor) {
+        // Parse current balance, subtract payment amount, and ensure it's properly formatted
+        const currentBalance = parseFloat(vendor.balance.toString());
+        const paymentAmount = parseFloat(payment.amount.toString());
+        const newBalance = (currentBalance - paymentAmount).toString();
+        
+        // Update vendor with new balance
+        await this.updateVendor(payment.vendorId, {
+          ...vendor,
+          balance: newBalance
+        });
+      }
       
       return newPayment;
     } catch (error) {
@@ -878,6 +894,22 @@ export class FirebaseDBStorage implements IStorage {
       const payment = await this.getVendorPaymentById(id);
       if (!payment) return false;
       
+      // Update vendor balance - add the payment amount back
+      const vendor = await this.getVendor(payment.vendorId);
+      if (vendor) {
+        // Parse current balance, add back payment amount, and ensure it's properly formatted
+        const currentBalance = parseFloat(vendor.balance.toString());
+        const paymentAmount = parseFloat(payment.amount.toString());
+        const newBalance = (currentBalance + paymentAmount).toString();
+        
+        // Update vendor with new balance
+        await this.updateVendor(payment.vendorId, {
+          ...vendor,
+          balance: newBalance
+        });
+      }
+      
+      // Delete the payment
       const paymentRef = ref(database, `users/${payment.userId}/vendorPayments/${id}`);
       await remove(paymentRef);
       

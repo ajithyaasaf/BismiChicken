@@ -183,10 +183,11 @@ export default function SaleForm({
         <Form {...form}>
           <motion.form 
             onSubmit={form.handleSubmit(handleSubmit)} 
-            className={`grid ${getGridLayout()}`}
+            className={`grid ${getGridLayout()} gap-4`}
             variants={formVariants}
             initial="hidden"
             animate="visible"
+            transition={{ staggerChildren: 0.1 }}
           >
             {type === "hotel" && (
               <motion.div variants={itemVariants}>
@@ -197,12 +198,12 @@ export default function SaleForm({
                     // @ts-ignore - The schema is conditional based on type
                     name="hotelName"
                     render={({ field }) => (
-                      <FormItem className="mb-3 sm:mb-4">
+                      <FormItem>
                         <FormLabel className="text-sm font-medium text-gray-700">Hotel Name</FormLabel>
                         <FormControl>
                           <Input 
                             placeholder="Enter hotel name" 
-                            className="h-9 sm:h-10 text-sm rounded-md"
+                            className="h-9 sm:h-10 text-sm rounded-md shadow-sm border-gray-300 focus:border-primary focus:ring-primary"
                             {...field} 
                           />
                         </FormControl>
@@ -219,7 +220,7 @@ export default function SaleForm({
                 control={form.control}
                 name="quantityKg"
                 render={({ field }) => (
-                  <FormItem className="mb-3 sm:mb-4">
+                  <FormItem>
                     <FormLabel className="text-sm font-medium text-gray-700 flex items-center justify-between">
                       <span>Quantity (kg)</span>
                       {remainingStock > 0 && (
@@ -235,7 +236,7 @@ export default function SaleForm({
                         min="0"
                         max={remainingStock}
                         placeholder="Enter quantity"
-                        className="h-9 sm:h-10 text-sm rounded-md"
+                        className="h-9 sm:h-10 text-sm rounded-md shadow-sm border-gray-300 focus:border-primary focus:ring-primary"
                         inputMode="decimal"
                         {...field}
                       />
@@ -251,7 +252,7 @@ export default function SaleForm({
                 control={form.control}
                 name="ratePerKg"
                 render={({ field }) => (
-                  <FormItem className="mb-3 sm:mb-4">
+                  <FormItem>
                     <FormLabel className="text-sm font-medium text-gray-700">Rate per kg (₹)</FormLabel>
                     <FormControl>
                       <Input
@@ -259,7 +260,7 @@ export default function SaleForm({
                         step="0.01"
                         min="0"
                         placeholder="Enter rate"
-                        className="h-9 sm:h-10 text-sm rounded-md"
+                        className="h-9 sm:h-10 text-sm rounded-md shadow-sm border-gray-300 focus:border-primary focus:ring-primary"
                         inputMode="decimal"
                         {...field}
                       />
