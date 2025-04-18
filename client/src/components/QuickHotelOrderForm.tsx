@@ -23,7 +23,19 @@ import {
   SelectTrigger, 
   SelectValue 
 } from "@/components/ui/select";
-import { Building2, Plus, ArrowRight, ShoppingCart, TrendingUp } from "lucide-react";
+import { 
+  Building2, 
+  Plus, 
+  ArrowRight, 
+  ShoppingCart, 
+  TrendingUp, 
+  UserIcon, 
+  PhoneIcon, 
+  MailIcon,
+  ClockIcon,
+  CalendarIcon,
+  Truck
+} from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import {
   Accordion,
@@ -342,23 +354,84 @@ export default function QuickHotelOrderForm({
             {/* Hotel Details Summary */}
             {selectedHotel && (
               <div className="bg-muted/50 p-3 rounded-md mb-2">
-                <h4 className="text-sm font-medium mb-2">Hotel Details</h4>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-2 text-sm">
-                  <div>
-                    <span className="font-medium">Contact:</span> {selectedHotel.contactPerson || 'Not specified'}
+                <h4 className="text-sm font-medium mb-2 flex items-center justify-between">
+                  <span className="flex items-center gap-1">
+                    <Building2 className="h-4 w-4 text-primary" />
+                    Hotel Details
+                  </span>
+                  {selectedHotel.paymentTerms && (
+                    <Badge 
+                      variant="outline" 
+                      className={`${selectedHotel.paymentTerms.includes("cash") ? "bg-green-50 text-green-700" : "bg-amber-50 text-amber-700"}`}
+                    >
+                      {selectedHotel.paymentTerms.includes("cash") ? "Cash on Delivery" : 
+                       selectedHotel.paymentTerms.includes("7days") ? "7 Days Credit" :
+                       selectedHotel.paymentTerms.includes("15days") ? "15 Days Credit" :
+                       selectedHotel.paymentTerms.includes("30days") ? "30 Days Credit" :
+                       selectedHotel.paymentTerms}
+                    </Badge>
+                  )}
+                </h4>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm mb-2">
+                  <div className="flex flex-col gap-1">
+                    <div className="flex items-center gap-1">
+                      <UserIcon className="h-3.5 w-3.5 text-gray-500" />
+                      <span className="font-medium">Contact:</span> {selectedHotel.contactPerson || 'Not specified'}
+                    </div>
+                    <div className="flex items-center gap-1">
+                      <PhoneIcon className="h-3.5 w-3.5 text-gray-500" />
+                      <span className="font-medium">Phone:</span> {selectedHotel.phone}
+                    </div>
+                    {selectedHotel.email && (
+                      <div className="flex items-center gap-1">
+                        <MailIcon className="h-3.5 w-3.5 text-gray-500" />
+                        <span className="font-medium">Email:</span> {selectedHotel.email}
+                      </div>
+                    )}
                   </div>
-                  <div>
-                    <span className="font-medium">Phone:</span> {selectedHotel.phone}
-                  </div>
-                  <div>
-                    <span className="font-medium">Delivery:</span> {selectedHotel.preferredDeliveryTime || 'Not specified'}
+                  
+                  <div className="flex flex-col gap-1">
+                    {selectedHotel.preferredDeliveryTime && (
+                      <div className="flex items-center gap-1">
+                        <ClockIcon className="h-3.5 w-3.5 text-gray-500" />
+                        <span className="font-medium">Delivery Time:</span> 
+                        {selectedHotel.preferredDeliveryTime === "morning" ? "Morning (6am-10am)" :
+                         selectedHotel.preferredDeliveryTime === "midday" ? "Midday (10am-2pm)" :
+                         selectedHotel.preferredDeliveryTime === "afternoon" ? "Afternoon (2pm-6pm)" :
+                         selectedHotel.preferredDeliveryTime === "evening" ? "Evening (6pm-10pm)" :
+                         selectedHotel.preferredDeliveryTime}
+                      </div>
+                    )}
+                    {selectedHotel.orderFrequency && (
+                      <div className="flex items-center gap-1">
+                        <CalendarIcon className="h-3.5 w-3.5 text-gray-500" />
+                        <span className="font-medium">Order Frequency:</span> 
+                        {selectedHotel.orderFrequency === "daily" ? "Daily" :
+                         selectedHotel.orderFrequency === "alternate_days" ? "Alternate Days" :
+                         selectedHotel.orderFrequency === "weekly" ? "Weekly" :
+                         selectedHotel.orderFrequency === "biweekly" ? "Bi-Weekly" :
+                         selectedHotel.orderFrequency === "monthly" ? "Monthly" :
+                         selectedHotel.orderFrequency === "on_demand" ? "On Demand" :
+                         selectedHotel.orderFrequency}
+                      </div>
+                    )}
+                    {selectedHotel.deliveryNotes && (
+                      <div className="flex items-center gap-1">
+                        <Truck className="h-3.5 w-3.5 text-gray-500" />
+                        <span className="font-medium">Notes:</span> {selectedHotel.deliveryNotes.slice(0, 40)}{selectedHotel.deliveryNotes.length > 40 ? '...' : ''}
+                      </div>
+                    )}
                   </div>
                 </div>
                 
                 {suggestedOrders.length > 0 && (
-                  <div className="mt-3">
+                  <div className="mt-3 pt-2 border-t border-gray-200">
                     <div className="flex items-center justify-between">
-                      <p className="text-sm font-medium">Regular Order Pattern</p>
+                      <p className="text-sm font-medium flex items-center">
+                        <TrendingUp className="h-3.5 w-3.5 mr-1 text-primary" />
+                        Regular Order Pattern
+                      </p>
                       <Button 
                         type="button" 
                         variant="outline" 
@@ -366,6 +439,7 @@ export default function QuickHotelOrderForm({
                         onClick={applySuggestedOrders}
                         className="h-7 text-xs"
                       >
+                        <ShoppingCart className="h-3.5 w-3.5 mr-1" />
                         Apply Regular Order
                       </Button>
                     </div>

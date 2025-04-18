@@ -485,10 +485,7 @@ export default function Hotels() {
           {selectedHotel && (
             <HotelForm 
               initialData={selectedHotel}
-              onSubmit={(data) => {
-                handleEditSubmit(data);
-                setEditDialogOpen(false);
-              }}
+              onSubmit={handleEditSubmit}
               isEdit={true}
             />
           )}
