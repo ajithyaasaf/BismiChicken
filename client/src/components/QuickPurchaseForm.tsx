@@ -130,14 +130,15 @@ export default function QuickPurchaseForm() {
     setIsSubmitting(true);
     
     try {
+      // Format data properly for backend validation
       const purchaseData = {
-        vendorId: parseInt(vendorId),
-        quantityKg: quantityKg, // Keep as string for the backend
-        ratePerKg: ratePerKg, // Keep as string for the backend
+        vendorId: vendorId, // Will be parsed to int on backend
+        productId: "1", // Default productId as string
+        quantityKg: quantityKg, // Already a string
+        ratePerKg: ratePerKg, // Already a string
         meatType,
         productCut,
         date: selectedDate.toISOString().split("T")[0],
-        productId: 1, // Default productId for now
         partId: null
       };
       

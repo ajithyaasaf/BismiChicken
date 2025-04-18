@@ -36,8 +36,8 @@ export default function InventoryTable({
             </CardTitle>
             <Skeleton className="h-6 w-20" />
           </div>
-          <CardDescription>
-            <Skeleton className="h-4 w-56" />
+          <CardDescription className="flex">
+            <span className="w-56"><Skeleton className="h-4 w-full" /></span>
           </CardDescription>
         </CardHeader>
         <CardContent>

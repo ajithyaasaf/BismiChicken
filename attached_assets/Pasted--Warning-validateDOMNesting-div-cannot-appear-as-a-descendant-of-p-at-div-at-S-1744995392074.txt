@@ -1,0 +1,37 @@
+ Warning: validateDOMNesting(...): <div> cannot appear as a descendant of <p>.
+    at div
+    at Skeleton (https://f40fee65-b4eb-465d-8222-ccb2be44209c-00-sa1rlabs9ron.pike.replit.dev/src/components/ui/skeleton.tsx:19:3)
+    at p
+    at _c7 (https://f40fee65-b4eb-465d-8222-ccb2be44209c-00-sa1rlabs9ron.pike.replit.dev/src/components/ui/card.tsx:92:12)
+    at div
+    at _c3 (https://f40fee65-b4eb-465d-8222-ccb2be44209c-00-sa1rlabs9ron.pike.replit.dev/src/components/ui/card.tsx:45:12)
+    at div
+    at _c (https://f40fee65-b4eb-465d-8222-ccb2be44209c-00-sa1rlabs9ron.pike.replit.dev/src/components/ui/card.tsx:20:11)
+    at InventoryTable (https://f40fee65-b4eb-465d-8222-ccb2be44209c-00-sa1rlabs9ron.pike.replit.dev/src/components/InventoryTable.tsx:30:3)
+    at div
+    at Dashboard (https://f40fee65-b4eb-465d-8222-ccb2be44209c-00-sa1rlabs9ron.pike.replit.dev/src/pages/Dashboard.tsx:80:7)
+    at PrivateRoute (https://f40fee65-b4eb-465d-8222-ccb2be44209c-00-sa1rlabs9ron.pike.replit.dev/src/App.tsx?v=67HL6_IYcM3nVGPWxJfDT:41:36)
+    at Route (https://f40fee65-b4eb-465d-8222-ccb2be44209c-00-sa1rlabs9ron.pike.replit.de…/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=acdb85b5:323:16)
+    at Switch (https://f40fee65-b4eb-465d-8222-ccb2be44209c-00-sa1rlabs9ron.pike.replit.de…/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=acdb85b5:379:17)
+    at Router
+    at div
+    at MotionComponent (https://f40fee65-b4eb-465d-8222-ccb2be44209c-00-sa1rlabs9ron.pike.replit.de…nner/workspace/node_modules/.vite/deps/framer-motion.js?v=acdb85b5:6562:40)
+    at main
+    at MotionComponent (https://f40fee65-b4eb-465d-8222-ccb2be44209c-00-sa1rlabs9ron.pike.replit.de…nner/workspace/node_modules/.vite/deps/framer-motion.js?v=acdb85b5:6562:40)
+    at div
+    at div
+    at Layout (https://f40fee65-b4eb-465d-8222-ccb2be44209c-00-sa1rlabs9ron.pike.replit.dev/src/components/Layout.tsx:26:34)
+    at EnhancedDataProvider (https://f40fee65-b4eb-465d-8222-ccb2be44209c-00-sa1rlabs9ron.pike.replit.dev/src/context/EnhancedDataContext.tsx:24:40)
+    at AuthProvider (https://f40fee65-b4eb-465d-8222-ccb2be44209c-00-sa1rlabs9ron.pike.replit.dev/src/context/AuthContext.tsx:23:32)
+    at AppWithProviders
+    at QueryClientProvider (https://f40fee65-b4eb-465d-8222-ccb2be44209c-00-sa1rlabs9ron.pike.replit.de…rkspace/node_modules/.vite/deps/@tanstack_react-query.js?v=acdb85b5:2805:3)
+    at App
+api/purchases:1 
+ Failed to load resource: the server responded with a status of 400 (Bad Request)
+ Error adding purchase: Error: 400: {"message":"Validation error","errors":"Validation error: Required at \"productId\"; Expected string, received number at \"quantityKg\"; Expected string, received number at \"ratePerKg\"; Expected string, received number at \"total\"; Expected string, received date at \"date\""}
+    at throwIfResNotOk (src/lib/queryClient.ts:5:11)
+    at async apiRequest (src/lib/queryClient.ts:24:3)
+ Error submitting purchase form: Error: 400: {"message":"Validation error","errors":"Validation error: Required at \"productId\"; Expected string, received number at \"quantityKg\"; Expected string, received number at \"ratePerKg\"; Expected string, received number at \"total\"; Expected string, received date at \"date\""}
+    at throwIfResNotOk (src/lib/queryClient.ts:5:11)
+    at async apiRequest (src/lib/queryClient.ts:24:3)
+﻿
