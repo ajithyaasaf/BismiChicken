@@ -223,11 +223,13 @@ export default function HotelBillForm({
                             No hotels found
                           </SelectItem>
                         ) : (
-                          hotels.map((hotel) => (
-                            <SelectItem key={hotel.id} value={hotel.id.toString()}>
-                              {hotel.name}
-                            </SelectItem>
-                          ))
+                          hotels
+                            .filter(hotel => hotel.isActive !== false) // Only show active hotels
+                            .map((hotel) => (
+                              <SelectItem key={hotel.id} value={hotel.id.toString()}>
+                                {hotel.name}
+                              </SelectItem>
+                            ))
                         )}
                       </SelectContent>
                     </Select>
