@@ -5,6 +5,7 @@ import SummaryCard from "../components/SummaryCard";
 import TransactionTable from "../components/TransactionTable";
 import InventoryTable from "../components/InventoryTable";
 import QuickPaymentWidget from "../components/QuickPaymentWidget";
+import QuickHotelPaymentWidget from "../components/QuickHotelPaymentWidget";
 import QuickPurchaseForm from "../components/QuickPurchaseForm";
 import QuickRetailSaleForm from "../components/QuickRetailSaleForm";
 import {
@@ -206,10 +207,11 @@ export default function Dashboard() {
           </CardHeader>
           <CardContent>
             <Tabs defaultValue="purchase" className="w-full">
-              <TabsList className="grid grid-cols-3 mb-4">
+              <TabsList className="grid grid-cols-4 mb-4">
                 <TabsTrigger value="purchase" className="text-xs">Purchase</TabsTrigger>
                 <TabsTrigger value="sale" className="text-xs">Retail Sale</TabsTrigger>
-                <TabsTrigger value="payment" className="text-xs">Payment</TabsTrigger>
+                <TabsTrigger value="vendor" className="text-xs">Vendor Pay</TabsTrigger>
+                <TabsTrigger value="hotel" className="text-xs">Hotel Pay</TabsTrigger>
               </TabsList>
               <TabsContent value="purchase" className="mt-0">
                 <QuickPurchaseForm />
@@ -217,8 +219,11 @@ export default function Dashboard() {
               <TabsContent value="sale" className="mt-0">
                 <QuickRetailSaleForm />
               </TabsContent>
-              <TabsContent value="payment" className="mt-0">
+              <TabsContent value="vendor" className="mt-0">
                 <QuickPaymentWidget />
+              </TabsContent>
+              <TabsContent value="hotel" className="mt-0">
+                <QuickHotelPaymentWidget />
               </TabsContent>
             </Tabs>
           </CardContent>
