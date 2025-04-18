@@ -168,7 +168,8 @@ export default function TransactionTable({
         <TableHeader>
           <TableRow className="bg-gray-50">
             <TableHead>Type</TableHead>
-            <TableHead>Details</TableHead>
+            <TableHead>Vendor</TableHead>
+            <TableHead>Product</TableHead>
             <TableHead>Quantity</TableHead>
             <TableHead>Rate</TableHead>
             <TableHead>Amount</TableHead>
@@ -179,7 +180,7 @@ export default function TransactionTable({
         <TableBody>
           {transactions.length === 0 ? (
             <TableRow>
-              <TableCell colSpan={onDelete ? 7 : 6} className="text-center py-8 text-gray-500">
+              <TableCell colSpan={onDelete ? 8 : 7} className="text-center py-8 text-gray-500">
                 No transactions found for this day
               </TableCell>
             </TableRow>
@@ -195,6 +196,11 @@ export default function TransactionTable({
                   {transaction.type === "purchase"
                     ? getVendorName(transaction.details)
                     : transaction.details}
+                </TableCell>
+                <TableCell>
+                  {transaction.meatType && transaction.productCut ? 
+                    `${transaction.meatType} ${transaction.productCut}` : 
+                    "-"}
                 </TableCell>
                 <TableCell>{transaction.quantityKg} kg</TableCell>
                 <TableCell>₹{transaction.ratePerKg}</TableCell>
