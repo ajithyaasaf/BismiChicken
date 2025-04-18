@@ -157,8 +157,8 @@ export default function SaleForm({
   };
 
   return (
-    <Card className="bg-white rounded-lg shadow-sm">
-      <CardContent className={`p-3 sm:p-4 md:p-5 transition-all duration-200`}>
+    <Card className="bg-white rounded-lg shadow-sm overflow-hidden">
+      <CardContent className={`p-4 sm:p-5 md:p-6 transition-all duration-200`}>
         <motion.h3 
           className="text-base sm:text-lg font-medium text-gray-900 mb-3 sm:mb-4"
           initial={{ opacity: 0, y: -10, scale: 0.95 }}
@@ -208,7 +208,7 @@ export default function SaleForm({
         <Form {...form}>
           <motion.form 
             onSubmit={form.handleSubmit(handleSubmit)} 
-            className={`grid ${getGridLayout()} gap-4`}
+            className={`grid ${getGridLayout()} gap-5`}
             variants={formVariants}
             initial="hidden"
             animate="visible"
@@ -227,7 +227,7 @@ export default function SaleForm({
                         <FormControl>
                           <Input 
                             placeholder="Enter hotel name" 
-                            className="h-9 sm:h-10 text-sm rounded-md shadow-sm border-gray-300 focus:border-primary focus:ring-primary"
+                            className="h-10 text-sm rounded-md shadow-sm border-gray-300 focus:border-primary focus:ring-primary"
                             {...field} 
                           />
                         </FormControl>
