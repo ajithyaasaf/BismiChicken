@@ -226,17 +226,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(400).json({ message: "Invalid product cut" });
       }
       
-      // Convert numeric values to strings for Zod validation
+      // Convert values to proper types for Zod validation
       const purchaseData = insertPurchaseSchema.parse({
         ...req.body,
+        productId: typeof req.body.productId === 'string' ? parseInt(req.body.productId) : req.body.productId,
         quantityKg: quantityKg.toString(),
         ratePerKg: ratePerKg.toString(),
         total: total.toString(),
-        date,
+        date: date.toISOString().split('T')[0], // Convert date to string in YYYY-MM-DD format
         userId,
         meatType,
-        productCut,
-        productId: req.body.productId ? req.body.productId.toString() : undefined
+        productCut
       });
       
       const purchase = await storage.createPurchase(purchaseData);
@@ -328,17 +328,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(400).json({ message: "Invalid product cut" });
       }
       
-      // Convert numeric values to strings for Zod validation
+      // Convert values to proper types for Zod validation
       const saleData = insertRetailSaleSchema.parse({
         ...req.body,
+        productId: typeof req.body.productId === 'string' ? parseInt(req.body.productId) : req.body.productId,
         quantityKg: quantityKg.toString(),
         ratePerKg: ratePerKg.toString(),
         total: total.toString(),
-        date,
+        date: date.toISOString().split('T')[0], // Convert date to string in YYYY-MM-DD format
         userId,
         meatType,
-        productCut,
-        productId: req.body.productId ? req.body.productId.toString() : undefined
+        productCut
       });
       
       const sale = await storage.createRetailSale(saleData);
@@ -430,18 +430,18 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(400).json({ message: "Invalid product cut" });
       }
       
-      // Convert numeric values to strings for Zod validation
+      // Convert values to proper types for Zod validation
       const saleData = insertHotelSaleSchema.parse({
         ...req.body,
+        productId: typeof req.body.productId === 'string' ? parseInt(req.body.productId) : req.body.productId,
+        hotelId: typeof req.body.hotelId === 'string' ? parseInt(req.body.hotelId) : req.body.hotelId,
         quantityKg: quantityKg.toString(),
         ratePerKg: ratePerKg.toString(),
         total: total.toString(),
-        date,
+        date: date.toISOString().split('T')[0], // Convert date to string in YYYY-MM-DD format
         userId,
         meatType,
-        productCut,
-        hotelId: req.body.hotelId ? req.body.hotelId.toString() : undefined,
-        productId: req.body.productId ? req.body.productId.toString() : undefined
+        productCut
       });
       
       const sale = await storage.createHotelSale(saleData);
@@ -560,12 +560,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(404).json({ message: "Vendor not found" });
       }
       
-      // Convert numeric values to strings for Zod validation
+      // Convert values to proper types for Zod validation
       const paymentData = insertVendorPaymentSchema.parse({
         ...req.body,
         userId,
-        vendorId: vendorId.toString(),
-        amount: req.body.amount.toString()
+        vendorId: vendorId,
+        amount: req.body.amount.toString(),
+        date: req.body.date // Already ensure date is in YYYY-MM-DD format
       });
       
       const payment = await storage.createVendorPayment(paymentData);
