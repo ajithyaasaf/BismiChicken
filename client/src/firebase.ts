@@ -11,7 +11,11 @@ import { getFirestore } from "firebase/firestore";
 
 // Check if Firebase env variables are available
 const apiKey = import.meta.env.VITE_FIREBASE_API_KEY;
+const authDomain = import.meta.env.VITE_FIREBASE_AUTH_DOMAIN;
+const databaseURL = import.meta.env.VITE_FIREBASE_DATABASE_URL;
 const projectId = import.meta.env.VITE_FIREBASE_PROJECT_ID;
+const storageBucket = import.meta.env.VITE_FIREBASE_STORAGE_BUCKET;
+const messagingSenderId = import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID;
 const appId = import.meta.env.VITE_FIREBASE_APP_ID;
 
 console.log('Firebase config check:');
@@ -19,14 +23,15 @@ console.log('API Key available:', !!apiKey);
 console.log('Project ID available:', !!projectId);
 console.log('App ID available:', !!appId);
 
-// Firebase configuration
+// Firebase configuration with fallbacks
 const firebaseConfig = {
-  apiKey: apiKey,
-  authDomain: `${projectId}.firebaseapp.com`,
-  projectId: projectId,
-  storageBucket: `${projectId}.appspot.com`,
-  messagingSenderId: "",
-  appId: appId,
+  apiKey: apiKey || "AIzaSyA3f4gJOKZDIjy9gnhSSpMVLs1UblGxo0s",
+  authDomain: authDomain || "bismi-broilers-3ca96.firebaseapp.com",
+  databaseURL: databaseURL || "https://bismi-broilers-3ca96-default-rtdb.firebaseio.com",
+  projectId: projectId || "bismi-broilers-3ca96",
+  storageBucket: storageBucket || "bismi-broilers-3ca96.firebasestorage.app",
+  messagingSenderId: messagingSenderId || "949430744092",
+  appId: appId || "1:949430744092:web:4ea5638a9d38ba3e76dbd9",
 };
 
 // Initialize Firebase
