@@ -637,7 +637,7 @@ export class RealtimeDBStorage implements IStorage {
       ...purchases.map(p => ({
         id: p.id,
         type: 'purchase' as const,
-        details: `Purchase from ${p.vendorId}`,
+        details: `Vendor ID: ${p.vendorId}`,
         quantityKg: parseFloat(p.quantityKg),
         ratePerKg: parseFloat(p.ratePerKg),
         total: parseFloat(p.total),
