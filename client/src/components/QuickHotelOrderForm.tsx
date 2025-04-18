@@ -137,8 +137,8 @@ export default function QuickHotelOrderForm({
                 extractedItems.push({
                   productId: matchedProduct.id.toString(),
                   quantityKg: quantity,
-                  // Use the product's average rate or a default
-                  ratePerKg: matchedProduct.defaultRate ? matchedProduct.defaultRate.toString() : "150",
+                  // Use a default rate since products don't have a defaultRate property
+                  ratePerKg: "150", // Default rate
                 });
               }
             }
