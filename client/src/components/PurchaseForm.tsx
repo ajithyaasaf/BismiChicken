@@ -127,6 +127,7 @@ export default function PurchaseForm({
       const paymentAmount = values.paymentAmount ? parseFloat(values.paymentAmount) : 0;
       const formattedData = {
         vendorId: parseInt(values.vendorId),
+        productId: 1, // Default product ID since it's required
         quantityKg: parseFloat(values.quantityKg),
         ratePerKg: parseFloat(values.ratePerKg),
         meatType: values.meatType,
