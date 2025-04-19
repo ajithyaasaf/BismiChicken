@@ -179,14 +179,14 @@ export default function Hotels() {
         </p>
       </div>
 
-      <div className="grid grid-cols-1 xl:grid-cols-4 gap-6 mb-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
         {/* Hotel Form */}
-        <div className="xl:col-span-1">
+        <div className="md:col-span-1">
           <HotelForm onSubmit={handleAddHotel} />
         </div>
 
         {/* Hotels List */}
-        <div className="xl:col-span-3">
+        <div className="md:col-span-1 lg:col-span-2">
           <Card>
             <CardHeader>
               <div className="flex justify-between items-center flex-wrap gap-2">
@@ -201,7 +201,7 @@ export default function Hotels() {
                 </div>
                 <Button 
                   variant="outline" 
-                  className="flex items-center gap-1 h-9 lg:hidden"
+                  className="flex items-center gap-1 h-9 md:hidden"
                   onClick={() => {
                     window.scrollTo({ top: 0, behavior: 'smooth' });
                   }}
