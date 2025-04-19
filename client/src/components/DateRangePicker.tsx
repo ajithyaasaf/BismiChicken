@@ -91,9 +91,9 @@ export default function DateRangePicker({
   };
 
   return (
-    <div className="flex items-center space-x-2">
+    <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2 w-full">
       <Select onValueChange={handlePresetSelect}>
-        <SelectTrigger className="h-9 w-[110px] border-dashed">
+        <SelectTrigger className="h-9 w-full sm:w-[110px] border-dashed">
           <SelectValue placeholder="Select" />
         </SelectTrigger>
         <SelectContent>
@@ -112,7 +112,7 @@ export default function DateRangePicker({
             id="date"
             variant={"outline"}
             className={cn(
-              "h-9 w-[230px] justify-start text-left font-normal border-dashed",
+              "h-9 w-full sm:w-[230px] justify-start text-left font-normal border-dashed",
               !date && "text-muted-foreground"
             )}
           >
@@ -120,14 +120,20 @@ export default function DateRangePicker({
             {date?.from ? (
               date.to ? (
                 <>
-                  {format(date.from, "LLL dd, y")} -{" "}
-                  {format(date.to, "LLL dd, y")}
+                  <span className="hidden xs:inline">{format(date.from, "LLL dd, y")}</span>
+                  <span className="inline xs:hidden">{format(date.from, "MM/dd")}</span>
+                  {" - "}
+                  <span className="hidden xs:inline">{format(date.to, "LLL dd, y")}</span>
+                  <span className="inline xs:hidden">{format(date.to, "MM/dd")}</span>
                 </>
               ) : (
-                format(date.from, "LLL dd, y")
+                <>
+                  <span className="hidden xs:inline">{format(date.from, "LLL dd, y")}</span>
+                  <span className="inline xs:hidden">{format(date.from, "MM/dd/yy")}</span>
+                </>
               )
             ) : (
-              <span>Pick a date range</span>
+              <span>Date range</span>
             )}
           </Button>
         </PopoverTrigger>
@@ -138,7 +144,7 @@ export default function DateRangePicker({
             defaultMonth={date?.from}
             selected={date}
             onSelect={handleDateRangeSelect}
-            numberOfMonths={2}
+            numberOfMonths={window.innerWidth < 768 ? 1 : 2}
           />
         </PopoverContent>
       </Popover>

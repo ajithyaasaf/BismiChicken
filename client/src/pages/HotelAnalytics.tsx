@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useEnhancedData } from "../context/EnhancedDataContext";
-import DateRangePicker from "../components/DateRangePicker";
+import { DateRange } from "react-day-picker";
 import {
   Card,
   CardContent,
@@ -37,10 +37,24 @@ import {
   Pie,
   Cell
 } from "recharts";
-import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Printer, Download, Building2, DollarSign, TrendingUp, AlertTriangle, BarChart3, PieChart as PieChartIcon } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Calendar } from "@/components/ui/calendar";
+import { Printer, Download, Building2, DollarSign, TrendingUp, AlertTriangle, BarChart3, PieChart as PieChartIcon, CalendarIcon } from "lucide-react";
 import { format, subDays, startOfMonth, endOfMonth, differenceInDays, formatDistanceToNow } from "date-fns";
+import { cn } from "@/lib/utils";
 
 // Define hotel analytics data types
 interface HotelAnalyticsSummary {
@@ -60,6 +74,139 @@ interface HotelSalesByHotel {
   salesCount: number;
   pendingAmount: number;
   lastOrderDate: Date;
+}
+
+// Custom DateRangePicker component
+function DateRangePicker({ 
+  startDate,
+  endDate,
+  onDateRangeChange 
+}: { 
+  startDate: Date; 
+  endDate: Date; 
+  onDateRangeChange: (start: Date, end: Date) => void;
+}) {
+  const [date, setDate] = useState<DateRange | undefined>({
+    from: startDate,
+    to: endDate,
+  });
+
+  // Update the internal state when props change
+  useEffect(() => {
+    setDate({
+      from: startDate,
+      to: endDate,
+    });
+  }, [startDate, endDate]);
+
+  // Handle date range change from calendar
+  const handleDateRangeSelect = (range: DateRange | undefined) => {
+    if (range?.from && range?.to) {
+      setDate(range);
+      onDateRangeChange(range.from, range.to);
+    }
+  };
+
+  // Handler for preset selections
+  const handlePresetSelect = (value: string) => {
+    const today = new Date();
+    let newStartDate: Date;
+    let newEndDate: Date = today;
+
+    switch (value) {
+      case "today":
+        newStartDate = today;
+        break;
+      case "yesterday":
+        newStartDate = subDays(today, 1);
+        newEndDate = subDays(today, 1);
+        break;
+      case "last7days":
+        newStartDate = subDays(today, 6);
+        break;
+      case "last30days":
+        newStartDate = subDays(today, 29);
+        break;
+      case "thisMonth":
+        newStartDate = startOfMonth(today);
+        newEndDate = today;
+        break;
+      case "lastMonth":
+        const lastMonth = subDays(startOfMonth(today), 1);
+        newStartDate = startOfMonth(lastMonth);
+        newEndDate = endOfMonth(lastMonth);
+        break;
+      default:
+        return;
+    }
+
+    setDate({
+      from: newStartDate,
+      to: newEndDate,
+    });
+    onDateRangeChange(newStartDate, newEndDate);
+  };
+
+  return (
+    <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2 w-full">
+      <Select onValueChange={handlePresetSelect}>
+        <SelectTrigger className="h-9 w-full sm:w-[110px] border-dashed">
+          <SelectValue placeholder="Select" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="today">Today</SelectItem>
+          <SelectItem value="yesterday">Yesterday</SelectItem>
+          <SelectItem value="last7days">Last 7 days</SelectItem>
+          <SelectItem value="last30days">Last 30 days</SelectItem>
+          <SelectItem value="thisMonth">This month</SelectItem>
+          <SelectItem value="lastMonth">Last month</SelectItem>
+        </SelectContent>
+      </Select>
+
+      <Popover>
+        <PopoverTrigger asChild>
+          <Button
+            id="date"
+            variant={"outline"}
+            className={cn(
+              "h-9 w-full sm:w-[230px] justify-start text-left font-normal border-dashed",
+              !date && "text-muted-foreground"
+            )}
+          >
+            <CalendarIcon className="mr-2 h-4 w-4" />
+            {date?.from ? (
+              date.to ? (
+                <>
+                  <span className="hidden xs:inline">{format(date.from, "LLL dd, y")}</span>
+                  <span className="inline xs:hidden">{format(date.from, "MM/dd")}</span>
+                  {" - "}
+                  <span className="hidden xs:inline">{format(date.to, "LLL dd, y")}</span>
+                  <span className="inline xs:hidden">{format(date.to, "MM/dd")}</span>
+                </>
+              ) : (
+                <>
+                  <span className="hidden xs:inline">{format(date.from, "LLL dd, y")}</span>
+                  <span className="inline xs:hidden">{format(date.from, "MM/dd/yy")}</span>
+                </>
+              )
+            ) : (
+              <span>Date range</span>
+            )}
+          </Button>
+        </PopoverTrigger>
+        <PopoverContent className="w-auto p-0" align="end">
+          <Calendar
+            initialFocus
+            mode="range"
+            defaultMonth={date?.from}
+            selected={date}
+            onSelect={handleDateRangeSelect}
+            numberOfMonths={window.innerWidth < 768 ? 1 : 2}
+          />
+        </PopoverContent>
+      </Popover>
+    </div>
+  );
 }
 
 export default function HotelAnalytics() {
@@ -232,19 +379,21 @@ export default function HotelAnalytics() {
   return (
     <>
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
-        <div>
+        <div className="w-full md:w-auto">
           <h2 className="text-2xl font-semibold text-gray-900">Hotel Analytics</h2>
           <p className="text-gray-500 mt-1">
             Track and analyze hotel sales, payments, and performance metrics
           </p>
         </div>
-        <div className="flex flex-col sm:flex-row gap-2">
-          <DateRangePicker 
-            startDate={startDate} 
-            endDate={endDate} 
-            onDateRangeChange={handleDateRangeChange} 
-          />
-          <div className="flex gap-2">
+        <div className="flex flex-col gap-2 w-full md:w-auto">
+          <div className="w-full">
+            <DateRangePicker 
+              startDate={startDate} 
+              endDate={endDate} 
+              onDateRangeChange={handleDateRangeChange} 
+            />
+          </div>
+          <div className="flex gap-2 justify-end">
             <Button variant="outline" size="sm" className="flex items-center gap-1">
               <Printer className="h-4 w-4" />
               <span className="hidden sm:inline">Print</span>
@@ -410,7 +559,7 @@ export default function HotelAnalytics() {
                   <Skeleton className="h-10 w-full" />
                 </div>
               ) : (
-                <>
+                <div>
                   {/* Hotel Performance Chart */}
                   <div className="mb-6">
                     <ResponsiveContainer width="100%" height={300}>
@@ -434,8 +583,8 @@ export default function HotelAnalytics() {
                     </ResponsiveContainer>
                   </div>
                 
-                  {/* Hotel Performance Table */}
-                  <div className="rounded-md border">
+                  {/* Hotel Performance Table - Desktop version */}
+                  <div className="rounded-md border hidden md:block">
                     <Table>
                       <TableHeader>
                         <TableRow>
@@ -471,7 +620,46 @@ export default function HotelAnalytics() {
                       </TableBody>
                     </Table>
                   </div>
-                </>
+                  
+                  {/* Hotel Performance Cards - Mobile version */}
+                  <div className="space-y-4 md:hidden">
+                    {analyticsData.hotelBreakdown.map((hotel: any) => (
+                      <Card key={hotel.hotelId} className="overflow-hidden">
+                        <CardHeader className="p-4 pb-2 flex flex-row justify-between items-center">
+                          <CardTitle className="text-base">{hotel.hotelName}</CardTitle>
+                          <Badge variant={hotel.pendingAmount > 0 ? "outline" : "secondary"} className={hotel.pendingAmount > 0 ? "bg-amber-50 text-amber-700" : ""}>
+                            {hotel.pendingAmount > 0 ? "Pending" : "Paid"}
+                          </Badge>
+                        </CardHeader>
+                        <CardContent className="p-4 pt-0">
+                          <div className="grid grid-cols-2 gap-2 text-sm">
+                            <div>
+                              <span className="text-gray-500">Orders:</span>
+                              <p className="font-medium">{hotel.salesCount}</p>
+                            </div>
+                            <div>
+                              <span className="text-gray-500">Quantity:</span>
+                              <p className="font-medium">{hotel.totalQuantity.toFixed(1)} kg</p>
+                            </div>
+                            <div>
+                              <span className="text-gray-500">Sales:</span>
+                              <p className="font-medium">{formatCurrency(hotel.totalSales)}</p>
+                            </div>
+                            <div>
+                              <span className="text-gray-500">Pending:</span>
+                              <p className={hotel.pendingAmount > 0 ? "font-medium text-amber-600" : "font-medium text-green-600"}>
+                                {hotel.pendingAmount > 0 ? formatCurrency(hotel.pendingAmount) : "Paid"}
+                              </p>
+                            </div>
+                          </div>
+                          <div className="mt-2 text-xs text-gray-500">
+                            Last order: {formatDistanceToNow(new Date(hotel.lastOrderDate), { addSuffix: true })}
+                          </div>
+                        </CardContent>
+                      </Card>
+                    ))}
+                  </div>
+                </div>
               )}
             </CardContent>
           </Card>
@@ -525,29 +713,62 @@ export default function HotelAnalytics() {
                     <Skeleton className="h-10 w-full" />
                   </div>
                 ) : (
-                  <div className="rounded-md border">
-                    <Table>
-                      <TableHeader>
-                        <TableRow>
-                          <TableHead>Product</TableHead>
-                          <TableHead className="text-right">Quantity (kg)</TableHead>
-                          <TableHead className="text-right">Amount</TableHead>
-                          <TableHead className="text-right">Avg Rate/kg</TableHead>
-                        </TableRow>
-                      </TableHeader>
-                      <TableBody>
-                        {analyticsData.productBreakdown.map((product: any, index: number) => (
-                          <TableRow key={index}>
-                            <TableCell className="font-medium capitalize">{product.name}</TableCell>
-                            <TableCell className="text-right">{product.quantity.toFixed(1)}</TableCell>
-                            <TableCell className="text-right">{formatCurrency(product.amount)}</TableCell>
-                            <TableCell className="text-right">
-                              {formatCurrency(product.amount / product.quantity)}
-                            </TableCell>
+                  <div>
+                    {/* Product Breakdown Table - Desktop */}
+                    <div className="rounded-md border hidden md:block">
+                      <Table>
+                        <TableHeader>
+                          <TableRow>
+                            <TableHead>Product</TableHead>
+                            <TableHead className="text-right">Quantity (kg)</TableHead>
+                            <TableHead className="text-right">Amount</TableHead>
+                            <TableHead className="text-right">Avg Rate/kg</TableHead>
                           </TableRow>
-                        ))}
-                      </TableBody>
-                    </Table>
+                        </TableHeader>
+                        <TableBody>
+                          {analyticsData.productBreakdown.map((product: any, index: number) => (
+                            <TableRow key={index}>
+                              <TableCell className="font-medium capitalize">{product.name}</TableCell>
+                              <TableCell className="text-right">{product.quantity.toFixed(1)}</TableCell>
+                              <TableCell className="text-right">{formatCurrency(product.amount)}</TableCell>
+                              <TableCell className="text-right">
+                                {formatCurrency(product.amount / product.quantity)}
+                              </TableCell>
+                            </TableRow>
+                          ))}
+                        </TableBody>
+                      </Table>
+                    </div>
+                    
+                    {/* Product Breakdown Cards - Mobile */}
+                    <div className="space-y-3 md:hidden">
+                      {analyticsData.productBreakdown.map((product: any, index: number) => (
+                        <Card key={index} className="overflow-hidden">
+                          <CardHeader className="p-3 pb-1 flex flex-row justify-between items-center">
+                            <CardTitle className="text-base capitalize">{product.name}</CardTitle>
+                            <div className="px-2 py-1 bg-primary/10 text-primary text-xs rounded-md font-medium">
+                              {(product.quantity / analyticsData.summary.totalQuantity * 100).toFixed(0)}%
+                            </div>
+                          </CardHeader>
+                          <CardContent className="p-3">
+                            <div className="grid grid-cols-3 gap-2 text-sm">
+                              <div>
+                                <span className="text-gray-500 text-xs">Quantity</span>
+                                <p className="font-medium">{product.quantity.toFixed(1)} kg</p>
+                              </div>
+                              <div>
+                                <span className="text-gray-500 text-xs">Amount</span>
+                                <p className="font-medium">{formatCurrency(product.amount)}</p>
+                              </div>
+                              <div>
+                                <span className="text-gray-500 text-xs">Rate/kg</span>
+                                <p className="font-medium">{formatCurrency(product.amount / product.quantity)}</p>
+                              </div>
+                            </div>
+                          </CardContent>
+                        </Card>
+                      ))}
+                    </div>
                   </div>
                 )}
               </CardContent>
