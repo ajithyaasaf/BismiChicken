@@ -38,13 +38,13 @@ function NavItem({ href, icon, label, active }: NavItemProps) {
     <Link href={href}>
       <motion.div 
         className={cn(
-          "group flex items-center px-3 py-2 text-base font-medium rounded-md cursor-pointer",
+          "group flex items-center px-4 py-2.5 text-sm font-medium rounded-lg cursor-pointer transition-all",
           active 
-            ? "bg-primary text-white"
-            : "text-gray-700 hover:bg-gray-100"
+            ? "bg-primary/10 text-primary border-l-2 border-primary"
+            : "text-slate-700 hover:bg-slate-100 hover:text-primary"
         )}
         whileHover={{ 
-          scale: 1.02,
+          scale: 1.01,
           transition: { duration: 0.2 }
         }}
         whileTap={{ scale: 0.98 }}
@@ -55,13 +55,15 @@ function NavItem({ href, icon, label, active }: NavItemProps) {
         }}
       >
         <motion.div 
-          className="mr-3"
+          className={cn("mr-3 flex items-center justify-center", 
+            active ? "text-primary" : "text-slate-500 group-hover:text-primary"
+          )}
           initial={{ opacity: 0.8 }}
           animate={{ opacity: 1 }}
         >
           {icon}
         </motion.div>
-        {label}
+        <span className="font-medium">{label}</span>
       </motion.div>
     </Link>
   );
@@ -77,13 +79,13 @@ function NavGroup({ icon, label, children, isOpen, onToggle, isActive }: NavGrou
       <CollapsibleTrigger asChild>
         <motion.div 
           className={cn(
-            "group flex items-center justify-between px-3 py-2 text-base font-medium rounded-md cursor-pointer",
+            "group flex items-center justify-between px-4 py-2.5 text-sm font-medium rounded-lg cursor-pointer transition-all",
             isActive 
-              ? "bg-primary text-white"
-              : "text-gray-700 hover:bg-gray-100"
+              ? "bg-primary/10 text-primary border-l-2 border-primary"
+              : "text-slate-700 hover:bg-slate-100 hover:text-primary"
           )}
           whileHover={{ 
-            scale: 1.02,
+            scale: 1.01,
             transition: { duration: 0.2 }
           }}
           whileTap={{ scale: 0.98 }}
@@ -95,24 +97,27 @@ function NavGroup({ icon, label, children, isOpen, onToggle, isActive }: NavGrou
         >
           <div className="flex items-center">
             <motion.div 
-              className="mr-3"
+              className={cn("mr-3 flex items-center justify-center", 
+                isActive ? "text-primary" : "text-slate-500 group-hover:text-primary"
+              )}
               initial={{ opacity: 0.8 }}
               animate={{ opacity: 1 }}
             >
               {icon}
             </motion.div>
-            {label}
+            <span className="font-medium">{label}</span>
           </div>
           <ChevronRight 
             className={cn(
               "h-4 w-4 transition-transform duration-200",
+              isActive ? "text-primary" : "text-slate-500 group-hover:text-primary",
               isOpen ? "transform rotate-90" : ""
             )}
           />
         </motion.div>
       </CollapsibleTrigger>
       <CollapsibleContent>
-        <div className="pl-8 space-y-1 mt-1">
+        <div className="pl-6 space-y-1 mt-1 border-l border-slate-200 ml-4">
           {children}
         </div>
       </CollapsibleContent>

@@ -65,7 +65,7 @@ export default function Layout({ children }: LayoutProps) {
   };
 
   return (
-    <div className="flex flex-col h-screen bg-gray-50 text-gray-900 font-['Roboto'] overflow-hidden">
+    <div className="flex flex-col h-screen bg-slate-50 text-slate-900 font-['Inter'] overflow-hidden">
       <Header onMobileMenuToggle={toggleMobileMenu} />
       
       <div className="flex flex-1 overflow-hidden">
@@ -75,15 +75,15 @@ export default function Layout({ children }: LayoutProps) {
         </AnimatePresence>
         
         <motion.main 
-          className={`flex-1 overflow-y-auto bg-gray-50 ${getMainPadding()} transition-all duration-200`}
+          className={`flex-1 overflow-y-auto bg-gradient-to-br from-slate-50 to-slate-100 ${getMainPadding()} transition-all duration-200`}
           initial={{ opacity: 0.9 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.3 }}
           style={{
             // Add safe area padding for iOS devices
             paddingBottom: isMobile ? `calc(5rem + ${safeAreaInsets.bottom})` : undefined,
-            paddingLeft: isTablet ? "1rem" : undefined,
-            paddingRight: isTablet ? "1rem" : undefined,
+            paddingLeft: isTablet ? "1.5rem" : undefined,
+            paddingRight: isTablet ? "1.5rem" : undefined,
           }}
         >
           <motion.div
@@ -91,7 +91,7 @@ export default function Layout({ children }: LayoutProps) {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ 
-              duration: 0.4,
+              duration: 0.5,
               type: "spring", 
               stiffness: 100, 
               damping: 15 
