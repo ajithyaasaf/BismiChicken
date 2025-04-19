@@ -249,118 +249,126 @@ export default function Hotels() {
                       </TableHeader>
                       <TableBody>
                         {hotels.map((hotel) => (
-                          <TableRow key={hotel.id}>
+                          <TableRow key={hotel.id} className="hover:bg-slate-50 transition-colors">
                             <TableCell className="font-medium">
                               <div className="flex items-center">
-                                <Building2Icon className="h-4 w-4 mr-2 text-gray-400" />
-                                <span>{hotel.name}</span>
-                                {hotel.isActive === false && (
-                                  <UIBadge variant="outline" className="ml-2 bg-gray-100 text-gray-500">
-                                    Inactive
-                                  </UIBadge>
+                                <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center mr-3 text-primary">
+                                  <Building2Icon className="h-4 w-4" />
+                                </div>
+                                <div>
+                                  <span className="text-slate-800 font-medium">{hotel.name}</span>
+                                  {hotel.isActive === false && (
+                                    <UIBadge variant="outline" className="ml-2 bg-slate-100 text-slate-500 border-slate-200">
+                                      Inactive
+                                    </UIBadge>
+                                  )}
+                                  {hotel.address && (
+                                    <div className="text-xs text-slate-500 mt-1 flex items-center">
+                                      <MapPinIcon className="h-3 w-3 mr-1 text-slate-400" />
+                                      {hotel.address}
+                                    </div>
+                                  )}
+                                </div>
+                              </div>
+                            </TableCell>
+                            <TableCell>
+                              <div className="flex flex-col space-y-1.5">
+                                <div className="flex items-center text-slate-700">
+                                  <PhoneIcon className="h-4 w-4 mr-2 text-slate-400" />
+                                  {hotel.phone}
+                                </div>
+                                {hotel.contactPerson && (
+                                  <div className="text-xs text-slate-500 flex items-center">
+                                    <UserIcon className="h-3 w-3 mr-2 text-slate-400" />
+                                    {hotel.contactPerson}
+                                  </div>
+                                )}
+                                {hotel.email && (
+                                  <div className="text-xs text-slate-500 flex items-center">
+                                    <MailIcon className="h-3 w-3 mr-2 text-slate-400" />
+                                    {hotel.email}
+                                  </div>
                                 )}
                               </div>
-                              {hotel.address && (
-                                <div className="text-xs text-gray-500 mt-1 flex items-center">
-                                  <MapPinIcon className="h-3 w-3 mr-1" />
-                                  {hotel.address}
-                                </div>
-                              )}
                             </TableCell>
                             <TableCell>
-                              <div className="flex items-center">
-                                <PhoneIcon className="h-4 w-4 mr-1 text-gray-400" />
-                                {hotel.phone}
-                              </div>
-                              {hotel.contactPerson && (
-                                <div className="text-xs text-gray-500 mt-1 flex items-center">
-                                  <UserIcon className="h-3 w-3 mr-1" />
-                                  {hotel.contactPerson}
-                                </div>
-                              )}
-                              {hotel.email && (
-                                <div className="text-xs text-gray-500 mt-1 flex items-center">
-                                  <MailIcon className="h-3 w-3 mr-1" />
-                                  {hotel.email}
-                                </div>
-                              )}
-                            </TableCell>
-                            <TableCell>
-                              <div className="space-y-1 text-sm">
+                              <div className="space-y-2 text-sm">
                                 {hotel.orderFrequency && (
-                                  <div className="flex items-center text-xs">
-                                    <CalendarIcon className="h-3 w-3 mr-1 text-primary/60" />
-                                    <span>{getOrderFrequencyText(hotel.orderFrequency)}</span>
+                                  <div className="flex items-center text-xs bg-slate-50 px-2 py-1 rounded-md">
+                                    <CalendarIcon className="h-3 w-3 mr-1.5 text-primary" />
+                                    <span className="text-slate-700">{getOrderFrequencyText(hotel.orderFrequency)}</span>
                                   </div>
                                 )}
                                 {hotel.preferredDeliveryTime && (
-                                  <div className="flex items-center text-xs">
-                                    <ClockIcon className="h-3 w-3 mr-1 text-primary/60" />
-                                    <span>{getDeliveryTimeText(hotel.preferredDeliveryTime)}</span>
+                                  <div className="flex items-center text-xs bg-slate-50 px-2 py-1 rounded-md">
+                                    <ClockIcon className="h-3 w-3 mr-1.5 text-primary" />
+                                    <span className="text-slate-700">{getDeliveryTimeText(hotel.preferredDeliveryTime)}</span>
                                   </div>
                                 )}
                                 {hotel.paymentTerms && (
-                                  <div className="flex items-center text-xs">
-                                    <CreditCardIcon className="h-3 w-3 mr-1 text-primary/60" />
-                                    <span>{getPaymentTermsText(hotel.paymentTerms)}</span>
+                                  <div className="flex items-center text-xs bg-slate-50 px-2 py-1 rounded-md">
+                                    <CreditCardIcon className="h-3 w-3 mr-1.5 text-primary" />
+                                    <span className="text-slate-700">{getPaymentTermsText(hotel.paymentTerms)}</span>
                                   </div>
                                 )}
                               </div>
                             </TableCell>
-                            <TableCell className="text-right space-x-1">
-                              <TooltipProvider>
-                                <Tooltip>
-                                  <TooltipTrigger asChild>
-                                    <Button 
-                                      variant="ghost" 
-                                      size="icon" 
-                                      className="h-8 w-8"
-                                      onClick={() => handleViewDetails(hotel)}
-                                    >
-                                      <InfoIcon className="h-4 w-4" />
-                                    </Button>
-                                  </TooltipTrigger>
-                                  <TooltipContent>
-                                    <p>View Details</p>
-                                  </TooltipContent>
-                                </Tooltip>
-                              </TooltipProvider>
-                              
-                              <TooltipProvider>
-                                <Tooltip>
-                                  <TooltipTrigger asChild>
-                                    <Button 
-                                      variant="ghost" 
-                                      size="icon" 
-                                      className="h-8 w-8"
-                                      onClick={() => handleEditClick(hotel)}
-                                    >
-                                      <PencilIcon className="h-4 w-4" />
-                                    </Button>
-                                  </TooltipTrigger>
-                                  <TooltipContent>
-                                    <p>Edit Hotel</p>
-                                  </TooltipContent>
-                                </Tooltip>
-                              </TooltipProvider>
-                              
-                              <TooltipProvider>
-                                <Tooltip>
-                                  <TooltipTrigger asChild>
-                                    <Button 
-                                      variant="ghost" 
-                                      size="icon" 
-                                      className="h-8 w-8 text-red-500"
-                                      onClick={() => handleDeleteClick(hotel.id)}
-                                    >
-                                      <TrashIcon className="h-4 w-4" />
-                                    </Button>
-                                  </TooltipTrigger>
-                                  <TooltipContent>
-                                    <p>Delete Hotel</p>
-                                  </TooltipContent>
-                                </Tooltip>
-                              </TooltipProvider>
+                            <TableCell className="text-right">
+                              <div className="flex items-center justify-end space-x-1">
+                                <TooltipProvider>
+                                  <Tooltip>
+                                    <TooltipTrigger asChild>
+                                      <Button 
+                                        variant="outline" 
+                                        size="sm"
+                                        className="h-8 w-8 p-0 rounded-full border-slate-200 hover:border-primary/30 hover:bg-primary/5 text-slate-600"
+                                        onClick={() => handleViewDetails(hotel)}
+                                      >
+                                        <InfoIcon className="h-3.5 w-3.5" />
+                                      </Button>
+                                    </TooltipTrigger>
+                                    <TooltipContent className="bg-slate-800 text-white">
+                                      <p className="text-xs">View Details</p>
+                                    </TooltipContent>
+                                  </Tooltip>
+                                </TooltipProvider>
+                                
+                                <TooltipProvider>
+                                  <Tooltip>
+                                    <TooltipTrigger asChild>
+                                      <Button 
+                                        variant="outline" 
+                                        size="sm"
+                                        className="h-8 w-8 p-0 rounded-full border-slate-200 hover:border-primary/30 hover:bg-primary/5 text-slate-600"
+                                        onClick={() => handleEditClick(hotel)}
+                                      >
+                                        <PencilIcon className="h-3.5 w-3.5" />
+                                      </Button>
+                                    </TooltipTrigger>
+                                    <TooltipContent className="bg-slate-800 text-white">
+                                      <p className="text-xs">Edit Hotel</p>
+                                    </TooltipContent>
+                                  </Tooltip>
+                                </TooltipProvider>
+                                
+                                <TooltipProvider>
+                                  <Tooltip>
+                                    <TooltipTrigger asChild>
+                                      <Button 
+                                        variant="outline" 
+                                        size="sm"
+                                        className="h-8 w-8 p-0 rounded-full border-slate-200 hover:border-red-200 hover:bg-red-50 text-slate-600 hover:text-red-500"
+                                        onClick={() => handleDeleteClick(hotel.id)}
+                                      >
+                                        <TrashIcon className="h-3.5 w-3.5" />
+                                      </Button>
+                                    </TooltipTrigger>
+                                    <TooltipContent className="bg-slate-800 text-white">
+                                      <p className="text-xs">Delete Hotel</p>
+                                    </TooltipContent>
+                                  </Tooltip>
+                                </TooltipProvider>
+                              </div>
                             </TableCell>
                           </TableRow>
                         ))}
@@ -371,88 +379,96 @@ export default function Hotels() {
                   {/* Mobile View - Cards */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 md:hidden gap-4">
                     {hotels.map((hotel) => (
-                      <Card key={hotel.id} className="overflow-hidden">
+                      <Card key={hotel.id} className="overflow-hidden border border-slate-200 shadow-sm hover:shadow transition-all">
                         <CardHeader className="p-4 pb-2">
                           <div className="flex justify-between items-start">
                             <CardTitle className="text-base flex items-center">
-                              <Building2Icon className="h-4 w-4 mr-2 text-gray-400" />
-                              {hotel.name}
+                              <div className="h-7 w-7 rounded-full bg-primary/10 flex items-center justify-center mr-2 text-primary">
+                                <Building2Icon className="h-3.5 w-3.5" />
+                              </div>
+                              <span className="text-slate-800">{hotel.name}</span>
                             </CardTitle>
                             {hotel.isActive === false && (
-                              <UIBadge variant="outline" className="bg-gray-100 text-gray-500">
+                              <UIBadge variant="outline" className="bg-slate-100 text-slate-500 border-slate-200">
                                 Inactive
                               </UIBadge>
                             )}
                           </div>
                           {hotel.address && (
-                            <div className="text-xs text-gray-500 mt-1 flex items-center">
-                              <MapPinIcon className="h-3 w-3 mr-1" />
+                            <div className="text-xs text-slate-500 mt-1 flex items-center ml-9">
+                              <MapPinIcon className="h-3 w-3 mr-1 text-slate-400" />
                               {hotel.address}
                             </div>
                           )}
                         </CardHeader>
                         <CardContent className="p-4 pt-0">
                           <div className="grid grid-cols-1 gap-3">
-                            <div>
-                              <div className="flex items-center">
-                                <PhoneIcon className="h-4 w-4 mr-1 text-gray-400" />
+                            <div className="mt-2">
+                              <div className="flex items-center text-slate-700">
+                                <PhoneIcon className="h-4 w-4 mr-2 text-slate-400" />
                                 {hotel.phone}
                               </div>
                               {hotel.contactPerson && (
-                                <div className="text-xs text-gray-500 mt-1 flex items-center">
-                                  <UserIcon className="h-3 w-3 mr-1" />
+                                <div className="text-xs text-slate-500 mt-1.5 flex items-center ml-0.5">
+                                  <UserIcon className="h-3 w-3 mr-1.5 text-slate-400" />
                                   {hotel.contactPerson}
                                 </div>
                               )}
+                              {hotel.email && (
+                                <div className="text-xs text-slate-500 mt-1.5 flex items-center ml-0.5">
+                                  <MailIcon className="h-3 w-3 mr-1.5 text-slate-400" />
+                                  {hotel.email}
+                                </div>
+                              )}
                             </div>
                             
-                            <div className="space-y-1 text-xs border-t pt-2">
+                            <div className="space-y-2 text-xs border-t border-slate-100 pt-3 mt-1">
                               {hotel.orderFrequency && (
-                                <div className="flex items-center">
-                                  <CalendarIcon className="h-3 w-3 mr-1 text-primary/60" />
-                                  <span>{getOrderFrequencyText(hotel.orderFrequency)}</span>
+                                <div className="inline-flex items-center text-xs bg-slate-50 px-2 py-1 rounded-md mr-1.5">
+                                  <CalendarIcon className="h-3 w-3 mr-1.5 text-primary" />
+                                  <span className="text-slate-700">{getOrderFrequencyText(hotel.orderFrequency)}</span>
                                 </div>
                               )}
                               {hotel.preferredDeliveryTime && (
-                                <div className="flex items-center">
-                                  <ClockIcon className="h-3 w-3 mr-1 text-primary/60" />
-                                  <span>{getDeliveryTimeText(hotel.preferredDeliveryTime)}</span>
+                                <div className="inline-flex items-center text-xs bg-slate-50 px-2 py-1 rounded-md mr-1.5">
+                                  <ClockIcon className="h-3 w-3 mr-1.5 text-primary" />
+                                  <span className="text-slate-700">{getDeliveryTimeText(hotel.preferredDeliveryTime)}</span>
                                 </div>
                               )}
                               {hotel.paymentTerms && (
-                                <div className="flex items-center">
-                                  <CreditCardIcon className="h-3 w-3 mr-1 text-primary/60" />
-                                  <span>{getPaymentTermsText(hotel.paymentTerms)}</span>
+                                <div className="inline-flex items-center text-xs bg-slate-50 px-2 py-1 rounded-md">
+                                  <CreditCardIcon className="h-3 w-3 mr-1.5 text-primary" />
+                                  <span className="text-slate-700">{getPaymentTermsText(hotel.paymentTerms)}</span>
                                 </div>
                               )}
                             </div>
                             
-                            <div className="flex justify-end space-x-1 border-t pt-2">
+                            <div className="flex justify-end space-x-1 border-t border-slate-100 pt-3 mt-1">
                               <Button
-                                variant="ghost"
+                                variant="outline"
                                 size="sm"
-                                className="h-8"
+                                className="h-8 text-xs rounded-full border-slate-200 hover:bg-primary/5 hover:text-primary hover:border-primary/30"
                                 onClick={() => handleViewDetails(hotel)}
                               >
-                                <InfoIcon className="h-4 w-4 mr-1" />
+                                <InfoIcon className="h-3.5 w-3.5 mr-1" />
                                 Details
                               </Button>
                               <Button
-                                variant="ghost"
+                                variant="outline"
                                 size="sm"
-                                className="h-8"
+                                className="h-8 text-xs rounded-full border-slate-200 hover:bg-primary/5 hover:text-primary hover:border-primary/30"
                                 onClick={() => handleEditClick(hotel)}
                               >
-                                <PencilIcon className="h-4 w-4 mr-1" />
+                                <PencilIcon className="h-3.5 w-3.5 mr-1" />
                                 Edit
                               </Button>
                               <Button
-                                variant="ghost"
+                                variant="outline"
                                 size="sm"
-                                className="h-8 text-red-500"
+                                className="h-8 text-xs rounded-full border-slate-200 hover:bg-red-50 hover:text-red-500 hover:border-red-200"
                                 onClick={() => handleDeleteClick(hotel.id)}
                               >
-                                <TrashIcon className="h-4 w-4 mr-1" />
+                                <TrashIcon className="h-3.5 w-3.5 mr-1" />
                                 Delete
                               </Button>
                             </div>
