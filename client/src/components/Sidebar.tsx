@@ -154,7 +154,7 @@ export default function Sidebar({ isOpen }: { isOpen?: boolean }) {
 
   return (
     <motion.aside 
-      className="w-64 bg-white shadow-md hidden md:block"
+      className="w-64 bg-white shadow-lg hidden md:block border-r border-slate-200"
       initial={{ x: -20, opacity: 0.5 }}
       animate={{ x: 0, opacity: 1 }}
       transition={{
@@ -164,14 +164,14 @@ export default function Sidebar({ isOpen }: { isOpen?: boolean }) {
       }}
     >
       <motion.div 
-        className="py-4 px-3 bg-primary text-white font-medium"
+        className="py-5 px-4 bg-gradient-to-r from-primary to-primary/90 text-white font-semibold flex items-center"
         initial={{ opacity: 0.7 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.5 }}
       >
-        Chicken Business Management
+        <div className="text-lg tracking-tight">Chicken Business Management</div>
       </motion.div>
-      <nav className="mt-4 px-2 space-y-1">
+      <nav className="mt-5 px-3 space-y-1.5">
         {/* Single nav items */}
         {singleNavItems.map((item, index) => (
           <motion.div

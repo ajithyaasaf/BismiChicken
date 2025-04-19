@@ -43,7 +43,7 @@ export default function Header({ onMobileMenuToggle }: HeaderProps) {
 
   return (
     <motion.header 
-      className="bg-white shadow-sm"
+      className="bg-white shadow-md border-b border-slate-200"
       initial={{ y: -20, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ 
@@ -57,17 +57,17 @@ export default function Header({ onMobileMenuToggle }: HeaderProps) {
         paddingTop: 'var(--safe-area-inset-top, 0px)'
       }}
     >
-      <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8 flex justify-between items-center h-12 sm:h-14 md:h-16 transition-all duration-200">
+      <div className="max-w-7xl mx-auto px-4 sm:px-5 md:px-6 lg:px-8 flex justify-between items-center h-14 sm:h-16 md:h-16 transition-all duration-200">
         <div className="flex items-center">
           {/* Mobile menu toggle button */}
           <motion.div
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
           >
             <Button 
               variant="ghost" 
               size="icon" 
-              className="md:hidden mr-1 sm:mr-2 text-primary h-8 w-8 sm:h-9 sm:w-9"
+              className="md:hidden mr-2 sm:mr-3 text-slate-600 hover:text-primary h-9 w-9 sm:h-10 sm:w-10"
               onClick={onMobileMenuToggle}
             >
               <motion.div
@@ -89,13 +89,13 @@ export default function Header({ onMobileMenuToggle }: HeaderProps) {
               times: [0, 0.1, 0.3, 0.4, 0.5, 0.7, 0.9, 1],
               repeat: 0
             }}
-            className="flex items-center justify-center"
+            className="flex items-center justify-center bg-primary/10 p-2 rounded-full"
           >
-            <Package className={`${logoSize.height} ${logoSize.width} text-primary mr-1.5 sm:mr-2`} />
+            <Package className={`${logoSize.height} ${logoSize.width} text-primary`} />
           </motion.div>
           
           <motion.h1 
-            className="text-base sm:text-lg md:text-xl font-medium text-gray-900 hidden sm:block transition-all duration-200"
+            className="ml-3 text-base sm:text-lg md:text-xl font-semibold text-slate-800 hidden sm:block tracking-tight transition-all duration-200"
             initial={{ opacity: 0, x: -10 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.1, duration: 0.3 }}
@@ -104,7 +104,7 @@ export default function Header({ onMobileMenuToggle }: HeaderProps) {
           </motion.h1>
           
           <motion.h1 
-            className="text-base font-medium text-gray-900 sm:hidden transition-all duration-200"
+            className="ml-2 text-base font-semibold text-slate-800 sm:hidden tracking-tight transition-all duration-200"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.1, duration: 0.3 }}
@@ -113,25 +113,27 @@ export default function Header({ onMobileMenuToggle }: HeaderProps) {
           </motion.h1>
         </div>
         
-        <div className="flex items-center space-x-1 sm:space-x-3 md:space-x-4">
-          <motion.span 
-            className="text-xs sm:text-sm text-gray-700 hidden sm:inline truncate max-w-[140px] md:max-w-[200px]"
+        <div className="flex items-center space-x-2 sm:space-x-4">
+          <motion.div 
+            className="hidden sm:flex items-center bg-slate-100 py-1.5 px-3 rounded-full"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.2, duration: 0.4 }}
           >
-            {currentUser?.email}
-          </motion.span>
+            <span className="text-xs sm:text-sm text-slate-700 truncate max-w-[140px] md:max-w-[200px]">
+              {currentUser?.email}
+            </span>
+          </motion.div>
           
           <motion.div
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
             <Button 
-              variant="ghost" 
+              variant="outline" 
               size="sm" 
               onClick={handleLogout}
-              className="h-8 sm:h-9 text-xs sm:text-sm text-gray-600 hover:text-gray-900 flex items-center px-2 sm:px-3"
+              className="h-9 sm:h-9 text-xs sm:text-sm text-slate-700 hover:text-primary border-slate-200 hover:border-primary/40 hover:bg-primary/5 flex items-center px-2.5 sm:px-3 rounded-full"
               aria-label="Logout"
             >
               <motion.div
@@ -139,8 +141,8 @@ export default function Header({ onMobileMenuToggle }: HeaderProps) {
                 whileHover={{ x: 3 }}
                 transition={{ type: "spring", stiffness: 400 }}
               >
-                <LogOut className="h-3.5 w-3.5 sm:h-4 sm:w-4 sm:mr-1" />
-                <span className="hidden sm:inline ml-1">Logout</span>
+                <LogOut className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+                <span className="hidden sm:inline ml-1.5">Logout</span>
               </motion.div>
             </Button>
           </motion.div>

@@ -46,16 +46,18 @@ function NavItem({ href, icon, label, active, index }: NavItemProps) {
           damping: 20,
           delay: index * 0.05 + 0.1
         }}
-        whileHover={{ scale: 1.1 }}
-        whileTap={{ scale: 0.9 }}
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.95 }}
       >
         <motion.div 
           className={cn(
-            "p-2 rounded-full",
-            active ? "bg-primary text-white" : "text-gray-600"
+            "p-2 rounded-lg flex items-center justify-center",
+            active 
+              ? "bg-primary/10 text-primary" 
+              : "text-slate-600 hover:text-primary hover:bg-slate-100"
           )}
-          whileHover={{ y: -4 }}
-          animate={active ? { scale: [1, 1.2, 1] } : { scale: 1 }}
+          whileHover={{ y: -2 }}
+          animate={active ? { scale: [1, 1.1, 1] } : { scale: 1 }}
           transition={{ 
             duration: active ? 0.3 : 0,
             times: active ? [0, 0.6, 1] : [0, 1],
@@ -66,12 +68,11 @@ function NavItem({ href, icon, label, active, index }: NavItemProps) {
         </motion.div>
         <motion.span 
           className={cn(
-            "mt-1",
-            active ? "text-primary font-medium" : "text-gray-600"
+            "mt-1 font-medium",
+            active ? "text-primary" : "text-slate-600"
           )}
           animate={active ? { 
-            scale: [1, 1.05, 1],
-            color: "#1a56db"  // assuming primary is a blue-ish color
+            scale: [1, 1.05, 1]
           } : {}}
           transition={{ duration: 0.3 }}
         >
@@ -86,7 +87,7 @@ function QuickAction({ href, icon, label, description, color, index, onClick }: 
   return (
     <Link href={href} onClick={onClick}>
       <motion.div 
-        className="flex items-center bg-white shadow-md rounded-xl p-3 mb-3"
+        className="flex items-center bg-white shadow-md rounded-xl p-3.5 mb-3 border border-slate-100"
         initial={{ opacity: 0, y: 20, scale: 0.9 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
         exit={{ opacity: 0, y: -20, scale: 0.9 }}
@@ -98,12 +99,12 @@ function QuickAction({ href, icon, label, description, color, index, onClick }: 
         }}
         whileTap={{ scale: 0.95 }}
       >
-        <div className={`rounded-full p-2 mr-3 ${color}`}>
+        <div className={`rounded-full p-2.5 mr-3.5 ${color.replace('bg-blue-500', 'bg-primary').replace('bg-green-500', 'bg-emerald-500').replace('bg-cyan-500', 'bg-primary/90').replace('bg-amber-500', 'bg-amber-500').replace('bg-purple-500', 'bg-violet-500')}`}>
           {icon}
         </div>
         <div className="flex-1">
-          <h3 className="font-medium text-gray-900">{label}</h3>
-          <p className="text-xs text-gray-500">{description}</p>
+          <h3 className="font-medium text-slate-800">{label}</h3>
+          <p className="text-xs text-slate-500">{description}</p>
         </div>
       </motion.div>
     </Link>
@@ -178,12 +179,12 @@ export default function MobileNav() {
       <AnimatePresence>
         {!showQuickActions && (
           <motion.button
-            className="md:hidden fixed bottom-20 right-4 bg-primary text-white p-3 rounded-full shadow-lg z-50"
+            className="md:hidden fixed bottom-20 right-4 bg-primary text-white p-3.5 rounded-full shadow-xl z-50"
             initial={{ scale: 0, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0, opacity: 0 }}
-            whileHover={{ scale: 1.1, boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)" }}
-            whileTap={{ scale: 0.9 }}
+            whileHover={{ scale: 1.05, boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.2), 0 10px 10px -5px rgba(0, 0, 0, 0.1)" }}
+            whileTap={{ scale: 0.95 }}
             onClick={toggleQuickActions}
           >
             <Plus className="h-6 w-6" />
@@ -195,27 +196,30 @@ export default function MobileNav() {
       <AnimatePresence>
         {showQuickActions && (
           <motion.div 
-            className="md:hidden fixed inset-0 bg-gray-900 bg-opacity-50 z-50 p-4 flex flex-col justify-end"
+            className="md:hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 p-4 flex flex-col justify-end"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={hideQuickActions}
           >
             <motion.div
-              className="bg-gray-100 rounded-t-xl p-4 pb-20"
+              className="bg-slate-50 rounded-t-xl p-5 pb-20 shadow-lg"
               initial={{ y: "100%" }}
               animate={{ y: 0 }}
               exit={{ y: "100%" }}
               transition={{ type: "spring", damping: 25, stiffness: 300 }}
               onClick={(e) => e.stopPropagation()}
             >
-              <div className="flex justify-between items-center mb-4">
+              <div className="flex justify-between items-center mb-5">
                 <div className="flex items-center">
-                  <Clock className="h-4 w-4 text-gray-500 mr-1" />
-                  <h2 className="text-sm text-gray-500">Quick Actions</h2>
+                  <Clock className="h-4 w-4 text-primary mr-2" />
+                  <h2 className="text-base font-medium text-slate-700">Quick Actions</h2>
                 </div>
-                <button onClick={hideQuickActions}>
-                  <XCircle className="h-5 w-5 text-gray-500" />
+                <button 
+                  onClick={hideQuickActions}
+                  className="text-slate-500 hover:text-slate-700 transition-colors"
+                >
+                  <XCircle className="h-5 w-5" />
                 </button>
               </div>
               
@@ -238,7 +242,7 @@ export default function MobileNav() {
 
       {/* Bottom Navigation Bar */}
       <motion.div 
-        className="md:hidden fixed bottom-0 left-0 right-0 bg-white shadow-lg rounded-t-lg z-10 border-t border-gray-200"
+        className="md:hidden fixed bottom-0 left-0 right-0 bg-white shadow-lg rounded-t-2xl z-10 border-t border-slate-200"
         initial={{ y: 100, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ 
@@ -247,8 +251,11 @@ export default function MobileNav() {
           damping: 30,
           delay: 0.2
         }}
+        style={{
+          paddingBottom: 'var(--safe-area-inset-bottom, 0px)'
+        }}
       >
-        <div className="flex justify-around py-2">
+        <div className="flex justify-around py-3">
           {navItems.map((item, index) => (
             <NavItem 
               key={item.href}
