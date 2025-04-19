@@ -21,6 +21,7 @@ import Hotels from "./pages/Hotels";
 import VendorDebt from "./pages/VendorDebt";
 import VendorPayments from "./pages/VendorPayments";
 import HotelBills from "./pages/HotelBills";
+import HotelAnalytics from "./pages/HotelAnalytics";
 import TestFirebase from "./pages/TestFirebase";
 import { Loader2 } from "lucide-react";
 
@@ -123,13 +124,16 @@ function Router() {
       <Route path="/retail-sales">
         {(params) => <PrivateRoute component={RetailSales} params={params} />}
       </Route>
-      <Route path="/hotel-sales">
-        {(params) => <PrivateRoute component={HotelSales} params={params} />}
-      </Route>
       
       {/* Hotel Management */}
       <Route path="/hotels">
         {(params) => <PrivateRoute component={Hotels} params={params} />}
+      </Route>
+      <Route path="/hotel-sales">
+        {(params) => <PrivateRoute component={HotelSales} params={params} />}
+      </Route>
+      <Route path="/hotel-analytics">
+        {(params) => <PrivateRoute component={HotelAnalytics} params={params} />}
       </Route>
       <Route path="/hotel-bills">
         {(params) => <PrivateRoute component={HotelBills} params={params} />}
