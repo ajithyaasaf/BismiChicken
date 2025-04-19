@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
-import { format, subDays, startOfMonth, endOfMonth } from "date-fns";
-import { Calendar as CalendarIcon } from "lucide-react";
 import { DateRange } from "react-day-picker";
+import { format, subDays, startOfMonth, endOfMonth } from "date-fns";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
@@ -17,6 +16,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { CalendarIcon } from "lucide-react";
 
 interface DateRangePickerProps {
   startDate: Date;
@@ -24,10 +24,10 @@ interface DateRangePickerProps {
   onDateRangeChange: (start: Date, end: Date) => void;
 }
 
-export default function DateRangePicker({
+export default function DateRangePicker({ 
   startDate,
   endDate,
-  onDateRangeChange,
+  onDateRangeChange 
 }: DateRangePickerProps) {
   const [date, setDate] = useState<DateRange | undefined>({
     from: startDate,
