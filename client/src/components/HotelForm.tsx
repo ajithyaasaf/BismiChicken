@@ -159,9 +159,9 @@ export default function HotelForm({
               className="w-full"
             >
               <TabsList className="grid w-full grid-cols-3 mb-4">
-                <TabsTrigger value="basic" className="px-2 py-1.5 text-sm">Basic Info</TabsTrigger>
-                <TabsTrigger value="orders" className="px-2 py-1.5 text-sm">Order Preferences</TabsTrigger>
-                <TabsTrigger value="billing" className="px-2 py-1.5 text-sm">Billing & Payments</TabsTrigger>
+                <TabsTrigger value="basic" className="text-xs sm:text-sm h-10">Basic Info</TabsTrigger>
+                <TabsTrigger value="orders" className="text-xs sm:text-sm h-10 px-1 sm:px-2"><span className="truncate">Order Preferences</span></TabsTrigger>
+                <TabsTrigger value="billing" className="text-xs sm:text-sm h-10 px-1 sm:px-2"><span className="truncate">Billing & Payments</span></TabsTrigger>
               </TabsList>
               
               {/* Basic Info Tab */}
