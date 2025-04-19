@@ -139,7 +139,7 @@ export default function HotelForm({
   };
 
   return (
-    <Card className="bg-white rounded-lg shadow-sm">
+    <Card className="bg-white rounded-lg shadow-sm w-full">
       <CardHeader className="pb-3">
         <CardTitle className="text-lg font-medium text-gray-900 flex items-center">
           <Building2 className="h-5 w-5 mr-2 text-primary" />
@@ -149,7 +149,7 @@ export default function HotelForm({
           Add hotel details with order preferences for easier daily sales
         </CardDescription>
       </CardHeader>
-      <CardContent className="p-4 pt-0">
+      <CardContent className="p-4 pt-0 overflow-visible">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(handleSubmit)}>
             <Tabs 
@@ -158,10 +158,10 @@ export default function HotelForm({
               onValueChange={setActiveTab}
               className="w-full"
             >
-              <TabsList className="grid grid-cols-3 mb-4">
-                <TabsTrigger value="basic">Basic Info</TabsTrigger>
-                <TabsTrigger value="orders">Order Preferences</TabsTrigger>
-                <TabsTrigger value="billing">Billing & Payments</TabsTrigger>
+              <TabsList className="grid w-full grid-cols-3 mb-4">
+                <TabsTrigger value="basic" className="px-2 py-1.5 text-sm">Basic Info</TabsTrigger>
+                <TabsTrigger value="orders" className="px-2 py-1.5 text-sm">Order Preferences</TabsTrigger>
+                <TabsTrigger value="billing" className="px-2 py-1.5 text-sm">Billing & Payments</TabsTrigger>
               </TabsList>
               
               {/* Basic Info Tab */}
